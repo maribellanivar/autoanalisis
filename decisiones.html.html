@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autoanálisis de la Toma de Decisiones</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, rgba(120, 6, 6, 0.95) 0%, rgba(160, 8, 8, 0.95) 100%), url('data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCAEAAQADASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD3+iiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigD/2Q==');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            min-height: 100vh;
+            padding: 20px;
+            color: #2c1810;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #780606 0%, #a00808 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2em;
+            margin-bottom: 15px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.95;
+            line-height: 1.6;
+            text-align: left;
+        }
+
+        .content {
+            padding: 40px 30px;
+        }
+
+        .question {
+            margin-bottom: 35px;
+            padding: 25px;
+            background: linear-gradient(135deg, #FFF5F7 0%, #FFE8EC 100%);
+            border-radius: 15px;
+            border-left: 5px solid #780606;
+            display: none;
+        }
+
+        .question.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .question h3 {
+            color: #780606;
+            margin-bottom: 20px;
+            font-size: 1.2em;
+            line-height: 1.5;
+        }
+
+        .question-number {
+            display: inline-block;
+            background: #780606;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option {
+            padding: 18px 20px;
+            background: white;
+            border: 2px solid #E8D5D8;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+
+        .option:hover {
+            border-color: #780606;
+            background: #FFF5F7;
+            transform: translateX(5px);
+        }
+
+        .option.selected {
+            background: #780606;
+            color: white;
+            border-color: #780606;
+        }
+
+        .option input[type="radio"] {
+            margin-right: 15px;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            padding: 0 30px;
+        }
+
+        .btn {
+            padding: 15px 35px;
+            background: linear-gradient(135deg, #780606 0%, #a00808 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.05em;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(120, 6, 6, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(120, 6, 6, 0.4);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: #E8D5D8;
+            margin: 20px 30px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #780606 0%, #a00808 100%);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .result {
+            display: none;
+            padding: 40px 30px;
+        }
+
+        .result.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .result-card {
+            background: linear-gradient(135deg, #FFF5F7 0%, #FFE8EC 100%);
+            border-radius: 15px;
+            padding: 35px;
+            margin-top: 25px;
+            border: 3px solid #780606;
+        }
+
+        .result-title {
+            color: #780606;
+            font-size: 2em;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .result-description {
+            line-height: 1.8;
+            margin-bottom: 25px;
+            font-size: 1.1em;
+        }
+
+        .result-recommendations {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin-top: 25px;
+            text-align: left;
+        }
+
+        .result-recommendations h4 {
+            color: #780606;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .result-recommendations ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .result-recommendations li {
+            padding: 10px 0;
+            padding-left: 30px;
+            position: relative;
+            line-height: 1.6;
+        }
+
+        .result-recommendations li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #780606;
+            font-weight: bold;
+            font-size: 1.3em;
+        }
+
+        .restart-btn {
+            margin-top: 30px;
+            background: white;
+            color: #780606;
+            border: 2px solid #780606;
+        }
+
+        .restart-btn:hover {
+            background: #780606;
+            color: white;
+        }
+
+        @media (max-width: 600px) {
+            .header h1 {
+                font-size: 1.5em;
+            }
+            
+            .content {
+                padding: 20px 15px;
+            }
+
+            .navigation {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Autoanálisis de la Toma de Decisiones</h1>
+            <p>Descubre cómo el enemigo está influyendo en tus decisiones diarias a través de la duda, el desánimo y el temor</p>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+        <div class="content" id="questionsContainer">
+            <!-- Questions will be generated here -->
+        </div>
+
+        <div class="navigation">
+            <button class="btn" id="prevBtn" onclick="previousQuestion()" style="display: none;">← Anterior</button>
+            <button class="btn" id="nextBtn" onclick="nextQuestion()">Siguiente →</button>
+            <button class="btn" id="submitBtn" onclick="calculateResult()" style="display: none;">Ver Resultado</button>
+        </div>
+
+        <div class="result" id="resultContainer">
+            <!-- Result will be shown here -->
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                q: "Cuando despiertas por la mañana, ¿qué pensamientos dominan tu mente antes de levantarte?",
+                options: [
+                    { text: "Pensamientos de preocupación, cansancio y desmotivación ('No quiero levantarme', '¿Para qué?')", value: 1 },
+                    { text: "Ansiedad por todo lo que tengo que hacer y sentimiento de incapacidad", value: 2 },
+                    { text: "A veces positivos, a veces negativos - es una lucha constante", value: 3 },
+                    { text: "Agradecimiento a Dios por un nuevo día y expectativa de Sus bendiciones", value: 4 }
+                ]
+            },
+            {
+                q: "Ante una oportunidad nueva (trabajo, ministerio, proyecto), ¿cuál es tu primera reacción?",
+                options: [
+                    { text: "'No soy suficiente', 'No estoy preparada', 'Alguien más lo hará mejor'", value: 1 },
+                    { text: "Emoción inicial seguida de inmediata duda y miedo al fracaso", value: 2 },
+                    { text: "Considero pros y contras pero a menudo la duda me paraliza", value: 3 },
+                    { text: "Busco la guía de Dios y avanzo con fe, aunque sienta temor", value: 4 }
+                ]
+            },
+            {
+                q: "Cuando cometes un error o fallas en algo, ¿cómo hablas contigo misma?",
+                options: [
+                    { text: "Con dureza extrema: 'Eres una tonta', 'Siempre arruinas todo', 'No sirves'", value: 1 },
+                    { text: "Con crítica constante y recordando todos mis errores pasados", value: 2 },
+                    { text: "Me critico pero intento ser más compasiva conmigo misma", value: 3 },
+                    { text: "Con gracia y verdad: aprendo del error pero no defino mi identidad por él", value: 4 }
+                ]
+            },
+            {
+                q: "En medio de una decisión importante, ¿qué voces tienen más peso en tu mente?",
+                options: [
+                    { text: "Voces de temor, 'qué dirán', recuerdos de fracasos pasados", value: 1 },
+                    { text: "Confusión entre muchas opiniones diferentes y mis propios miedos", value: 2 },
+                    { text: "Intento escuchar a Dios pero las voces de duda son muy fuertes", value: 3 },
+                    { text: "La voz de Dios a través de Su Palabra y el testimonio del Espíritu Santo", value: 4 }
+                ]
+            },
+            {
+                q: "Cuando estás a punto de dar un paso de fe, ¿qué sucede?",
+                options: [
+                    { text: "Me paralizo completamente y termino sin hacer nada", value: 1 },
+                    { text: "Postergo la decisión esperando 'un mejor momento' que nunca llega", value: 2 },
+                    { text: "Doy el paso pero con mucha inseguridad y frecuente retroceso", value: 3 },
+                    { text: "Siento el temor pero lo reconozco y avanzo confiando en Dios", value: 4 }
+                ]
+            },
+            {
+                q: "En tus momentos a solas, ¿qué tipo de diálogo interno predomina?",
+                options: [
+                    { text: "Destructivo y negativo: 'No puedo', 'No valgo', 'Todo está mal'", value: 1 },
+                    { text: "Mayormente negativo con algunos intentos de pensar positivo", value: 2 },
+                    { text: "Mixto - lucho entre lo que sé que Dios dice y lo que siento", value: 3 },
+                    { text: "Afirmaciones basadas en la Palabra de Dios sobre mi identidad", value: 4 }
+                ]
+            },
+            {
+                q: "Cuando alguien te critica o rechaza, ¿cómo afecta tus próximas decisiones?",
+                options: [
+                    { text: "Me derrumbo y cambio completamente mi curso de acción", value: 1 },
+                    { text: "Me desanimo profundamente y dudo de todo lo que estaba haciendo", value: 2 },
+                    { text: "Me afecta pero intento procesarlo y seguir adelante", value: 3 },
+                    { text: "Lo evalúo con sabiduría pero mantengo mi convicción en lo que Dios me mostró", value: 4 }
+                ]
+            },
+            {
+                q: "Al enfrentar un día difícil o desafiante, ¿cuál es tu estrategia mental?",
+                options: [
+                    { text: "Rendirme: 'Este día será terrible', 'No puedo con esto'", value: 1 },
+                    { text: "Resistirlo con quejas, estrés y negatividad constante", value: 2 },
+                    { text: "Intentar mantener una actitud positiva pero cayendo en desánimo frecuente", value: 3 },
+                    { text: "Declaro que Dios es mi fortaleza y busco Su presencia durante el día", value: 4 }
+                ]
+            },
+            {
+                q: "Antes de dormir, ¿con qué pensamientos cierras tu día?",
+                options: [
+                    { text: "Preocupación, ansiedad por el mañana, reproches por lo que no hice", value: 1 },
+                    { text: "Estrés y pensamiento repetitivo sobre problemas sin resolver", value: 2 },
+                    { text: "Mezcla de gratitud con preocupación - no tengo paz completa", value: 3 },
+                    { text: "Gratitud a Dios, entrega de mis cargas a Él, paz en Su control", value: 4 }
+                ]
+            },
+            {
+                q: "¿Con qué frecuencia te encuentras diciendo 'no puedo', 'es imposible', 'no lo lograré'?",
+                options: [
+                    { text: "Constantemente - es mi diálogo interno automático", value: 1 },
+                    { text: "Varias veces al día - especialmente ante desafíos", value: 2 },
+                    { text: "Ocasionalmente - estoy trabajando en cambiarlo", value: 3 },
+                    { text: "Rara vez - he renovado mi mente con la verdad de Dios", value: 4 }
+                ]
+            }
+        ];
+
+        let currentQuestion = 0;
+        let answers = {};
+
+        function initQuiz() {
+            const container = document.getElementById('questionsContainer');
+            questions.forEach((question, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = `question ${index === 0 ? 'active' : ''}`;
+                questionDiv.id = `question-${index}`;
+                
+                let optionsHTML = '<div class="options">';
+                question.options.forEach((option, optIndex) => {
+                    optionsHTML += `
+                        <label class="option" onclick="selectOption(${index}, ${option.value}, this)">
+                            <input type="radio" name="q${index}" value="${option.value}">
+                            <span>${option.text}</span>
+                        </label>
+                    `;
+                });
+                optionsHTML += '</div>';
+                
+                questionDiv.innerHTML = `
+                    <h3><span class="question-number">${index + 1}</span>${question.q}</h3>
+                    ${optionsHTML}
+                `;
+                
+                container.appendChild(questionDiv);
+            });
+            updateProgress();
+        }
+
+        function selectOption(questionIndex, value, element) {
+            answers[questionIndex] = value;
+            
+            const options = element.parentElement.querySelectorAll('.option');
+            options.forEach(opt => opt.classList.remove('selected'));
+            element.classList.add('selected');
+            
+            document.getElementById('nextBtn').disabled = false;
+            if (currentQuestion === questions.length - 1) {
+                document.getElementById('submitBtn').disabled = false;
+            }
+        }
+
+        function nextQuestion() {
+            if (!answers.hasOwnProperty(currentQuestion)) {
+                alert('Por favor selecciona una respuesta antes de continuar');
+                return;
+            }
+            
+            document.getElementById(`question-${currentQuestion}`).classList.remove('active');
+            currentQuestion++;
+            document.getElementById(`question-${currentQuestion}`).classList.add('active');
+            
+            updateButtons();
+            updateProgress();
+        }
+
+        function previousQuestion() {
+            document.getElementById(`question-${currentQuestion}`).classList.remove('active');
+            currentQuestion--;
+            document.getElementById(`question-${currentQuestion}`).classList.add('active');
+            
+            updateButtons();
+            updateProgress();
+        }
+
+        function updateButtons() {
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const submitBtn = document.getElementById('submitBtn');
+            
+            prevBtn.style.display = currentQuestion > 0 ? 'block' : 'none';
+            
+            if (currentQuestion === questions.length - 1) {
+                nextBtn.style.display = 'none';
+                submitBtn.style.display = 'block';
+                submitBtn.disabled = !answers.hasOwnProperty(currentQuestion);
+            } else {
+                nextBtn.style.display = 'block';
+                submitBtn.style.display = 'none';
+                nextBtn.disabled = !answers.hasOwnProperty(currentQuestion);
+            }
+        }
+
+        function updateProgress() {
+            const progress = ((currentQuestion + 1) / questions.length) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        function calculateResult() {
+            if (Object.keys(answers).length !== questions.length) {
+                alert('Por favor responde todas las preguntas');
+                return;
+            }
+            
+            const totalScore = Object.values(answers).reduce((sum, val) => sum + val, 0);
+            const maxScore = questions.length * 4;
+            const percentage = (totalScore / maxScore) * 100;
+            
+            let resultTitle, resultDescription, recommendations;
+            
+            if (percentage <= 40) {
+                resultTitle = "Nivel: Batalla Intensa - Bajo Ataque Constante";
+                resultDescription = `<p><strong>Mujer,</strong> tu autoanálisis revela que el enemigo tiene una fuerte influencia en tus decisiones diarias. Las voces de duda, desánimo, temor y descalificación están dominando tu mente, paralizando tus decisiones y robándote el destino que Dios tiene preparado para ti.</p>
+                <p><strong>Tu realidad actual:</strong> Cada decisión, desde levantarte por la mañana hasta cerrar el día, está siendo bombardeada por pensamientos negativos. El enemigo ha establecido fortalezas en tu mente que te mantienen en un ciclo de parálisis, autosabotaje y duda constante. Tus pensamientos automáticos son destructivos y te impiden ver lo que Dios dice sobre ti.</p>
+                <p><strong>¡PERO HAY ESPERANZA!</strong> Reconocer esta batalla es el primer paso para la victoria. Dios quiere liberarte y renovar tu mente completamente.</p>`;
+                recommendations = `
+                    <li>Comienza cada día declarando en voz alta quién eres en Cristo - tu identidad NO es lo que sientes</li>
+                    <li>Identifica los pensamientos enemigos y reemplázalos inmediatamente con verdades bíblicas específicas</li>
+                    <li>Ayuna de pensamientos negativos por 21 días - cada vez que lleguen, déjalos ir y declara lo contrario</li>
+                    <li>Escribe 10 promesas de Dios sobre tu vida y léelas en voz alta 3 veces al día</li>
+                    <li>Busca ayuda de una mentora o consejera cristiana - no pelees esta batalla sola</li>
+                    <li>Cada noche, anota 3 decisiones pequeñas donde VENCISTE hoy - celebra cada victoria</li>
+                    <li>Establece una alarma cada 3 horas para detenerte y evaluar tus pensamientos</li>
+                `;
+            } else if (percentage <= 60) {
+                resultTitle = "Nivel: Campo de Batalla Activo - En Guerra";
+                resultDescription = `<p><strong>Mujer,</strong> estás en medio de una batalla activa. El enemigo está usando la duda y el desánimo para frenar tus decisiones, y aunque tienes momentos de victoria, aún permites que sus ataques te desvíen del camino con frecuencia.</p>
+                <p><strong>Tu realidad actual:</strong> Reconoces las tácticas del enemigo, pero todavía te afectan profundamente. Tienes días donde decides bien y das pasos de fe, seguidos de días donde el desánimo te paraliza. Tus decisiones son inconsistentes porque tu mente sigue siendo campo de batalla entre la verdad de Dios y las mentiras del enemigo.</p>
+                <p><strong>Lo que necesitas:</strong> Fortalecer tu armadura espiritual y desarrollar estrategias específicas para reconocer y rechazar los ataques del enemigo antes de que influyan en tus decisiones.</p>`;
+                recommendations = `
+                    <li>Crea un 'arsenal de verdades' - versículos específicos para cada mentira común del enemigo</li>
+                    <li>Cuando sientas desánimo, pregúntate: '¿De dónde viene este pensamiento? ¿Es de Dios?'</li>
+                    <li>Establece límites con personas o situaciones que alimentan la duda en tu vida</li>
+                    <li>Lleva un diario de batallas: documenta cada ataque mental y cómo lo venciste</li>
+                    <li>Practica la decisión inmediata en cosas pequeñas para fortalecer tu músculo de fe</li>
+                    <li>Únete a un grupo de mujeres guerreras que estén peleando la misma batalla</li>
+                    <li>Lee testimonios de mujeres que vencieron la duda y el desánimo</li>
+                    <li>Declara guerra al enemigo en oración - sé agresiva en tu postura espiritual</li>
+                `;
+            } else if (percentage <= 80) {
+                resultTitle = "Nivel: Victoria Progresiva - Ganando Terreno";
+                resultDescription = `<p><strong>Mujer,</strong> ¡estás ganando la batalla! Has aprendido a reconocer los ataques del enemigo y tienes herramientas para resistir sus tácticas de duda y desánimo. Tus decisiones diarias están cada vez más alineadas con la verdad de Dios, aunque todavía enfrentas batallas ocasionales.</p>
+                <p><strong>Tu realidad actual:</strong> La mayoría del tiempo, tomas decisiones basadas en la verdad de Dios y no en tus emociones o los ataques del enemigo. Tienes claridad mental, reconoces las mentiras rápidamente y las confrontas con la Palabra. Sin embargo, en momentos de alta presión o cansancio, todavía eres vulnerable a los ataques.</p>
+                <p><strong>Tu próximo nivel:</strong> Consolidar tu victoria y convertirte en una guerrera que no solo se defiende, sino que toma territorio para el Reino de Dios.</p>`;
+                recommendations = `
+                    <li>Identifica tus 'puntos ciegos' - momentos o situaciones donde el enemigo todavía te atrapa</li>
+                    <li>Fortalece tu vida de oración con intercesión estratégica y guerra espiritual</li>
+                    <li>Comienza a mentorear a otra mujer que esté en una batalla más temprana que la tuya</li>
+                    <li>Desarrolla protocolos automáticos para momentos de crisis - decisiones pre-programadas basadas en verdad</li>
+                    <li>Ayuna regularmente para mantener tu sensibilidad espiritual aguda</li>
+                    <li>Estudia casos bíblicos de guerra espiritual y aplica sus principios</li>
+                    <li>Mantén un registro de victorias para recordarte tu progreso en momentos difíciles</li>
+                    <li>Amplía tu territorio - toma decisiones más audaces que requieran mayor fe</li>
+                `;
+            } else {
+                resultTitle = "Nivel: Guerrera Victoriosa - Tomando Territorio";
+                resultDescription = `<p><strong>Mujer,</strong> ¡eres una guerrera victoriosa! Has vencido las tácticas del enemigo de duda, desánimo y temor. Tus decisiones diarias están firmemente arraigadas en la verdad de Dios, y cuando el enemigo ataca, lo reconoces inmediatamente y lo derrotas con la Palabra.</p>
+                <p><strong>Tu realidad actual:</strong> Vives en victoria constante. Tu mente está renovada, tus decisiones reflejan la sabiduría de Dios, y no permites que el enemigo robe tu paz o desvíe tu propósito. Eres un ejemplo vivo de lo que significa tener la mente de Cristo y tomar decisiones desde un lugar de autoridad espiritual.</p>
+                <p><strong>Tu llamado ahora:</strong> No solo mantener tu victoria, sino ser instrumento de liberación para otras mujeres. Dios te ha dado experiencia y autoridad para ayudar a otras a romper las cadenas de duda y desánimo.</p>`;
+                recommendations = `
+                    <li>Mantén tu guardia alta - el enemigo busca momentos de confianza para atacar</li>
+                    <li>Desarrolla un ministerio intencional de mentoría para mujeres en batalla mental</li>
+                    <li>Comparte públicamente tu testimonio de victoria sobre la duda y el desánimo</li>
+                    <li>Intercede estratégicamente por otras mujeres que luchan con decisiones paralizadas</li>
+                    <li>Crea recursos (escritos, videos, enseñanzas) sobre victoria mental para bendecir a otras</li>
+                    <li>Busca niveles más profundos de intimidad con Dios - siempre hay más</li>
+                    <li>Toma decisiones audaces que expandan el Reino y sean testimonio de fe</li>
+                    <li>Sé mentora de mentoras - multiplica tu victoria en generaciones</li>
+                `;
+            }
+            
+            const resultHTML = `
+                <div class="result-card">
+                    <div class="result-title">${resultTitle}</div>
+                    <div class="result-description">${resultDescription}</div>
+                    <div class="result-recommendations">
+                        <h4>Estrategias de Guerra Para Tus Decisiones Diarias:</h4>
+                        <ul>${recommendations}</ul>
+                    </div>
+                    <div style="margin-top: 30px; padding: 20px; background: white; border-radius: 10px; border-left: 4px solid #780606;">
+                        <p style="font-size: 1.05em; line-height: 1.7;">
+                            <strong>Recuerda:</strong> La batalla por tus decisiones es real, pero ya está ganada en Cristo. El enemigo usa la duda, el desánimo y el temor porque sabe que tus decisiones diarias determinan tu destino. Cada decisión tomada en fe es un territorio recuperado para el Reino de Dios.
+                        </p>
+                        <p style="margin-top: 15px; color: #780606; font-style: italic; font-size: 1.1em;">
+                            "Pues aunque andamos en la carne, no militamos según la carne; porque las armas de nuestra milicia no son carnales, sino poderosas en Dios para la destrucción de fortalezas, derribando argumentos y toda altivez que se levanta contra el conocimiento de Dios, y llevando cautivo todo pensamiento a la obediencia a Cristo." - 2 Corintios 10:3-5
+                        </p>
+                    </div>
+                    <button class="btn restart-btn" onclick="location.reload()">Realizar Autoanálisis Nuevamente</button>
+                </div>
+            `;
+            
+            document.getElementById('questionsContainer').style.display = 'none';
+            document.querySelector('.navigation').style.display = 'none';
+            document.querySelector('.progress-bar').style.display = 'none';
+            
+            const resultContainer = document.getElementById('resultContainer');
+            resultContainer.innerHTML = resultHTML;
+            resultContainer.classList.add('active');
+        }
+
+        // Initialize the quiz when page loads
+        initQuiz();
+    </script>
+</body>
+</html>
