@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autoanálisis: Diosestima</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #fafafa;
+            min-height: 100vh;
+            padding: 40px 20px;
+            color: #1d1d1f;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #806459 0%, #96776c 100%);
+            color: white;
+            padding: 60px 40px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: -0.5px;
+        }
+
+        .header p {
+            font-size: 1.15em;
+            opacity: 0.9;
+            line-height: 1.6;
+            text-align: left;
+            font-weight: 300;
+            max-width: 700px;
+        }
+
+        .content {
+            padding: 50px 40px;
+        }
+
+        .question {
+            margin-bottom: 40px;
+            padding: 0;
+            display: none;
+        }
+
+        .question.active {
+            display: block;
+            animation: fadeIn 0.6s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .question h3 {
+            color: #806459;
+            margin-bottom: 30px;
+            font-size: 1.3em;
+            line-height: 1.5;
+            font-weight: 600;
+            letter-spacing: -0.3px;
+        }
+
+        .question-number {
+            display: inline-block;
+            background: #806459;
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 36px;
+            margin-right: 12px;
+            font-weight: 600;
+            font-size: 0.95em;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .option {
+            padding: 20px 24px;
+            background: #f5f5f7;
+            border: 2px solid transparent;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            font-weight: 400;
+        }
+
+        .option:hover {
+            background: #e8e8ed;
+            transform: translateX(2px);
+        }
+
+        .option.selected {
+            background: #806459;
+            color: white;
+            border-color: #806459;
+            font-weight: 500;
+        }
+
+        .option input[type="radio"] {
+            margin-right: 16px;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: #806459;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+            padding: 0 40px;
+            gap: 20px;
+        }
+
+        .btn {
+            padding: 16px 40px;
+            background: #806459;
+            color: white;
+            border: none;
+            border-radius: 980px;
+            cursor: pointer;
+            font-size: 1.05em;
+            font-weight: 500;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            font-family: 'Montserrat', sans-serif;
+            letter-spacing: -0.2px;
+        }
+
+        .btn:hover {
+            background: #6e5449;
+            transform: scale(1.02);
+        }
+
+        .btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .progress-bar {
+            height: 4px;
+            background: #e8e8ed;
+            margin: 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #806459;
+            width: 0%;
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .result {
+            display: none;
+            padding: 50px 40px;
+        }
+
+        .result.active {
+            display: block;
+            animation: fadeIn 0.6s ease-in;
+        }
+
+        .result-card {
+            background: #f5f5f7;
+            border-radius: 20px;
+            padding: 40px;
+            margin-top: 30px;
+        }
+
+        .result-title {
+            color: #806459;
+            font-size: 2.2em;
+            margin-bottom: 24px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .result-description {
+            line-height: 1.8;
+            margin-bottom: 30px;
+            font-size: 1.05em;
+            font-weight: 400;
+            color: #1d1d1f;
+        }
+
+        .result-description p {
+            margin-bottom: 20px;
+        }
+
+        .result-recommendations {
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            margin-top: 30px;
+        }
+
+        .result-recommendations h4 {
+            color: #806459;
+            margin-bottom: 20px;
+            font-size: 1.4em;
+            font-weight: 600;
+            letter-spacing: -0.3px;
+        }
+
+        .result-recommendations ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .result-recommendations li {
+            padding: 14px 0;
+            padding-left: 35px;
+            position: relative;
+            line-height: 1.7;
+            font-weight: 400;
+            color: #1d1d1f;
+        }
+
+        .result-recommendations li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #806459;
+            font-weight: 600;
+            font-size: 1.2em;
+        }
+
+        .restart-btn {
+            margin-top: 35px;
+            background: transparent;
+            color: #806459;
+            border: 2px solid #806459;
+        }
+
+        .restart-btn:hover {
+            background: #806459;
+            color: white;
+        }
+
+        .final-message {
+            margin-top: 35px;
+            padding: 30px;
+            background: white;
+            border-radius: 16px;
+            border-left: 4px solid #806459;
+        }
+
+        .final-message p {
+            font-size: 1.05em;
+            line-height: 1.8;
+            color: #1d1d1f;
+            margin-bottom: 18px;
+        }
+
+        .final-message p:last-child {
+            font-style: italic;
+            color: #424245;
+            margin-bottom: 0;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 40px 30px;
+            }
+
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .content {
+                padding: 30px 20px;
+            }
+
+            .navigation {
+                flex-direction: column;
+                padding: 0 20px;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            .result {
+                padding: 30px 20px;
+            }
+
+            .result-card {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Autoanálisis: Diosestima</h1>
+            <p>Descubre si tu valor está fundamentado en lo que Dios dice de ti o en las opiniones cambiantes de este mundo</p>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+        <div class="content" id="questionsContainer">
+            <!-- Questions will be generated here -->
+        </div>
+
+        <div class="navigation">
+            <button class="btn" id="nextBtn" onclick="nextQuestion()">Siguiente</button>
+            <button class="btn" id="submitBtn" onclick="calculateResult()" style="display: none;">Ver Resultado</button>
+            <button class="btn" id="prevBtn" onclick="previousQuestion()" style="display: none;">Anterior</button>
+        </div>
+
+        <div class="result" id="resultContainer">
+            <!-- Result will be shown here -->
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                q: "¿De dónde proviene principalmente tu sentido de valor y dignidad?",
+                options: [
+                    { text: "De lo que otros piensan de mí, mis logros y mi apariencia", value: 1 },
+                    { text: "De una mezcla confusa entre lo que logro y lo que Dios dice", value: 2 },
+                    { text: "Mayormente de Dios pero todavía me afectan mucho las opiniones de otros", value: 3 },
+                    { text: "Completamente de mi identidad en Cristo - soy quien Él dice que soy", value: 4 }
+                ]
+            },
+            {
+                q: "Cuando te miras al espejo, ¿qué voz escuchas más fuerte?",
+                options: [
+                    { text: "Crítica devastadora - veo todo lo que está 'mal' conmigo", value: 1 },
+                    { text: "Comparación constante - mido mi belleza contra estándares imposibles", value: 2 },
+                    { text: "Lucha entre aceptación y crítica - algunos días mejor que otros", value: 3 },
+                    { text: "Gratitud - veo a alguien creada con propósito por un Dios que no comete errores", value: 4 }
+                ]
+            },
+            {
+                q: "¿Cómo reaccionas cuando alguien te critica o rechaza?",
+                options: [
+                    { text: "Me derrumbo completamente - su opinión define mi valor ese día", value: 1 },
+                    { text: "Me obsesiono con ello y cuestiono todo sobre mí misma", value: 2 },
+                    { text: "Me duele pero intento recordar que mi valor no depende de su opinión", value: 3 },
+                    { text: "Lo proceso con sabiduría pero no permito que sacuda mi identidad en Cristo", value: 4 }
+                ]
+            },
+            {
+                q: "¿Cuánto de tu tiempo y energía gastas tratando de impresionar o ser validada por otros?",
+                options: [
+                    { text: "La mayor parte - vivo buscando aprobación constante", value: 1 },
+                    { text: "Mucho - necesito validación externa para sentirme bien conmigo misma", value: 2 },
+                    { text: "Algo - todavía me importa más de lo que debería lo que otros piensen", value: 3 },
+                    { text: "Poco - mi validación viene de Dios, no necesito impresionar a nadie", value: 4 }
+                ]
+            },
+            {
+                q: "Cuando fallas o cometes errores, ¿cómo defines tu valor después?",
+                options: [
+                    { text: "Soy un fracaso - el error me define completamente", value: 1 },
+                    { text: "Mi valor disminuye significativamente - me siento 'menos que' por días o semanas", value: 2 },
+                    { text: "Me afecta temporalmente pero trabajo en separarme del error", value: 3 },
+                    { text: "Mi valor permanece intacto - los errores no cambian quién soy en Cristo", value: 4 }
+                ]
+            },
+            {
+                q: "¿Qué tan seguido te comparas con otras mujeres y sientes que 'no eres suficiente'?",
+                options: [
+                    { text: "Constantemente - vivo en comparación y siempre salgo perdiendo", value: 1 },
+                    { text: "Frecuentemente - las redes sociales y mi entorno alimentan mi inseguridad", value: 2 },
+                    { text: "Ocasionalmente - reconozco cuando lo hago e intento detenerme", value: 3 },
+                    { text: "Rara vez - entiendo que cada una tiene un llamado único e incomparable", value: 4 }
+                ]
+            },
+            {
+                q: "¿Cómo hablas de ti misma cuando nadie te está escuchando?",
+                options: [
+                    { text: "Con palabras crueles y desprecio - me trato peor de lo que trataría a mi peor enemigo", value: 1 },
+                    { text: "Con crítica constante - rara vez me doy gracia o reconozco algo bueno", value: 2 },
+                    { text: "Con una mezcla - a veces con gracia, a veces con crítica", value: 3 },
+                    { text: "Con el mismo amor y respeto con el que Dios me habla", value: 4 }
+                ]
+            },
+            {
+                q: "Cuando lees versículos sobre tu identidad en Cristo, ¿qué sientes?",
+                options: [
+                    { text: "'Eso es para otros, no para mí' - no puedo creer que se apliquen a mi vida", value: 1 },
+                    { text: "'Suena bonito pero no lo siento' - hay una desconexión entre la verdad y mi corazón", value: 2 },
+                    { text: "'Quiero creerlo y estoy trabajando en ello' - es un proceso de renovación mental", value: 3 },
+                    { text: "'Sí, eso es exactamente quien soy' - mi identidad está firmemente arraigada en la Palabra", value: 4 }
+                ]
+            },
+            {
+                q: "¿Qué tan cómoda te sientes ocupando espacio, usando tu voz y siendo vista?",
+                options: [
+                    { text: "Muy incómoda - prefiero ser invisible porque no me siento digna de atención", value: 1 },
+                    { text: "Incómoda - constantemente me disculpo por existir o tener necesidades", value: 2 },
+                    { text: "Medianamente cómoda - estoy aprendiendo que merezco ocupar espacio", value: 3 },
+                    { text: "Cómoda - sé que Dios me creó para brillar, no para esconderme", value: 4 }
+                ]
+            },
+            {
+                q: "Si Dios te hablara directamente sobre tu valor, ¿qué tan fácil sería para ti creerle?",
+                options: [
+                    { text: "Imposible - pensaría que está equivocado o hablando de otra persona", value: 1 },
+                    { text: "Muy difícil - argumentaría con Él sobre todas mis deficiencias", value: 2 },
+                    { text: "Algo difícil - quiero creerle pero mi mente lucha contra ello", value: 3 },
+                    { text: "Completamente - confío en Su palabra sobre mí más que en cualquier otra voz", value: 4 }
+                ]
+            }
+        ];
+
+        let currentQuestion = 0;
+        let answers = {};
+
+        function initQuiz() {
+            const container = document.getElementById('questionsContainer');
+            questions.forEach((question, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = `question ${index === 0 ? 'active' : ''}`;
+                questionDiv.id = `question-${index}`;
+                
+                let optionsHTML = '<div class="options">';
+                question.options.forEach((option, optIndex) => {
+                    optionsHTML += `
+                        <label class="option" onclick="selectOption(${index}, ${option.value}, this)">
+                            <input type="radio" name="q${index}" value="${option.value}">
+                            <span>${option.text}</span>
+                        </label>
+                    `;
+                });
+                optionsHTML += '</div>';
+                
+                questionDiv.innerHTML = `
+                    <h3><span class="question-number">${index + 1}</span>${question.q}</h3>
+                    ${optionsHTML}
+                `;
+                
+                container.appendChild(questionDiv);
+            });
+            updateProgress();
+        }
+
+        function selectOption(questionIndex, value, element) {
+            answers[questionIndex] = value;
+            
+            const options = element.parentElement.querySelectorAll('.option');
+            options.forEach(opt => opt.classList.remove('selected'));
+            element.classList.add('selected');
+            
+            document.getElementById('nextBtn').disabled = false;
+            if (currentQuestion === questions.length - 1) {
+                document.getElementById('submitBtn').disabled = false;
+            }
+        }
+
+        function nextQuestion() {
+            if (!answers.hasOwnProperty(currentQuestion)) {
+                alert('Por favor selecciona una respuesta antes de continuar');
+                return;
+            }
+            
+            document.getElementById(`question-${currentQuestion}`).classList.remove('active');
+            currentQuestion++;
+            document.getElementById(`question-${currentQuestion}`).classList.add('active');
+            
+            updateButtons();
+            updateProgress();
+        }
+
+        function previousQuestion() {
+            document.getElementById(`question-${currentQuestion}`).classList.remove('active');
+            currentQuestion--;
+            document.getElementById(`question-${currentQuestion}`).classList.add('active');
+            
+            updateButtons();
+            updateProgress();
+        }
+
+        function updateButtons() {
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const submitBtn = document.getElementById('submitBtn');
+            
+            prevBtn.style.display = currentQuestion > 0 ? 'block' : 'none';
+            
+            if (currentQuestion === questions.length - 1) {
+                nextBtn.style.display = 'none';
+                submitBtn.style.display = 'block';
+                submitBtn.disabled = !answers.hasOwnProperty(currentQuestion);
+            } else {
+                nextBtn.style.display = 'block';
+                submitBtn.style.display = 'none';
+                nextBtn.disabled = !answers.hasOwnProperty(currentQuestion);
+            }
+        }
+
+        function updateProgress() {
+            const progress = ((currentQuestion + 1) / questions.length) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        function calculateResult() {
+            if (Object.keys(answers).length !== questions.length) {
+                alert('Por favor responde todas las preguntas');
+                return;
+            }
+            
+            const totalScore = Object.values(answers).reduce((sum, val) => sum + val, 0);
+            const maxScore = questions.length * 4;
+            const percentage = (totalScore / maxScore) * 100;
+            
+            let resultTitle, resultDescription, recommendations;
+            
+            if (percentage <= 40) {
+                resultTitle = "Nivel: Autoestima Quebrantada - Sin Diosestima";
+                resultDescription = `<p><strong>Mujer,</strong> este autoanálisis revela que tu sentido de valor está completamente desconectado de lo que Dios dice sobre ti. Vives buscando validación externa, criticándote cruelmente, y permitiendo que las opiniones de otros definan tu dignidad. Has construido tu identidad sobre arena movediza en lugar de sobre la Roca.</p>
+                <p><strong>Tu realidad actual:</strong> Tu valor sube y baja como una montaña rusa según tus logros, tu apariencia, o la aprobación de otros. Te tratas con desprecio y crueldad. Vives en comparación constante y siempre sales perdiendo. Cuando lees lo que Dios dice sobre ti, no puedes creerlo porque la voz de la crítica es más fuerte que la voz de la Verdad.</p>
+                <p><strong>La verdad transformadora:</strong> No tienes autoestima porque nunca debiste tenerla. La autoestima siempre falla porque está basada en algo cambiante: tú. Lo que necesitas es DIOSESTIMA - un sentido de valor que viene de lo que el Creador del universo dice sobre ti, no de tus circunstancias o logros.</p>`;
+                recommendations = `
+                    <li>Haz un ayuno de crítica personal por 30 días - cada vez que te critiques, detente y declara una verdad bíblica sobre ti</li>
+                    <li>Escribe una lista de todo lo que Dios dice que eres en Cristo (amada, escogida, perdonada, nueva creación, etc.)</li>
+                    <li>Lee esa lista en voz alta cada mañana y cada noche por 90 días - la repetición renueva tu mente</li>
+                    <li>Busca consejería cristiana para trabajar las heridas profundas que alimentan tu autoimagen quebrantada</li>
+                    <li>Elimina o limita severamente redes sociales por un mes - el ciclo de comparación debe romperse</li>
+                    <li>Rodéate de personas que te recuerden tu identidad en Cristo cuando la olvides</li>
+                    <li>Cada vez que busques validación externa, pregúntate: '¿Qué dice Dios sobre esto?'</li>
+                    <li>Practica hablarte como Dios te habla - con amor, gracia y verdad</li>
+                `;
+            } else if (percentage <= 60) {
+                resultTitle = "Nivel: Identidad Inestable - Diosestima Débil";
+                resultDescription = `<p><strong>Mujer,</strong> conoces intelectualmente lo que Dios dice sobre ti, pero esa verdad no ha descendido de tu cabeza a tu corazón. Tu sentido de valor fluctúa entre lo que Dios dice y lo que el mundo dice, dejándote en un estado constante de inestabilidad emocional.</p>
+                <p><strong>Tu realidad actual:</strong> Algunos días te sientes valiosa, otros días te sientes invisible. Las críticas te afectan más de lo que admites. Todavía buscas validación en lugares equivocados. Sabes que deberías creer lo que Dios dice, pero tu corazón todavía se aferra a las voces del mundo. La comparación sigue siendo tu ladrón de gozo.</p>
+                <p><strong>El puente necesario:</strong> Necesitas construir un puente entre lo que conoces y lo que crees. El conocimiento de tu identidad en Cristo debe convertirse en convicción inquebrantable. Tu Diosestima necesita fortalecerse hasta que sea tu fundamento, no tu teoría.</p>`;
+                recommendations = `
+                    <li>Identifica las voces específicas (personas, medios, pensamientos) que más socavan tu Diosestima</li>
+                    <li>Crea 'tarjetas de verdad' - versículos sobre tu identidad que leas cuando la duda llegue</li>
+                    <li>Practica decir 'no' a la necesidad de impresionar o complacer a otros</li>
+                    <li>Lleva un diario de 'evidencia de Dios' - momentos donde ves Su amor por ti en acción</li>
+                    <li>Encuentra una mentora con Diosestima sólida y aprende de ella</li>
+                    <li>Cada vez que te compares, declara en voz alta: 'Dios me hizo única e incomparable'</li>
+                    <li>Memoriza Salmo 139:13-14 y medita en él cuando dudes de tu valor</li>
+                    <li>Establece límites con personas que constantemente critican o invalidan</li>
+                `;
+            } else if (percentage <= 80) {
+                resultTitle = "Nivel: Identidad Arraigada - Diosestima Creciente";
+                resultDescription = `<p><strong>Mujer,</strong> has hecho un progreso hermoso en establecer tu identidad en Cristo como tu fundamento. Tu Diosestima está creciendo y la mayoría del tiempo, tu valor está determinado por lo que Dios dice, no por lo que el mundo dice. Aunque todavía hay áreas de vulnerabilidad, has aprendido a regresar a la Verdad.</p>
+                <p><strong>Tu realidad actual:</strong> La mayor parte del tiempo, las críticas no te derrumban. Te hablas con más gracia que antes. La comparación ha perdido mucho de su poder sobre ti. Sabes quién eres en Cristo y esa verdad te sostiene en los días difíciles. Sin embargo, en momentos de presión o ataque, las viejas inseguridades todavía intentan regresar.</p>
+                <p><strong>Tu próximo nivel:</strong> Consolidar tu Diosestima hasta que sea tan sólida que nada - ni críticas, ni fracasos, ni rechazo - pueda sacudir tu conocimiento de quién eres. Convertirte en modelo de identidad arraigada para otras mujeres.</p>`;
+                recommendations = `
+                    <li>Identifica los 'gatillos de inseguridad' que todavía te afectan y desarmalos específicamente</li>
+                    <li>Profundiza tu estudio de la identidad en Cristo - busca nuevas verdades que fortalecer</li>
+                    <li>Comparte tu testimonio de cómo has construido Diosestima para inspirar a otras</li>
+                    <li>Practica usar tu voz y ocupar espacio intencionalmente - es tiempo de brillar</li>
+                    <li>Mentorea a una mujer que lucha con autoestima quebrantada</li>
+                    <li>Cuando enfrentes críticas, úsalas como oportunidad para fortalecer tu identidad en Cristo</li>
+                    <li>Celebra tu singularidad - haz una lista de cómo Dios te hizo única y dale gracias</li>
+                    <li>Continúa renovando tu mente diariamente con la verdad de la Palabra</li>
+                `;
+            } else {
+                resultTitle = "Nivel: Identidad Inquebrantable - Diosestima Sólida";
+                resultDescription = `<p><strong>Mujer,</strong> has alcanzado algo precioso y poderoso: una Diosestima sólida e inquebrantable. Tu valor no está en lo que haces, cómo te ves, o lo que otros piensan. Tu valor está firmemente arraigado en ser hija del Rey, y esa verdad gobierna cada área de tu vida.</p>
+                <p><strong>Tu realidad actual:</strong> Vives libre de la tiranía de la opinión de otros. Te hablas con el mismo amor que Dios te habla. La comparación ya no roba tu gozo porque entiendes que eres incomparable. Las críticas te informan pero no te definen. Ocupas espacio con confianza porque sabes que Dios te creó para brillar. Eres un testimonio vivo de lo que significa tener tu identidad en Cristo.</p>
+                <p><strong>Tu llamado ahora:</strong> Ser instrumento de liberación para mujeres que todavía están atrapadas en la búsqueda de validación externa. Tu Diosestima sólida no es solo para tu beneficio - es un faro para aquellas que todavía están en la oscuridad de la inseguridad.</p>`;
+                recommendations = `
+                    <li>Mantén tu Diosestima fresca - nunca des por sentado este lugar de libertad</li>
+                    <li>Desarrolla contenido o ministerio enfocado en ayudar a mujeres a construir Diosestima</li>
+                    <li>Comparte públicamente cómo pasaste de autoestima quebrantada a Diosestima sólida</li>
+                    <li>Mentorea intencionalmente a mujeres que luchan con su identidad</li>
+                    <li>Usa tu voz y plataforma audazmente - tu seguridad en Cristo inspira a otras</li>
+                    <li>Crea espacios seguros donde mujeres puedan descubrir su identidad en Cristo</li>
+                    <li>Intercede por mujeres que están destruyéndose con crítica y comparación</li>
+                    <li>Sé modelo visible de una mujer que sabe quién es y a Quién pertenece</li>
+                `;
+            }
+            
+            const resultHTML = `
+                <div class="result-card">
+                    <div class="result-title">${resultTitle}</div>
+                    <div class="result-description">${resultDescription}</div>
+                    <div class="result-recommendations">
+                        <h4>Pasos Para Construir Diosestima Sólida:</h4>
+                        <ul>${recommendations}</ul>
+                    </div>
+                    <div class="final-message">
+                        <p><strong>Recuerda:</strong> La autoestima siempre fallará porque está basada en ti - y tú cambias. La Diosestima nunca falla porque está basada en Dios - y Él es inmutable. Tu valor no es algo que ganas, es algo que recibes. No es algo que construyes, es algo que descubres. Eres amada, escogida, valiosa, digna - no por lo que haces, sino por Quién te hizo.</p>
+                        <p>"Porque somos hechura de Dios, creados en Cristo Jesús para buenas obras, las cuales Dios dispuso de antemano a fin de que las pongamos en práctica." - Efesios 2:10</p>
+                    </div>
+                    <button class="btn restart-btn" onclick="location.reload()">Realizar Autoanálisis Nuevamente</button>
+                </div>
+            `;
+            
+            document.getElementById('questionsContainer').style.display = 'none';
+            document.querySelector('.navigation').style.display = 'none';
+            document.querySelector('.progress-bar').style.display = 'none';
+            
+            const resultContainer = document.getElementById('resultContainer');
+            resultContainer.innerHTML = resultHTML;
+            resultContainer.classList.add('active');
+        }
+
+        // Initialize the quiz when page loads
+        initQuiz();
+    </script>
+</body>
+</html>
