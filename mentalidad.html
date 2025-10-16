@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autoanálisis: Mentalidad Limitante</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #fafafa;
+            min-height: 100vh;
+            padding: 40px 20px;
+            color: #1d1d1f;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #806459 0%, #96776c 100%);
+            color: white;
+            padding: 60px 40px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: -0.5px;
+        }
+
+        .header p {
+            font-size: 1.15em;
+            opacity: 0.9;
+            line-height: 1.6;
+            text-align: left;
+            font-weight: 300;
+            max-width: 700px;
+        }
+
+        .content {
+            padding: 50px 40px;
+        }
+
+        .question {
+            margin-bottom: 40px;
+            padding: 0;
+            display: none;
+        }
+
+        .question.active {
+            display: block;
+            animation: fadeIn 0.6s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .question h3 {
+            color: #806459;
+            margin-bottom: 30px;
+            font-size: 1.3em;
+            line-height: 1.5;
+            font-weight: 600;
+            letter-spacing: -0.3px;
+        }
+
+        .question-number {
+            display: inline-block;
+            background: #806459;
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 36px;
+            margin-right: 12px;
+            font-weight: 600;
+            font-size: 0.95em;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .option {
+            padding: 20px 24px;
+            background: #f5f5f7;
+            border: 2px solid transparent;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            font-weight: 400;
+        }
+
+        .option:hover {
+            background: #e8e8ed;
+            transform: translateX(2px);
+        }
+
+        .option.selected {
+            background: #806459;
+            color: white;
+            border-color: #806459;
+            font-weight: 500;
+        }
+
+        .option input[type="radio"] {
+            margin-right: 16px;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: #806459;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+            padding: 0 40px;
+            gap: 20px;
+        }
+
+        .btn {
+            padding: 16px 40px;
+            background: #806459;
+            color: white;
+            border: none;
+            border-radius: 980px;
+            cursor: pointer;
+            font-size: 1.05em;
+            font-weight: 500;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            font-family: 'Montserrat', sans-serif;
+            letter-spacing: -0.2px;
+        }
+
+        .btn:hover {
+            background: #6e5449;
+            transform: scale(1.02);
+        }
+
+        .btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .progress-bar {
+            height: 4px;
+            background: #e8e8ed;
+            margin: 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #806459;
+            width: 0%;
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .result {
+            display: none;
+            padding: 50px 40px;
+        }
+
+        .result.active {
+            display: block;
+            animation: fadeIn 0.6s ease-in;
+        }
+
+        .result-card {
+            background: #f5f5f7;
+            border-radius: 20px;
+            padding: 40px;
+            margin-top: 30px;
+        }
+
+        .result-title {
+            color: #806459;
+            font-size: 2.2em;
+            margin-bottom: 24px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .result-description {
+            line-height: 1.8;
+            margin-bottom: 30px;
+            font-size: 1.05em;
+            font-weight: 400;
+            color: #1d1d1f;
+        }
+
+        .result-description p {
+            margin-bottom: 20px;
+        }
+
+        .result-recommendations {
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            margin-top: 30px;
+        }
+
+        .result-recommendations h4 {
+            color: #806459;
+            margin-bottom: 20px;
+            font-size: 1.4em;
+            font-weight: 600;
+            letter-spacing: -0.3px;
+        }
+
+        .result-recommendations ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .result-recommendations li {
+            padding: 14px 0;
+            padding-left: 35px;
+            position: relative;
+            line-height: 1.7;
+            font-weight: 400;
+            color: #1d1d1f;
+        }
+
+        .result-recommendations li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #806459;
+            font-weight: 600;
+            font-size: 1.2em;
+        }
+
+        .restart-btn {
+            margin-top: 35px;
+            background: transparent;
+            color: #806459;
+            border: 2px solid #806459;
+        }
+
+        .restart-btn:hover {
+            background: #806459;
+            color: white;
+        }
+
+        .final-message {
+            margin-top: 35px;
+            padding: 30px;
+            background: white;
+            border-radius: 16px;
+            border-left: 4px solid #806459;
+        }
+
+        .final-message p {
+            font-size: 1.05em;
+            line-height: 1.8;
+            color: #1d1d1f;
+            margin-bottom: 18px;
+        }
+
+        .final-message p:last-child {
+            font-style: italic;
+            color: #424245;
+            margin-bottom: 0;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 40px 30px;
+            }
+
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .content {
+                padding: 30px 20px;
+            }
+
+            .navigation {
+                flex-direction: column;
+                padding: 0 20px;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            .result {
+                padding: 30px 20px;
+            }
+
+            .result-card {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Autoanálisis: Mentalidad Limitante</h1>
+            <p>Descubre cómo tus creencias limitantes están bloqueando los planes de Dios y tus sueños</p>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+        <div class="content" id="questionsContainer">
+            <!-- Questions will be generated here -->
+        </div>
+
+        <div class="navigation">
+            <button class="btn" id="nextBtn" onclick="nextQuestion()">Siguiente</button>
+            <button class="btn" id="submitBtn" onclick="calculateResult()" style="display: none;">Ver Resultado</button>
+            <button class="btn" id="prevBtn" onclick="previousQuestion()" style="display: none;">Anterior</button>
+        </div>
+
+        <div class="result" id="resultContainer">
+            <!-- Result will be shown here -->
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                q: "Cuando piensas en tus grandes sueños, ¿cuál es el primer pensamiento que viene a tu mente?",
+                options: [
+                    { text: "'Es imposible para alguien como yo' - Me descalifico automáticamente", value: 1 },
+                    { text: "'Sería bonito pero es muy poco realista' - No me atrevo a creer que podría lograrlo", value: 2 },
+                    { text: "'Quizás algún día, si todo se alinea perfectamente' - Pongo condiciones imposibles", value: 3 },
+                    { text: "'Si Dios lo puso en mi corazón, es posible' - Creo que mis sueños son alcanzables", value: 4 }
+                ]
+            },
+            {
+                q: "¿Qué tan seguido te comparas con otras personas y te sientes inferior?",
+                options: [
+                    { text: "Constantemente - Siempre encuentro razones por las que otros son mejores que yo", value: 1 },
+                    { text: "Frecuentemente - Me cuesta ver mi valor cuando veo los logros de otros", value: 2 },
+                    { text: "Ocasionalmente - A veces caigo en comparación pero intento salir de ello", value: 3 },
+                    { text: "Rara vez - Entiendo que cada persona tiene un llamado único y no me comparo", value: 4 }
+                ]
+            },
+            {
+                q: "Cuando alguien te hace un cumplido sobre tus talentos o capacidades, ¿cómo respondes internamente?",
+                options: [
+                    { text: "'No saben de lo que hablan' o 'Si supieran la verdad...' - Rechazo totalmente el cumplido", value: 1 },
+                    { text: "'Fue suerte' o 'Cualquiera podría hacerlo' - Minimizo mis logros", value: 2 },
+                    { text: "Me siento incómoda pero trato de aceptarlo sin desacreditarme", value: 3 },
+                    { text: "Agradezco genuinamente y reconozco que Dios me ha dado dones específicos", value: 4 }
+                ]
+            },
+            {
+                q: "¿Cuál es tu reacción cuando te viene una idea grande o un sueño nuevo?",
+                options: [
+                    { text: "La desecho inmediatamente - 'Eso nunca va a funcionar', 'Estoy loca por pensar así'", value: 1 },
+                    { text: "Me emociono un momento pero luego empiezo a listar todas las razones por las que no funcionará", value: 2 },
+                    { text: "Me entusiasmo pero me paralizo pensando en todos los obstáculos", value: 3 },
+                    { text: "La escribo, oro por ella y doy pasos aunque tenga miedo", value: 4 }
+                ]
+            },
+            {
+                q: "¿Cómo te hablas a ti misma cuando cometes un error o fallas?",
+                options: [
+                    { text: "Con palabras devastadoras: 'Eres una fracasada', 'Siempre arruinas todo', 'No sirves'", value: 1 },
+                    { text: "Con crítica dura y recordatorios de todos mis fracasos anteriores", value: 2 },
+                    { text: "Me critico pero trato de recuperarme y aprender de la experiencia", value: 3 },
+                    { text: "Con gracia: 'Esto no define quién soy. Aprendo y sigo adelante'", value: 4 }
+                ]
+            },
+            {
+                q: "¿Qué tan frecuentemente usas frases como 'No puedo', 'Es imposible', 'No soy buena para eso'?",
+                options: [
+                    { text: "Es mi vocabulario diario - Estas frases definen cómo pienso sobre mí misma", value: 1 },
+                    { text: "Muy seguido - Es mi respuesta automática ante desafíos o nuevas oportunidades", value: 2 },
+                    { text: "A veces - Reconozco que lo hago y estoy trabajando en cambiarlo", value: 3 },
+                    { text: "Rara vez - He renovado mi lenguaje para reflejar posibilidades, no limitaciones", value: 4 }
+                ]
+            },
+            {
+                q: "Cuando ves a alguien viviendo tus sueños, ¿qué sientes?",
+                options: [
+                    { text: "Envidia amarga y confirmación de que 'eso es solo para ciertas personas, no para mí'", value: 1 },
+                    { text: "Tristeza y desánimo porque pienso que yo nunca podré llegar ahí", value: 2 },
+                    { text: "Una mezcla de inspiración y duda sobre si yo también puedo lograrlo", value: 3 },
+                    { text: "Inspiración genuina y confirmación de que es posible para mí también", value: 4 }
+                ]
+            },
+            {
+                q: "¿Qué tanto permites que tu pasado (errores, fracasos, traumas) defina tu futuro?",
+                options: [
+                    { text: "Completamente - Vivo prisionera de mi pasado y no creo que pueda ser diferente", value: 1 },
+                    { text: "Mucho - Mi pasado es una cadena pesada que no sé cómo soltar", value: 2 },
+                    { text: "Parcialmente - Lucho entre dejar el pasado atrás y ser definida por él", value: 3 },
+                    { text: "Poco - Entiendo que mi pasado no determina mi futuro en Dios", value: 4 }
+                ]
+            },
+            {
+                q: "Cuando piensas en el dinero, recursos o provisión necesaria para tus sueños, ¿qué crees?",
+                options: [
+                    { text: "'Nunca tendré suficiente' - Vivo en mentalidad de escasez constante", value: 1 },
+                    { text: "'Es imposible obtener lo que necesito' - Me siento bloqueada antes de intentar", value: 2 },
+                    { text: "'Sería difícil pero tal vez...' - Tengo esperanza tímida", value: 3 },
+                    { text: "'Dios proveerá todo lo que necesito para Su propósito en mí' - Confío en Su provisión", value: 4 }
+                ]
+            },
+            {
+                q: "¿Cómo interpretas las puertas cerradas o los 'no' que recibes?",
+                options: [
+                    { text: "Como confirmación de que no soy suficiente y nunca lo seré", value: 1 },
+                    { text: "Como señal de que debo rendirme porque claramente no estoy destinada para eso", value: 2 },
+                    { text: "Me desanimo profundamente pero eventualmente intento levantarme", value: 3 },
+                    { text: "Como redirección de Dios hacia algo mejor o preparación para el momento correcto", value: 4 }
+                ]
+            }
+        ];
+
+        let currentQuestion = 0;
+        let answers = {};
+
+        function initQuiz() {
+            const container = document.getElementById('questionsContainer');
+            questions.forEach((question, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = `question ${index === 0 ? 'active' : ''}`;
+                questionDiv.id = `question-${index}`;
+                
+                let optionsHTML = '<div class="options">';
+                question.options.forEach((option, optIndex) => {
+                    optionsHTML += `
+                        <label class="option" onclick="selectOption(${index}, ${option.value}, this)">
+                            <input type="radio" name="q${index}" value="${option.value}">
+                            <span>${option.text}</span>
+                        </label>
+                    `;
+                });
+                optionsHTML += '</div>';
+                
+                questionDiv.innerHTML = `
+                    <h3><span class="question-number">${index + 1}</span>${question.q}</h3>
+                    ${optionsHTML}
+                `;
+                
+                container.appendChild(questionDiv);
+            });
+            updateProgress();
+        }
+
+        function selectOption(questionIndex, value, element) {
+            answers[questionIndex] = value;
+            
+            const options = element.parentElement.querySelectorAll('.option');
+            options.forEach(opt => opt.classList.remove('selected'));
+            element.classList.add('selected');
+            
+            document.getElementById('nextBtn').disabled = false;
+            if (currentQuestion === questions.length - 1) {
+                document.getElementById('submitBtn').disabled = false;
+            }
+        }
+
+        function nextQuestion() {
+            if (!answers.hasOwnProperty(currentQuestion)) {
+                alert('Por favor selecciona una respuesta antes de continuar');
+                return;
+            }
+            
+            document.getElementById(`question-${currentQuestion}`).classList.remove('active');
+            currentQuestion++;
+            document.getElementById(`question-${currentQuestion}`).classList.add('active');
+            
+            updateButtons();
+            updateProgress();
+        }
+
+        function previousQuestion() {
+            document.getElementById(`question-${currentQuestion}`).classList.remove('active');
+            currentQuestion--;
+            document.getElementById(`question-${currentQuestion}`).classList.add('active');
+            
+            updateButtons();
+            updateProgress();
+        }
+
+        function updateButtons() {
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const submitBtn = document.getElementById('submitBtn');
+            
+            prevBtn.style.display = currentQuestion > 0 ? 'block' : 'none';
+            
+            if (currentQuestion === questions.length - 1) {
+                nextBtn.style.display = 'none';
+                submitBtn.style.display = 'block';
+                submitBtn.disabled = !answers.hasOwnProperty(currentQuestion);
+            } else {
+                nextBtn.style.display = 'block';
+                submitBtn.style.display = 'none';
+                nextBtn.disabled = !answers.hasOwnProperty(currentQuestion);
+            }
+        }
+
+        function updateProgress() {
+            const progress = ((currentQuestion + 1) / questions.length) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        function calculateResult() {
+            if (Object.keys(answers).length !== questions.length) {
+                alert('Por favor responde todas las preguntas');
+                return;
+            }
+            
+            const totalScore = Object.values(answers).reduce((sum, val) => sum + val, 0);
+            const maxScore = questions.length * 4;
+            const percentage = (totalScore / maxScore) * 100;
+            
+            let resultTitle, resultDescription, recommendations;
+            
+            if (percentage <= 40) {
+                resultTitle = "Nivel: Prisión Mental - Completamente Limitada";
+                resultDescription = `<p><strong>Mujer,</strong> tu autoanálisis revela que vives en una prisión mental construida por creencias profundamente limitantes. Estas mentiras sobre ti misma se han convertido en muros que bloquean completamente los planes de Dios y tus sueños. Tu mente es el obstáculo más grande entre donde estás y donde Dios quiere llevarte.</p>
+                <p><strong>Tu realidad actual:</strong> Cada sueño que Dios pone en tu corazón es inmediatamente saboteado por tu diálogo interno destructivo. Te descalificas antes de intentar. Vives comparándote con otros y siempre sales perdiendo. Tu pasado te tiene encadenada al punto que no puedes imaginar un futuro diferente. Has normalizado hablar negativamente de ti misma y ni siquiera reconoces cuán dañino es.</p>
+                <p><strong>La verdad urgente:</strong> No eres lo que tu mente limitante dice. Eres quien Dios dice que eres. Pero mientras sigas creyendo las mentiras sobre ti misma, permanecerás estancada viendo cómo otros viven los sueños que Dios también puso en ti.</p>`;
+                recommendations = `
+                    <li>Haz un inventario brutal de todas tus creencias limitantes - escríbelas todas sin filtro</li>
+                    <li>Por cada creencia limitante, busca un versículo bíblico que la contradiga directamente</li>
+                    <li>Elimina frases como "no puedo", "es imposible", "no soy buena para" de tu vocabulario por 30 días</li>
+                    <li>Busca ayuda profesional (consejería cristiana) para trabajar traumas y creencias arraigadas</li>
+                    <li>Rodéate de personas que vean tu potencial cuando tú no puedes verlo</li>
+                    <li>Cada mañana, declara en voz alta 5 verdades bíblicas sobre tu identidad en Cristo</li>
+                    <li>Cuando te descalifiques, detente y pregunta: "¿Dios estaría de acuerdo con lo que acabo de decir?"</li>
+                    <li>Lee biografías de mujeres que superaron limitaciones y lograron cosas extraordinarias</li>
+                `;
+            } else if (percentage <= 60) {
+                resultTitle = "Nivel: Batalla Mental - Parcialmente Bloqueada";
+                resultDescription = `<p><strong>Mujer,</strong> estás en medio de una batalla mental intensa. Tienes sueños y deseos dados por Dios, pero tus creencias limitantes te mantienen en un ciclo de dos pasos adelante, tres pasos atrás. Conoces tu potencial en teoría, pero tus pensamientos automáticos te sabotean constantemente.</p>
+                <p><strong>Tu realidad actual:</strong> Tienes momentos de fe y valentía donde crees que puedes lograr tus sueños, seguidos inmediatamente de olas de duda y autosabotaje. Tu diálogo interno es una mezcla confusa de verdades de Dios y mentiras sobre ti misma. Empiezas cosas con entusiasmo pero tu mente limitante te convence de rendirte antes de ver resultados.</p>
+                <p><strong>El punto de inflexión:</strong> Estás en un momento crítico. Puedes seguir permitiendo que tus limitaciones mentales te mantengan estancada, o puedes decidir hoy que vas a renovar tu mente agresivamente. La diferencia entre quedarte aquí o avanzar está en qué voz decides creer.</p>`;
+                recommendations = `
+                    <li>Lleva un diario de pensamientos limitantes - anótalos cuando aparezcan y reemplázalos con verdad</li>
+                    <li>Identifica las 3 creencias limitantes más fuertes y enfócate en desarmarlas con la Palabra</li>
+                    <li>Crea un "muro de verdad" - un lugar visible con versículos y afirmaciones sobre quién eres en Cristo</li>
+                    <li>Cada vez que te compares con alguien, detente y agradece a Dios por tu llamado único</li>
+                    <li>Da un paso pequeño cada día hacia tu sueño, aunque tu mente te diga que no puedes</li>
+                    <li>Busca una mentora o grupo de mujeres que te ayude a mantener tu mente renovada</li>
+                    <li>Memoriza Romanos 12:2 y repítelo cuando sientas que tu mente te limita</li>
+                    <li>Celebra cada victoria pequeña - es evidencia de que las limitaciones son mentiras</li>
+                `;
+            } else if (percentage <= 80) {
+                resultTitle = "Nivel: Mente en Renovación - Expandiéndose";
+                resultDescription = `<p><strong>Mujer,</strong> estás en un proceso hermoso de renovación mental. Has identificado muchas de tus creencias limitantes y estás activamente trabajando en reemplazarlas con la verdad de Dios. Aunque todavía enfrentas batallas mentales ocasionales, ahora tienes herramientas para combatirlas.</p>
+                <p><strong>Tu realidad actual:</strong> La mayoría del tiempo, crees que tus sueños son posibles. Reconoces rápidamente cuando pensamientos limitantes intentan infiltrarse y los confrontas con la Palabra. Has visto suficiente progreso como para saber que la renovación mental es real y posible. Sin embargo, en momentos de presión o fracaso, las viejas creencias limitantes todavía intentan regresar.</p>
+                <p><strong>Tu próximo nivel:</strong> Consolidar tu nueva mentalidad hasta que pensar en grande y creer en tus sueños sea tu estado natural, no algo que requiera esfuerzo consciente. Convertirte en testimonio vivo de mentalidad renovada.</p>`;
+                recommendations = `
+                    <li>Identifica tus "gatillos de limitación" - situaciones que activan creencias viejas</li>
+                    <li>Desarrolla respuestas automáticas de verdad para esos momentos de vulnerabilidad</li>
+                    <li>Comparte tu testimonio de renovación mental para animar a otras mujeres</li>
+                    <li>Aumenta progresivamente el tamaño de tus metas - estira tu fe constantemente</li>
+                    <li>Rodéate de personas con mentalidad de abundancia y posibilidad</li>
+                    <li>Estudia la vida de figuras bíblicas que tuvieron que romper mentalidades limitantes (Gedeón, Moisés, Ester)</li>
+                    <li>Comienza a mentorear a alguien que lucha con creencias limitantes</li>
+                    <li>Documenta tu progreso - mira atrás y celebra cuánto has crecido mentalmente</li>
+                `;
+            } else {
+                resultTitle = "Nivel: Mente Libre - Mentalidad de Posibilidades";
+                resultDescription = `<p><strong>Mujer,</strong> has logrado algo extraordinario: la renovación de tu mente. Vives en una mentalidad de posibilidades donde tus sueños no están limitados por tu pensamiento sino expandidos por la fe en un Dios ilimitado. Has roto las cadenas mentales que una vez te mantuvieron pequeña.</p>
+                <p><strong>Tu realidad actual:</strong> Cuando Dios pone un sueño en tu corazón, tu primera reacción es creer que es posible, no descalificarte. Reconoces tus dones sin falsa humildad. Aprendes de los fracasos sin que definan tu identidad. Tu diálogo interno refleja la verdad de Dios sobre ti. Inspiras a otros simplemente por cómo piensas y hablas sobre posibilidades.</p>
+                <p><strong>Tu llamado ahora:</strong> Usar tu libertad mental para liberar a otras mujeres. Tu jornada de prisión mental a libertad es un mapa que otras necesitan desesperadamente. Dios te renovó no solo para tu beneficio, sino para que seas instrumento de renovación para tu generación.</p>`;
+                recommendations = `
+                    <li>Mantén tu mente renovada - nunca des por sentado este lugar de libertad</li>
+                    <li>Desarrolla contenido (enseñanzas, escritos, videos) sobre renovación de mentalidad</li>
+                    <li>Mentorea intencionalmente a mujeres atrapadas en mentalidades limitantes</li>
+                    <li>Comparte públicamente tu historia de cómo pasaste de limitación a posibilidad</li>
+                    <li>Continúa expandiendo tu mente - siempre hay nuevos niveles de fe y posibilidad</li>
+                    <li>Intercede por mujeres que están prisioneras de sus propias mentes</li>
+                    <li>Toma riesgos audaces de fe que demuestren tu mentalidad renovada</li>
+                    <li>Crea espacios seguros donde otras mujeres puedan compartir y trabajar sus limitaciones mentales</li>
+                `;
+            }
+            
+            const resultHTML = `
+                <div class="result-card">
+                    <div class="result-title">${resultTitle}</div>
+                    <div class="result-description">${resultDescription}</div>
+                    <div class="result-recommendations">
+                        <h4>Pasos Para Renovar Tu Mentalidad y Alcanzar Tus Sueños:</h4>
+                        <ul>${recommendations}</ul>
+                    </div>
+                    <div class="final-message">
+                        <p><strong>Recuerda:</strong> Tu mentalidad no es permanente. Lo que crees sobre ti misma puede cambiar. Los pensamientos limitantes son mentiras que has creído por tanto tiempo que se sienten como verdad. Pero la verdad de Dios tiene el poder de romper cada cadena mental y liberar el potencial extraordinario que Él puso en ti. Tus sueños no son demasiado grandes. Tu mentalidad simplemente necesita expandirse para contenerlos.</p>
+                        <p>"No se amolden al mundo actual, sino sean transformados mediante la renovación de su mente. Así podrán comprobar cuál es la voluntad de Dios, buena, agradable y perfecta." - Romanos 12:2</p>
+                    </div>
+                    <button class="btn restart-btn" onclick="location.reload()">Realizar Autoanálisis Nuevamente</button>
+                </div>
+            `;
+            
+            document.getElementById('questionsContainer').style.display = 'none';
+            document.querySelector('.navigation').style.display = 'none';
+            document.querySelector('.progress-bar').style.display = 'none';
+            
+            const resultContainer = document.getElementById('resultContainer');
+            resultContainer.innerHTML = resultHTML;
+            resultContainer.classList.add('active');
+        }
+
+        // Initialize the quiz when page loads
+        initQuiz();
+    </script>
+</body>
+</html>
