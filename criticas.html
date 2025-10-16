@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autoanálisis: Críticas y Envidia</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #fafafa;
+            min-height: 100vh;
+            padding: 40px 20px;
+            color: #1d1d1f;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #806459 0%, #96776c 100%);
+            color: white;
+            padding: 60px 40px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: -0.5px;
+        }
+
+        .header p {
+            font-size: 1.15em;
+            opacity: 0.9;
+            line-height: 1.6;
+            text-align: left;
+            font-weight: 300;
+            max-width: 700px;
+        }
+
+        .content {
+            padding: 50px 40px;
+        }
+
+        .question {
+            margin-bottom: 40px;
+            padding: 0;
+            display: none;
+        }
+
+        .question.active {
+            display: block;
+            animation: fadeIn 0.6s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .question h3 {
+            color: #806459;
+            margin-bottom: 30px;
+            font-size: 1.3em;
+            line-height: 1.5;
+            font-weight: 600;
+            letter-spacing: -0.3px;
+        }
+
+        .question-number {
+            display: inline-block;
+            background: #806459;
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 36px;
+            margin-right: 12px;
+            font-weight: 600;
+            font-size: 0.95em;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .option {
+            padding: 20px 24px;
+            background: #f5f5f7;
+            border: 2px solid transparent;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            font-weight: 400;
+        }
+
+        .option:hover {
+            background: #e8e8ed;
+            transform: translateX(2px);
+        }
+
+        .option.selected {
+            background: #806459;
+            color: white;
+            border-color: #806459;
+            font-weight: 500;
+        }
+
+        .option input[type="radio"] {
+            margin-right: 16px;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: #806459;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+            padding: 0 40px;
+            gap: 20px;
+        }
+
+        .btn {
+            padding: 16px 40px;
+            background: #806459;
+            color: white;
+            border: none;
+            border-radius: 980px;
+            cursor: pointer;
+            font-size: 1.05em;
+            font-weight: 500;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            font-family: 'Montserrat', sans-serif;
+            letter-spacing: -0.2px;
+        }
+
+        .btn:hover {
+            background: #6e5449;
+            transform: scale(1.02);
+        }
+
+        .btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .progress-bar {
+            height: 4px;
+            background: #e8e8ed;
+            margin: 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #806459;
+            width: 0%;
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .result {
+            display: none;
+            padding: 50px 40px;
+        }
+
+        .result.active {
+            display: block;
+            animation: fadeIn 0.6s ease-in;
+        }
+
+        .result-card {
+            background: #f5f5f7;
+            border-radius: 20px;
+            padding: 40px;
+            margin-top: 30px;
+        }
+
+        .result-title {
+            color: #806459;
+            font-size: 2.2em;
+            margin-bottom: 24px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .result-description {
+            line-height: 1.8;
+            margin-bottom: 30px;
+            font-size: 1.05em;
+            font-weight: 400;
+            color: #1d1d1f;
+        }
+
+        .result-description p {
+            margin-bottom: 20px;
+        }
+
+        .result-recommendations {
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            margin-top: 30px;
+        }
+
+        .result-recommendations h4 {
+            color: #806459;
+            margin-bottom: 20px;
+            font-size: 1.4em;
+            font-weight: 600;
+            letter-spacing: -0.3px;
+        }
+
+        .result-recommendations ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .result-recommendations li {
+            padding: 14px 0;
+            padding-left: 35px;
+            position: relative;
+            line-height: 1.7;
+            font-weight: 400;
+            color: #1d1d1f;
+        }
+
+        .result-recommendations li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #806459;
+            font-weight: 600;
+            font-size: 1.2em;
+        }
+
+        .restart-btn {
+            margin-top: 35px;
+            background: transparent;
+            color: #806459;
+            border: 2px solid #806459;
+        }
+
+        .restart-btn:hover {
+            background: #806459;
+            color: white;
+        }
+
+        .final-message {
+            margin-top: 35px;
+            padding: 30px;
+            background: white;
+            border-radius: 16px;
+            border-left: 4px solid #806459;
+        }
+
+        .final-message p {
+            font-size: 1.05em;
+            line-height: 1.8;
+            color: #1d1d1f;
+            margin-bottom: 18px;
+        }
+
+        .final-message p:last-child {
+            font-style: italic;
+            color: #424245;
+            margin-bottom: 0;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 40px 30px;
+            }
+
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .content {
+                padding: 30px 20px;
+            }
+
+            .navigation {
+                flex-direction: column;
+                padding: 0 20px;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            .result {
+                padding: 30px 20px;
+            }
+
+            .result-card {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Autoanálisis: Críticas y Envidia</h1>
+            <p>Descubre cómo las críticas y la envidia de otros están deteniendo tu avance hacia tus sueños y propósito</p>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+        <div class="content" id="questionsContainer">
+            <!-- Questions will be generated here -->
+        </div>
+
+        <div class="navigation">
+            <button class="btn" id="nextBtn" onclick="nextQuestion()">Siguiente</button>
+            <button class="btn" id="submitBtn" onclick="calculateResult()" style="display: none;">Ver Resultado</button>
+            <button class="btn" id="prevBtn" onclick="previousQuestion()" style="display: none;">Anterior</button>
+        </div>
+
+        <div class="result" id="resultContainer">
+            <!-- Result will be shown here -->
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                q: "Cuando alguien te critica o cuestiona tu sueño/proyecto, ¿cómo reaccionas?",
+                options: [
+                    { text: "Me derrumbo completamente - la crítica me hace cuestionar todo y frecuentemente abandono", value: 1 },
+                    { text: "Me desanimo profundamente y postergo o minimizo mi sueño por días/semanas", value: 2 },
+                    { text: "Me afecta pero intento procesarlo y continuar, aunque con inseguridad", value: 3 },
+                    { text: "Lo evalúo con sabiduría pero no permito que me detenga - sé que la crítica es parte del camino", value: 4 }
+                ]
+            },
+            {
+                q: "¿Cuántas oportunidades o sueños has abandonado porque alguien te dijo que 'no podías' o te criticó?",
+                options: [
+                    { text: "Muchos - he construido un cementerio de sueños abandonados por críticas", value: 1 },
+                    { text: "Varios - las opiniones negativas tienen demasiado poder sobre mis decisiones", value: 2 },
+                    { text: "Algunos - me ha costado pero estoy aprendiendo a no dejar que me detengan", value: 3 },
+                    { text: "Ninguno o muy pocos - las críticas me informan pero no determinan mi camino", value: 4 }
+                ]
+            },
+            {
+                q: "¿Cómo manejas cuando reconoces envidia en alguien cercano a ti?",
+                options: [
+                    { text: "Me hago pequeña - minimizo mis logros o freno mi progreso para no provocar más envidia", value: 1 },
+                    { text: "Me siento culpable - como si mi éxito causara su dolor y debo detenerme", value: 2 },
+                    { text: "Me incomoda pero intento seguir adelante aunque con peso emocional", value: 3 },
+                    { text: "Lo reconozco con compasión pero no permito que su envidia limite mi propósito", value: 4 }
+                ]
+            },
+            {
+                q: "¿Qué tan seguido modificas o escondes tus planes para evitar críticas o envidia?",
+                options: [
+                    { text: "Constantemente - vivo en modo 'oculto' para no ser blanco de críticas", value: 1 },
+                    { text: "Frecuentemente - evito compartir mis sueños o logros por miedo a reacciones negativas", value: 2 },
+                    { text: "Ocasionalmente - todavía me frena el miedo a cómo reaccionarán otros", value: 3 },
+                    { text: "Rara vez - comparto con sabiduría pero no vivo escondiendo mi luz", value: 4 }
+                ]
+            },
+            {
+                q: "Cuando empiezas a tener éxito y notas cambios en cómo te tratan (comentarios pasivo-agresivos, distanciamiento), ¿qué haces?",
+                options: [
+                    { text: "Saboteo mi propio éxito - prefiero mantener la 'paz' que seguir creciendo", value: 1 },
+                    { text: "Me paralizo con culpa y dudo si debo continuar mi camino", value: 2 },
+                    { text: "Me duele pero intento continuar, aunque con mucha inseguridad", value: 3 },
+                    { text: "Continúo mi camino con claridad - entiendo que no todos celebrarán mi crecimiento", value: 4 }
+                ]
+            },
+            {
+                q: "¿Cómo interpretas las críticas que recibes?",
+                options: [
+                    { text: "Como verdad absoluta - si alguien critica, deben tener razón y yo debo estar equivocada", value: 1 },
+                    { text: "Como señales de que debo detenerme - claramente no estoy lista o no es para mí", value: 2 },
+                    { text: "Con confusión - me cuesta discernir qué es sabiduría y qué es opinión destructiva", value: 3 },
+                    { text: "Con discernimiento - evalúo si hay verdad constructiva o solo es resistencia a mi crecimiento", value: 4 }
+                ]
+            },
+            {
+                q: "¿Qué porcentaje de tu energía gastas preocupándote por cómo reaccionarán otros a tus logros o sueños?",
+                options: [
+                    { text: "La mayoría - es mi preocupación constante que me paraliza", value: 1 },
+                    { text: "Mucho - paso más tiempo preocupándome por reacciones que actuando en mis sueños", value: 2 },
+                    { text: "Algo - todavía me afecta más de lo que debería", value: 3 },
+                    { text: "Poco - mi enfoque está en obedecer a Dios, no en controlar reacciones ajenas", value: 4 }
+                ]
+            },
+            {
+                q: "Cuando percibes envidia disfrazada de 'preocupación' o 'consejos', ¿puedes identificarla?",
+                options: [
+                    { text: "No - acepto toda 'preocupación' como legítima y me detengo por ella", value: 1 },
+                    { text: "Rara vez - me confundo fácilmente y termino dudando de mí", value: 2 },
+                    { text: "A veces - estoy aprendiendo a discernir pero todavía me afecta", value: 3 },
+                    { text: "Sí - reconozco la diferencia entre consejo genuino y envidia disfrazada", value: 4 }
+                ]
+            },
+            {
+                q: "¿Cómo afecta tu círculo cercano tu valentía para perseguir tus sueños?",
+                options: [
+                    { text: "Totalmente - si ellos no apoyan o critican, no puedo avanzar", value: 1 },
+                    { text: "Significativamente - su desaprobación o envidia me paraliza frecuentemente", value: 2 },
+                    { text: "Moderadamente - me afecta pero estoy aprendiendo a avanzar de todas formas", value: 3 },
+                    { text: "Poco - he aprendido que no todos en mi círculo están destinados a ir donde voy", value: 4 }
+                ]
+            },
+            {
+                q: "Si pudieras ser completamente inmune a las críticas y la envidia, ¿qué harías diferente?",
+                options: [
+                    { text: "TODO - literalmente perseguiría todos mis sueños sin las cadenas del miedo a opiniones", value: 1 },
+                    { text: "Mucho - tomaría decisiones audaces que he evitado por años", value: 2 },
+                    { text: "Algunas cosas importantes - hay áreas específicas donde me frena", value: 3 },
+                    { text: "Poco - ya vivo mayormente libre de ese miedo", value: 4 }
+                ]
+            }
+        ];
+
+        let currentQuestion = 0;
+        let answers = {};
+
+        function initQuiz() {
+            const container = document.getElementById('questionsContainer');
+            questions.forEach((question, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = `question ${index === 0 ? 'active' : ''}`;
+                questionDiv.id = `question-${index}`;
+                
+                let optionsHTML = '<div class="options">';
+                question.options.forEach((option, optIndex) => {
+                    optionsHTML += `
+                        <label class="option" onclick="selectOption(${index}, ${option.value}, this)">
+                            <input type="radio" name="q${index}" value="${option.value}">
+                            <span>${option.text}</span>
+                        </label>
+                    `;
+                });
+                optionsHTML += '</div>';
+                
+                questionDiv.innerHTML = `
+                    <h3><span class="question-number">${index + 1}</span>${question.q}</h3>
+                    ${optionsHTML}
+                `;
+                
+                container.appendChild(questionDiv);
+            });
+            updateProgress();
+        }
+
+        function selectOption(questionIndex, value, element) {
+            answers[questionIndex] = value;
+            
+            const options = element.parentElement.querySelectorAll('.option');
+            options.forEach(opt => opt.classList.remove('selected'));
+            element.classList.add('selected');
+            
+            document.getElementById('nextBtn').disabled = false;
+            if (currentQuestion === questions.length - 1) {
+                document.getElementById('submitBtn').disabled = false;
+            }
+        }
+
+        function nextQuestion() {
+            if (!answers.hasOwnProperty(currentQuestion)) {
+                alert('Por favor selecciona una respuesta antes de continuar');
+                return;
+            }
+            
+            document.getElementById(`question-${currentQuestion}`).classList.remove('active');
+            currentQuestion++;
+            document.getElementById(`question-${currentQuestion}`).classList.add('active');
+            
+            updateButtons();
+            updateProgress();
+        }
+
+        function previousQuestion() {
+            document.getElementById(`question-${currentQuestion}`).classList.remove('active');
+            currentQuestion--;
+            document.getElementById(`question-${currentQuestion}`).classList.add('active');
+            
+            updateButtons();
+            updateProgress();
+        }
+
+        function updateButtons() {
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const submitBtn = document.getElementById('submitBtn');
+            
+            prevBtn.style.display = currentQuestion > 0 ? 'block' : 'none';
+            
+            if (currentQuestion === questions.length - 1) {
+                nextBtn.style.display = 'none';
+                submitBtn.style.display = 'block';
+                submitBtn.disabled = !answers.hasOwnProperty(currentQuestion);
+            } else {
+                nextBtn.style.display = 'block';
+                submitBtn.style.display = 'none';
+                nextBtn.disabled = !answers.hasOwnProperty(currentQuestion);
+            }
+        }
+
+        function updateProgress() {
+            const progress = ((currentQuestion + 1) / questions.length) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        function calculateResult() {
+            if (Object.keys(answers).length !== questions.length) {
+                alert('Por favor responde todas las preguntas');
+                return;
+            }
+            
+            const totalScore = Object.values(answers).reduce((sum, val) => sum + val, 0);
+            const maxScore = questions.length * 4;
+            const percentage = (totalScore / maxScore) * 100;
+            
+            let resultTitle, resultDescription, recommendations;
+            
+            if (percentage <= 40) {
+                resultTitle = "Nivel: Paralizada por Críticas - Prisionera de Opiniones";
+                resultDescription = `<p><strong>Mujer,</strong> este autoanálisis revela una verdad urgente: las críticas y la envidia de otros tienen control total sobre tu vida. Has abandonado sueños, minimizado tu luz, y saboteado tu propio éxito para mantener la 'paz' con personas que nunca celebrarán tu crecimiento. Estás viviendo pequeña para que otros se sientan grandes.</p>
+                <p><strong>Tu realidad actual:</strong> Cada crítica te derrumba completamente. Has construido un cementerio de sueños abandonados por opiniones negativas. Te haces pequeña cuando notas envidia. Vives escondiendo tu luz para no provocar reacciones negativas. Saboteas tu propio éxito para mantener relaciones. Pasas más tiempo preocupándote por reacciones ajenas que persiguiendo tu propósito. Has dado el control de tu destino a las opiniones de otros.</p>
+                <p><strong>La verdad liberadora:</strong> No todos van a celebrar tu crecimiento. Las críticas y la envidia son confirmación de que estás avanzando. Mientras sigas dándole poder a las opiniones negativas, seguirás traicionando tu propósito. Dios no te llamó a vivir pequeña para que otros se sientan cómodos.</p>`;
+                recommendations = `
+                    <li>Reconoce el patrón - identifica todos los sueños que has abandonado por críticas y envidia</li>
+                    <li>Establece una verdad fundamental: Las críticas y la envidia son parte del crecimiento, no señales de detenerme</li>
+                    <li>Haz una lista de 'críticos permanentes' - personas cuya opinión negativa siempre será negativa</li>
+                    <li>Practica avanzar a pesar de una crítica pequeña esta semana - construye inmunidad gradualmente</li>
+                    <li>Busca mentoría de alguien que haya navegado críticas y envidia exitosamente</li>
+                    <li>Lee biografías de personas exitosas y nota cómo manejaron críticas y envidia</li>
+                    <li>Memoriza Mateo 5:11-12 sobre ser criticada por hacer lo correcto</li>
+                    <li>Decide: ¿Quién tiene más poder - Dios llamándote adelante o personas criticándote?</li>
+                `;
+            } else if (percentage <= 60) {
+                resultTitle = "Nivel: Vulnerable a Críticas - Frenada por Opiniones";
+                resultDescription = `<p><strong>Mujer,</strong> aunque no estás completamente paralizada, las críticas y la envidia todavía tienen demasiado poder sobre ti. Avanzas, pero con miedo constante a reacciones negativas. Has perdido oportunidades por no querer enfrentar críticas. Tu progreso es más lento de lo que podría ser porque constantemente miras atrás para ver quién te critica.</p>
+                <p><strong>Tu realidad actual:</strong> Las críticas te afectan profundamente aunque intentes seguir. Modificas o escondes tus planes para evitar reacciones negativas. La envidia de otros te hace sentir culpable de tu éxito. Todavía confundes envidia disfrazada de 'preocupación' con consejo genuino. Gastas energía considerable preocupándote por cómo reaccionarán otros. Has sacrificado algunos sueños para mantener relaciones que quizás no eran para tu siguiente nivel.</p>
+                <p><strong>El punto de decisión:</strong> Puedes seguir viviendo asustada de críticas y envidia, o puedes decidir que tu propósito es más importante que el comfort de otros. El crecimiento siempre provoca reacciones. La pregunta es: ¿dejarás que esas reacciones te detengan?</p>`;
+                recommendations = `
+                    <li>Lleva un 'diario de críticas' - documenta cada crítica y tu reacción para identificar patrones</li>
+                    <li>Desarrolla un 'filtro de críticas' - criterios para determinar qué críticas son valiosas y cuáles ignorar</li>
+                    <li>Practica compartir una victoria sin minimizarla, aunque sepas que provocará envidia</li>
+                    <li>Identifica relaciones donde constantemente te haces pequeña - evalúa si son saludables</li>
+                    <li>Aprende a discernir envidia disfrazada - pregúntate: '¿Esta persona celebra mi crecimiento?'</li>
+                    <li>Establece límites con críticos crónicos - reduce exposición a voces constantemente negativas</li>
+                    <li>Cada vez que recibas crítica, pregunta: '¿Hay verdad útil aquí o solo resistencia?'</li>
+                    <li>Rodéate de personas que celebren tu crecimiento, no que lo resientan</li>
+                `;
+            } else if (percentage <= 80) {
+                resultTitle = "Nivel: Resistencia Creciente - Navegando Críticas";
+                resultDescription = `<p><strong>Mujer,</strong> has desarrollado buena resistencia a críticas y envidia. La mayoría del tiempo, puedes discernir entre consejo genuino y opinión destructiva. Sigues avanzando aunque otros critiquen o envidien. Sin embargo, todavía hay momentos donde las voces negativas te hacen dudar o frenar temporalmente.</p>
+                <p><strong>Tu realidad actual:</strong> Las críticas te informan pero ya no te destruyen. Puedes identificar envidia disfrazada la mayoría del tiempo. No abandonas sueños por opiniones negativas. Has aprendido que no todos celebrarán tu crecimiento y estás en paz con ello. Sin embargo, con ciertas personas o en ciertos contextos, las críticas todavía tienen más peso del que deberían.</p>
+                <p><strong>Tu próximo nivel:</strong> Desarrollar inmunidad casi completa a críticas destructivas y envidia. Usar las críticas como confirmación de que estás en el camino correcto. Ser tan segura en tu llamado que las voces negativas sean solo ruido de fondo.</p>`;
+                recommendations = `
+                    <li>Identifica tus últimos 'puntos vulnerables' - situaciones donde críticas todavía te frenan</li>
+                    <li>Comparte tu testimonio de cómo aprendiste a navegar críticas y envidia</li>
+                    <li>Practica reinterpretar críticas como confirmación - 'Si critican, voy por buen camino'</li>
+                    <li>Mentorea a alguien paralizada por miedo a críticas</li>
+                    <li>Desarrolla una 'armadura de críticas' - verdades que declares cuando lleguen voces negativas</li>
+                    <li>Celebra cada vez que avances a pesar de críticas - está fortaleciendo tu inmunidad</li>
+                    <li>Estudia cómo Jesús manejó críticas y envidia - era constante en su vida</li>
+                    <li>Normaliza que el crecimiento provoca reacciones - no es señal de detenerse</li>
+                `;
+            } else {
+                resultTitle = "Nivel: Inmune a Críticas - Libre de Opiniones Destructivas";
+                resultDescription = `<p><strong>Mujer,</strong> has alcanzado algo extraordinario: inmunidad a críticas destructivas y envidia. Estas voces ya no tienen poder sobre tu dirección. Discierenes con claridad entre consejo sabio y opinión destructiva. Avanzas con convicción aunque otros critiquen. Tu seguridad está en tu llamado, no en la aprobación de la multitud.</p>
+                <p><strong>Tu realidad actual:</strong> Las críticas te enseñan pero no te desvían. Puedes identificar envidia inmediatamente y responder con compasión sin permitir que te limite. No modificas tus sueños para evitar reacciones negativas. Entiendes que no todos celebrarán tu crecimiento y estás completamente en paz con ello. Tu círculo está lleno de personas que celebran tu avance, no que lo resientan.</p>
+                <p><strong>Tu llamado ahora:</strong> Usar tu libertad de críticas y envidia para liberar a otras mujeres. Tu testimonio de cómo navegaste voces negativas es un mapa que otras necesitan. Dios te fortaleció no solo para tu beneficio, sino para que seas ejemplo de valentía inquebrantable para tu generación.</p>`;
+                recommendations = `
+                    <li>Mantén tu inmunidad vigilante - críticas inesperadas todavía pueden sorprender</li>
+                    <li>Desarrolla contenido o ministerio sobre navegar críticas y envidia</li>
+                    <li>Comparte públicamente cómo desarrollaste resistencia a opiniones destructivas</li>
+                    <li>Mentorea intencionalmente a mujeres paralizadas por miedo a críticas</li>
+                    <li>Sé modelo visible de avanzar a pesar de voces negativas</li>
+                    <li>Enseña a otras a discernir entre consejo sabio y envidia disfrazada</li>
+                    <li>Usa tu plataforma para normalizar que críticas vienen con el crecimiento</li>
+                    <li>Intercede por mujeres que han abandonado sueños por críticas</li>
+                `;
+            }
+            
+            const resultHTML = `
+                <div class="result-card">
+                    <div class="result-title">${resultTitle}</div>
+                    <div class="result-description">${resultDescription}</div>
+                    <div class="result-recommendations">
+                        <h4>Pasos Para Liberarte del Poder de Críticas y Envidia:</h4>
+                        <ul>${recommendations}</ul>
+                    </div>
+                    <div class="final-message">
+                        <p><strong>Recuerda:</strong> Las críticas y la envidia son el precio del crecimiento. Si nadie te critica, probablemente no estás avanzando. Si nadie te envidia, probablemente estás jugando demasiado pequeña. No todos van a celebrar tu elevación - algunos preferirán que te quedes donde ellos están. Pero tu propósito no está sujeto a votación popular. Dios te llamó a algo específico, y ese llamado vendrá con críticas y envidia. La pregunta no es si vendrán, sino: ¿les darás poder sobre tu destino?</p>
+                        <p>"Dichosos serán ustedes cuando los insulten y persigan, y digan toda clase de mal contra ustedes por mi causa. Alégrense y regocíjense, porque su recompensa en el cielo es grande." - Mateo 5:11-12</p>
+                    </div>
+                    <button class="btn restart-btn" onclick="location.reload()">Realizar Autoanálisis Nuevamente</button>
+                </div>
+            `;
+            
+            document.getElementById('questionsContainer').style.display = 'none';
+            document.querySelector('.navigation').style.display = 'none';
+            document.querySelector('.progress-bar').style.display = 'none';
+            
+            const resultContainer = document.getElementById('resultContainer');
+            resultContainer.innerHTML = resultHTML;
+            resultContainer.classList.add('active');
+        }
+
+        // Initialize the quiz when page loads
+        initQuiz();
+    </script>
+</body>
+</html>
