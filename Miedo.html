@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autoanálisis: Miedo al Fracaso</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #fafafa;
+            min-height: 100vh;
+            padding: 40px 20px;
+            color: #1d1d1f;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #806459 0%, #96776c 100%);
+            color: white;
+            padding: 60px 40px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: -0.5px;
+        }
+
+        .header p {
+            font-size: 1.15em;
+            opacity: 0.9;
+            line-height: 1.6;
+            text-align: left;
+            font-weight: 300;
+            max-width: 700px;
+        }
+
+        .content {
+            padding: 50px 40px;
+        }
+
+        .question {
+            margin-bottom: 40px;
+            padding: 0;
+            display: none;
+        }
+
+        .question.active {
+            display: block;
+            animation: fadeIn 0.6s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .question h3 {
+            color: #806459;
+            margin-bottom: 30px;
+            font-size: 1.3em;
+            line-height: 1.5;
+            font-weight: 600;
+            letter-spacing: -0.3px;
+        }
+
+        .question-number {
+            display: inline-block;
+            background: #806459;
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 36px;
+            margin-right: 12px;
+            font-weight: 600;
+            font-size: 0.95em;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .option {
+            padding: 20px 24px;
+            background: #f5f5f7;
+            border: 2px solid transparent;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            font-weight: 400;
+        }
+
+        .option:hover {
+            background: #e8e8ed;
+            transform: translateX(2px);
+        }
+
+        .option.selected {
+            background: #806459;
+            color: white;
+            border-color: #806459;
+            font-weight: 500;
+        }
+
+        .option input[type="radio"] {
+            margin-right: 16px;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: #806459;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+            padding: 0 40px;
+            gap: 20px;
+        }
+
+        .btn {
+            padding: 16px 40px;
+            background: #806459;
+            color: white;
+            border: none;
+            border-radius: 980px;
+            cursor: pointer;
+            font-size: 1.05em;
+            font-weight: 500;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            font-family: 'Montserrat', sans-serif;
+            letter-spacing: -0.2px;
+        }
+
+        .btn:hover {
+            background: #6e5449;
+            transform: scale(1.02);
+        }
+
+        .btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .progress-bar {
+            height: 4px;
+            background: #e8e8ed;
+            margin: 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #806459;
+            width: 0%;
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2,1);
+        }
+
+        .result {
+            display: none;
+            padding: 50px 40px;
+        }
+
+        .result.active {
+            display: block;
+            animation: fadeIn 0.6s ease-in;
+        }
+
+        .result-card {
+            background: #f5f5f7;
+            border-radius: 20px;
+            padding: 40px;
+            margin-top: 30px;
+        }
+
+        .result-title {
+            color: #806459;
+            font-size: 2.2em;
+            margin-bottom: 24px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .result-description {
+            line-height: 1.8;
+            margin-bottom: 30px;
+            font-size: 1.05em;
+            font-weight: 400;
+            color: #1d1d1f;
+        }
+
+        .result-description p {
+            margin-bottom: 20px;
+        }
+
+        .result-recommendations {
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            margin-top: 30px;
+        }
+
+        .result-recommendations h4 {
+            color: #806459;
+            margin-bottom: 20px;
+            font-size: 1.4em;
+            font-weight: 600;
+            letter-spacing: -0.3px;
+        }
+
+        .result-recommendations ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .result-recommendations li {
+            padding: 14px 0;
+            padding-left: 35px;
+            position: relative;
+            line-height: 1.7;
+            font-weight: 400;
+            color: #1d1d1f;
+        }
+
+        .result-recommendations li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #806459;
+            font-weight: 600;
+            font-size: 1.2em;
+        }
+
+        .restart-btn {
+            margin-top: 35px;
+            background: transparent;
+            color: #806459;
+            border: 2px solid #806459;
+        }
+
+        .restart-btn:hover {
+            background: #806459;
+            color: white;
+        }
+
+        .final-message {
+            margin-top: 35px;
+            padding: 30px;
+            background: white;
+            border-radius: 16px;
+            border-left: 4px solid #806459;
+        }
+
+        .final-message p {
+            font-size: 1.05em;
+            line-height: 1.8;
+            color: #1d1d1f;
+            margin-bottom: 18px;
+        }
+
+        .final-message p:last-child {
+            font-style: italic;
+            color: #424245;
+            margin-bottom: 0;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 40px 30px;
+            }
+
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .content {
+                padding: 30px 20px;
+            }
+
+            .navigation {
+                flex-direction: column;
+                padding: 0 20px;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            .result {
+                padding: 30px 20px;
+            }
+
+            .result-card {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Autoanálisis: Miedo al Fracaso</h1>
+            <p>Descubre cómo el miedo al fracaso te mantiene en la zona de confort y te impide caminar en fe hacia las promesas de Dios</p>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+        <div class="content" id="questionsContainer">
+            <!-- Questions will be generated here -->
+        </div>
+
+        <div class="navigation">
+            <button class="btn" id="nextBtn" onclick="nextQuestion()">Siguiente</button>
+            <button class="btn" id="submitBtn" onclick="calculateResult()" style="display: none;">Ver Resultado</button>
+            <button class="btn" id="prevBtn" onclick="previousQuestion()" style="display: none;">Anterior</button>
+        </div>
+
+        <div class="result" id="resultContainer">
+            <!-- Result will be shown here -->
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                q: "Cuando tienes la oportunidad de intentar algo nuevo que podría acercarte a tus sueños, ¿qué haces?",
+                options: [
+                    { text: "La evito completamente - el miedo a fallar me paraliza y prefiero no intentarlo", value: 1 },
+                    { text: "La considero pero encuentro excusas para no hacerlo ('no es el momento', 'no estoy lista')", value: 2 },
+                    { text: "Quiero intentarlo pero la ansiedad me hace procrastinar indefinidamente", value: 3 },
+                    { text: "Siento miedo pero lo hago de todas formas, confiando en que Dios está conmigo", value: 4 }
+                ]
+            },
+            {
+                q: "¿Cómo defines el fracaso?",
+                options: [
+                    { text: "Como algo devastador que confirma que no soy suficiente y que no debí intentarlo", value: 1 },
+                    { text: "Como prueba de que no estoy destinada para cosas grandes", value: 2 },
+                    { text: "Como algo doloroso pero que reconozco es parte del proceso", value: 3 },
+                    { text: "Como información valiosa y redirección hacia el camino correcto", value: 4 }
+                ]
+            },
+            {
+                q: "¿Qué tanto has sacrificado de tus sueños para mantener tu vida 'segura' y predecible?",
+                options: [
+                    { text: "Todo - he enterrado mis sueños a cambio de seguridad y comodidad", value: 1 },
+                    { text: "Mucho - mis sueños están en pausa indefinida por miedo a arriesgar", value: 2 },
+                    { text: "Algo - he tomado algunos riesgos pero no los que realmente importan", value: 3 },
+                    { text: "Poco - he aprendido que la seguridad en Dios es diferente a la zona de confort", value: 4 }
+                ]
+            },
+            {
+                q: "Cuando Dios te pide dar un paso de fe que implica riesgo, ¿cuál es tu reacción honesta?",
+                options: [
+                    { text: "Terror y resistencia - busco todas las razones para no hacerlo", value: 1 },
+                    { text: "Negociación - intento encontrar un camino 'más seguro' que sea más cómodo", value: 2 },
+                    { text: "Duda y vacilación - quiero obedecer pero el miedo me frena", value: 3 },
+                    { text: "Obediencia valiente - aunque tenga miedo, confío y doy el paso", value: 4 }
+                ]
+            },
+            {
+                q: "¿Qué te preocupa más sobre intentar algo grande y fracasar?",
+                options: [
+                    { text: "Que todos vean mi fracaso y me juzguen - la humillación pública", value: 1 },
+                    { text: "Confirmar mis peores miedos sobre mí misma - que en realidad no soy capaz", value: 2 },
+                    { text: "Desperdiciar tiempo, dinero o recursos en algo que no funcione", value: 3 },
+                    { text: "Ya no me preocupa tanto porque entiendo que el fracaso no define mi valor", value: 4 }
+                ]
+            },
+            {
+                q: "¿Cuántas veces has dejado pasar oportunidades importantes por miedo?",
+                options: [
+                    { text: "Incontables - he construido mi vida alrededor de evitar riesgos", value: 1 },
+                    { text: "Muchas - cuando miro atrás, veo un patrón claro de oportunidades perdidas por miedo", value: 2 },
+                    { text: "Algunas - me arrepiento de ciertos momentos donde el miedo me detuvo", value: 3 },
+                    { text: "Pocas - he aprendido a no dejar que el miedo tome mis decisiones", value: 4 }
+                ]
+            },
+            {
+                q: "¿Cómo te sientes cuando ves a otros intentando cosas audaces (aunque fallen)?",
+                options: [
+                    { text: "Aterrada - uso sus fracasos como confirmación de que tengo razón en no arriesgar", value: 1 },
+                    { text: "Ansiosa - pienso 'eso me pasaría a mí también'", value: 2 },
+                    { text: "Dividida - entre admiración por su valentía y miedo por el resultado", value: 3 },
+                    { text: "Inspirada - veo su valentía como ejemplo a seguir, independiente del resultado", value: 4 }
+                ]
+            },
+            {
+                q: "¿Qué tan seguido usas la frase 'mejor seguro que arrepentido' para justificar no arriesgar?",
+                options: [
+                    { text: "Es mi lema de vida - la uso para justificar quedarme donde estoy siempre", value: 1 },
+                    { text: "Frecuentemente - es mi excusa favorita para no salir de mi zona de confort", value: 2 },
+                    { text: "Ocasionalmente - la uso en momentos de miedo intenso", value: 3 },
+                    { text: "Rara vez - entiendo que la verdadera seguridad está en la obediencia a Dios, no en evitar riesgos", value: 4 }
+                ]
+            },
+            {
+                q: "Si intentaras tu sueño más grande y fallaras públicamente, ¿cómo crees que te recuperarías?",
+                options: [
+                    { text: "No lo haría - me destruiría completamente y nunca volvería a intentar nada", value: 1 },
+                    { text: "Me tomaría años recuperarme y probablemente nunca volvería a arriesgar así", value: 2 },
+                    { text: "Sería doloroso pero eventualmente encontraría la fuerza para levantarme", value: 3 },
+                    { text: "Aprendería, me levantaría y lo intentaría de nuevo porque mi identidad no está en mi éxito", value: 4 }
+                ]
+            },
+            {
+                q: "¿Qué porcentaje de tu vida actual está dictado por el miedo al fracaso vs. la fe en Dios?",
+                options: [
+                    { text: "90% miedo, 10% fe - el miedo gobierna casi todas mis decisiones", value: 1 },
+                    { text: "70% miedo, 30% fe - el miedo todavía tiene más poder que mi fe", value: 2 },
+                    { text: "50/50 - estoy en una batalla constante entre miedo y fe", value: 3 },
+                    { text: "20% miedo, 80% fe - la fe en Dios es mi motor principal, aunque el miedo aparezca", value: 4 }
+                ]
+            }
+        ];
+
+        let currentQuestion = 0;
+        let answers = {};
+
+        function initQuiz() {
+            const container = document.getElementById('questionsContainer');
+            questions.forEach((question, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = `question ${index === 0 ? 'active' : ''}`;
+                questionDiv.id = `question-${index}`;
+                
+                let optionsHTML = '<div class="options">';
+                question.options.forEach((option, optIndex) => {
+                    optionsHTML += `
+                        <label class="option" onclick="selectOption(${index}, ${option.value}, this)">
+                            <input type="radio" name="q${index}" value="${option.value}">
+                            <span>${option.text}</span>
+                        </label>
+                    `;
+                });
+                optionsHTML += '</div>';
+                
+                questionDiv.innerHTML = `
+                    <h3><span class="question-number">${index + 1}</span>${question.q}</h3>
+                    ${optionsHTML}
+                `;
+                
+                container.appendChild(questionDiv);
+            });
+            updateProgress();
+        }
+
+        function selectOption(questionIndex, value, element) {
+            answers[questionIndex] = value;
+            
+            const options = element.parentElement.querySelectorAll('.option');
+            options.forEach(opt => opt.classList.remove('selected'));
+            element.classList.add('selected');
+            
+            document.getElementById('nextBtn').disabled = false;
+            if (currentQuestion === questions.length - 1) {
+                document.getElementById('submitBtn').disabled = false;
+            }
+        }
+
+        function nextQuestion() {
+            if (!answers.hasOwnProperty(currentQuestion)) {
+                alert('Por favor selecciona una respuesta antes de continuar');
+                return;
+            }
+            
+            document.getElementById(`question-${currentQuestion}`).classList.remove('active');
+            currentQuestion++;
+            document.getElementById(`question-${currentQuestion}`).classList.add('active');
+            
+            updateButtons();
+            updateProgress();
+        }
+
+        function previousQuestion() {
+            document.getElementById(`question-${currentQuestion}`).classList.remove('active');
+            currentQuestion--;
+            document.getElementById(`question-${currentQuestion}`).classList.add('active');
+            
+            updateButtons();
+            updateProgress();
+        }
+
+        function updateButtons() {
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const submitBtn = document.getElementById('submitBtn');
+            
+            prevBtn.style.display = currentQuestion > 0 ? 'block' : 'none';
+            
+            if (currentQuestion === questions.length - 1) {
+                nextBtn.style.display = 'none';
+                submitBtn.style.display = 'block';
+                submitBtn.disabled = !answers.hasOwnProperty(currentQuestion);
+            } else {
+                nextBtn.style.display = 'block';
+                submitBtn.style.display = 'none';
+                nextBtn.disabled = !answers.hasOwnProperty(currentQuestion);
+            }
+        }
+
+        function updateProgress() {
+            const progress = ((currentQuestion + 1) / questions.length) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        function calculateResult() {
+            if (Object.keys(answers).length !== questions.length) {
+                alert('Por favor responde todas las preguntas');
+                return;
+            }
+            
+            const totalScore = Object.values(answers).reduce((sum, val) => sum + val, 0);
+            const maxScore = questions.length * 4;
+            const percentage = (totalScore / maxScore) * 100;
+            
+            let resultTitle, resultDescription, recommendations;
+            
+            if (percentage <= 40) {
+                resultTitle = "Nivel: Paralizada por el Miedo - Zona de Confort Total";
+                resultDescription = `<p><strong>Mujer,</strong> este autoanálisis revela una verdad difícil pero necesaria: estás completamente paralizada por el miedo al fracaso. Has construido tu vida entera alrededor de evitar riesgos, lo cual significa que también estás evitando las promesas de Dios y tus sueños más profundos. Tu zona de confort se ha convertido en una prisión.</p>
+                <p><strong>Tu realidad actual:</strong> El miedo al fracaso gobierna cada decisión importante que tomas. Has dejado pasar incontables oportunidades. Has enterrado tus sueños porque el riesgo de intentar y fallar te aterroriza más que la certeza de quedarte donde estás. Te has convencido de que la seguridad y la comodidad son más importantes que la obediencia a Dios y el cumplimiento de tu propósito.</p>
+                <p><strong>La verdad devastadora:</strong> Al tratar de evitar el fracaso, estás garantizando el mayor fracaso de todos: una vida sin intentarlo, una vida sin cumplir tu propósito, una vida de 'qué hubiera pasado si...'. Dios no te llamó a una vida segura. Te llamó a una vida de fe.</p>`;
+                recommendations = `
+                    <li>Identifica exactamente qué temes: ¿la opinión de otros? ¿confirmar tus inseguridades? ¿perder recursos? Escribe tus miedos específicos</li>
+                    <li>Haz una lista de todo lo que has sacrificado por quedarte 'segura' - sueños, oportunidades, crecimiento</li>
+                    <li>Reconoce que la zona de confort es una ilusión - no hay verdadera seguridad fuera de la voluntad de Dios</li>
+                    <li>Da UN paso pequeño de fe esta semana - algo que te asuste pero que sepas que Dios te pide</li>
+                    <li>Lee sobre personas bíblicas que enfrentaron el miedo al fracaso (Pedro caminando sobre el agua, David vs Goliat)</li>
+                    <li>Busca consejería para trabajar el trauma o experiencias pasadas que alimentan este miedo</li>
+                    <li>Rodéate de personas valientes que toman riesgos de fe y aprende de ellas</li>
+                    <li>Memoriza 2 Timoteo 1:7 - Dios no te dio espíritu de cobardía</li>
+                `;
+            } else if (percentage <= 60) {
+                resultTitle = "Nivel: Frenada por el Miedo - Zona de Confort Parcial";
+                resultDescription = `<p><strong>Mujer,</strong> estás en un lugar incómodo: conoces tus sueños, sabes lo que Dios te ha llamado a hacer, pero el miedo al fracaso te mantiene tomando pasos tímidos en lugar de pasos audaces de fe. Te mueves, pero siempre con un pie firmemente plantado en tu zona de confort.</p>
+                <p><strong>Tu realidad actual:</strong> Tomas riesgos pequeños pero evitas los grandes. Dices 'sí' a Dios con condiciones. Empiezas cosas pero el miedo te hace abandonar cuando se pone difícil. Has perdido oportunidades importantes porque el miedo habló más fuerte que tu fe. Vives en un tira y afloja constante entre el deseo de crecer y el terror de fallar.</p>
+                <p><strong>El punto crítico:</strong> Estás lo suficientemente cerca de tus sueños como para saborearlos, pero lo suficientemente asustada como para no alcanzarlos completamente. Este es el lugar más frustrante porque sabes que podrías, pero el miedo te convence de que no deberías.</p>`;
+                recommendations = `
+                    <li>Identifica el patrón: ¿en qué momentos específicos el miedo te hace retroceder?</li>
+                    <li>Cambia tu definición de fracaso - no es el opuesto al éxito, es parte del camino hacia él</li>
+                    <li>Haz una lista de todos los fracasos que has sobrevivido - eres más fuerte de lo que crees</li>
+                    <li>Comprométete a intentar algo grande por 90 días sin rendirte, pase lo que pase</li>
+                    <li>Encuentra un mentor o coach que te ayude a mantener la valentía cuando el miedo aparezca</li>
+                    <li>Pregúntate: '¿Qué haría si supiera que no voy a fracasar?' - luego hazlo confiando en Dios</li>
+                    <li>Documenta cada paso valiente que das - créate evidencia de que puedes actuar a pesar del miedo</li>
+                    <li>Únete a un grupo de mujeres que estén dando pasos de fe audaces</li>
+                `;
+            } else if (percentage <= 80) {
+                resultTitle = "Nivel: Caminando en Fe - Valentía Creciente";
+                resultDescription = `<p><strong>Mujer,</strong> has hecho un progreso hermoso. El miedo al fracaso ya no te paraliza. Has aprendido que sentir miedo no significa que no debas avanzar. Estás tomando riesgos, confiando en Dios, y viendo que Él es fiel incluso cuando las cosas no salen como esperabas.</p>
+                <p><strong>Tu realidad actual:</strong> Das pasos de fe regularmente aunque te asuste. Has redefinido el fracaso como parte del proceso de crecimiento. Cuando fallas, te levantas más rápido. Tu identidad ya no está ligada a tu éxito o fracaso. Sin embargo, todavía hay áreas donde el miedo te hace dudar, especialmente ante los riesgos más grandes.</p>
+                <p><strong>Tu próximo nivel:</strong> Pasar de valentía situacional a valentía como estilo de vida. Convertirte en alguien que no solo vence su propio miedo, sino que inspira a otros a hacer lo mismo. Tomar los riesgos que antes te parecían imposibles.</p>`;
+                recommendations = `
+                    <li>Identifica las áreas donde todavía permites que el miedo limite tu obediencia a Dios</li>
+                    <li>Aumenta intencionalmente el nivel de riesgo - toma desafíos más grandes progresivamente</li>
+                    <li>Comparte tu testimonio de cómo has vencido el miedo al fracaso</li>
+                    <li>Mentorea a alguien que está paralizada por el miedo - tu experiencia es valiosa</li>
+                    <li>Celebra tus 'fracasos' como evidencia de que estás intentando cosas grandes</li>
+                    <li>Cuando sientas miedo ante algo grande, tómalo como señal de que es importante</li>
+                    <li>Desarrolla un sistema de apoyo que te anime a arriesgar cuando todos dicen que juegues seguro</li>
+                    <li>Documenta tu jornada para inspirar a otras mujeres</li>
+                `;
+            } else {
+                resultTitle = "Nivel: Libre del Miedo - Vida de Fe Audaz";
+                resultDescription = `<p><strong>Mujer,</strong> has alcanzado algo extraordinario: libertad del miedo paralizante al fracaso. No es que nunca sientas miedo, sino que ya no permites que ese miedo tome tus decisiones. Vives una vida de fe audaz, tomando riesgos que otros considerarían locos porque confías profundamente en Dios.</p>
+                <p><strong>Tu realidad actual:</strong> Das pasos de fe que asustan incluso a los que te rodean. Has redefinido completamente el fracaso - ya no es tu enemigo, es tu maestro. Tu identidad está tan arraigada en Cristo que ni el éxito ni el fracaso te definen. Inspiras a otros simplemente por cómo vives sin miedo a intentar cosas grandes.</p>
+                <p><strong>Tu llamado ahora:</strong> Ser instrumento de liberación para mujeres que todavía están paralizadas por el miedo. Tu valentía no es solo para ti, es un mapa para otras. Dios te ha llevado a este lugar de libertad para que puedas guiar a otras hacia ella.</p>`;
+                recommendations = `
+                    <li>Mantén tu libertad activa - sigue tomando riesgos que te mantengan dependiendo de Dios</li>
+                    <li>Desarrolla un ministerio o contenido enfocado en ayudar a mujeres a vencer el miedo al fracaso</li>
+                    <li>Comparte públicamente tus fracasos junto con tus éxitos - normaliza el fracaso como parte del crecimiento</li>
+                    <li>Mentorea intencionalmente a mujeres paralizadas por el miedo</li>
+                    <li>Toma riesgos aún más grandes - desafía tu propia definición de 'grande'</li>
+                    <li>Crea espacios seguros donde otras mujeres puedan arriesgar sin juicio</li>
+                    <li>Escribe tu historia de cómo pasaste del miedo a la fe audaz</li>
+                    <li>Intercede por mujeres que están perdiendo sus sueños por miedo</li>
+                `;
+            }
+            
+            const resultHTML = `
+                <div class="result-card">
+                    <div class="result-title">${resultTitle}</div>
+                    <div class="result-description">${resultDescription}</div>
+                    <div class="result-recommendations">
+                        <h4>Pasos Para Vencer el Miedo y Caminar en Fe:</h4>
+                        <ul>${recommendations}</ul>
+                    </div>
+                    <div class="final-message">
+                        <p><strong>Recuerda:</strong> El miedo al fracaso es uno de los engaños más efectivos del enemigo porque se disfraza de sabiduría y prudencia. Pero Dios no te llamó a una vida sin riesgos - te llamó a una vida de fe. La fe, por definición, requiere riesgo. No puedes caminar en el agua si nunca sales del bote. Tus sueños están al otro lado de tu miedo. Las promesas de Dios están esperándote fuera de tu zona de confort.</p>
+                        <p>"Porque no nos ha dado Dios espíritu de cobardía, sino de poder, de amor y de dominio propio." - 2 Timoteo 1:7</p>
+                    </div>
+                    <button class="btn restart-btn" onclick="location.reload()">Realizar Autoanálisis Nuevamente</button>
+                </div>
+            `;
+            
+            document.getElementById('questionsContainer').style.display = 'none';
+            document.querySelector('.navigation').style.display = 'none';
+            document.querySelector('.progress-bar').style.display = 'none';
+            
+            const resultContainer = document.getElementById('resultContainer');
+            resultContainer.innerHTML = resultHTML;
+            resultContainer.classList.add('active');
+        }
+
+        // Initialize the quiz when page loads
+        initQuiz();
+    </script>
+</body>
+</html>
