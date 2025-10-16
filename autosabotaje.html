@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autoanálisis: Autosabotaje y Autocrítica</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #fafafa;
+            min-height: 100vh;
+            padding: 40px 20px;
+            color: #1d1d1f;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #806459 0%, #96776c 100%);
+            color: white;
+            padding: 60px 40px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: -0.5px;
+        }
+
+        .header p {
+            font-size: 1.15em;
+            opacity: 0.9;
+            line-height: 1.6;
+            text-align: left;
+            font-weight: 300;
+            max-width: 700px;
+        }
+
+        .content {
+            padding: 50px 40px;
+        }
+
+        .question {
+            margin-bottom: 40px;
+            padding: 0;
+            display: none;
+        }
+
+        .question.active {
+            display: block;
+            animation: fadeIn 0.6s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .question h3 {
+            color: #806459;
+            margin-bottom: 30px;
+            font-size: 1.3em;
+            line-height: 1.5;
+            font-weight: 600;
+            letter-spacing: -0.3px;
+        }
+
+        .question-number {
+            display: inline-block;
+            background: #806459;
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 36px;
+            margin-right: 12px;
+            font-weight: 600;
+            font-size: 0.95em;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .option {
+            padding: 20px 24px;
+            background: #f5f5f7;
+            border: 2px solid transparent;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            font-weight: 400;
+        }
+
+        .option:hover {
+            background: #e8e8ed;
+            transform: translateX(2px);
+        }
+
+        .option.selected {
+            background: #806459;
+            color: white;
+            border-color: #806459;
+            font-weight: 500;
+        }
+
+        .option input[type="radio"] {
+            margin-right: 16px;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: #806459;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+            padding: 0 40px;
+            gap: 20px;
+        }
+
+        .btn {
+            padding: 16px 40px;
+            background: #806459;
+            color: white;
+            border: none;
+            border-radius: 980px;
+            cursor: pointer;
+            font-size: 1.05em;
+            font-weight: 500;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            font-family: 'Montserrat', sans-serif;
+            letter-spacing: -0.2px;
+        }
+
+        .btn:hover {
+            background: #6e5449;
+            transform: scale(1.02);
+        }
+
+        .btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .progress-bar {
+            height: 4px;
+            background: #e8e8ed;
+            margin: 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #806459;
+            width: 0%;
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .result {
+            display: none;
+            padding: 50px 40px;
+        }
+
+        .result.active {
+            display: block;
+            animation: fadeIn 0.6s ease-in;
+        }
+
+        .result-card {
+            background: #f5f5f7;
+            border-radius: 20px;
+            padding: 40px;
+            margin-top: 30px;
+        }
+
+        .result-title {
+            color: #806459;
+            font-size: 2.2em;
+            margin-bottom: 24px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .result-description {
+            line-height: 1.8;
+            margin-bottom: 30px;
+            font-size: 1.05em;
+            font-weight: 400;
+            color: #1d1d1f;
+        }
+
+        .result-description p {
+            margin-bottom: 20px;
+        }
+
+        .result-recommendations {
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            margin-top: 30px;
+        }
+
+        .result-recommendations h4 {
+            color: #806459;
+            margin-bottom: 20px;
+            font-size: 1.4em;
+            font-weight: 600;
+            letter-spacing: -0.3px;
+        }
+
+        .result-recommendations ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .result-recommendations li {
+            padding: 14px 0;
+            padding-left: 35px;
+            position: relative;
+            line-height: 1.7;
+            font-weight: 400;
+            color: #1d1d1f;
+        }
+
+        .result-recommendations li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #806459;
+            font-weight: 600;
+            font-size: 1.2em;
+        }
+
+        .restart-btn {
+            margin-top: 35px;
+            background: transparent;
+            color: #806459;
+            border: 2px solid #806459;
+        }
+
+        .restart-btn:hover {
+            background: #806459;
+            color: white;
+        }
+
+        .final-message {
+            margin-top: 35px;
+            padding: 30px;
+            background: white;
+            border-radius: 16px;
+            border-left: 4px solid #806459;
+        }
+
+        .final-message p {
+            font-size: 1.05em;
+            line-height: 1.8;
+            color: #1d1d1f;
+            margin-bottom: 18px;
+        }
+
+        .final-message p:last-child {
+            font-style: italic;
+            color: #424245;
+            margin-bottom: 0;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 40px 30px;
+            }
+
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .content {
+                padding: 30px 20px;
+            }
+
+            .navigation {
+                flex-direction: column;
+                padding: 0 20px;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            .result {
+                padding: 30px 20px;
+            }
+
+            .result-card {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Autoanálisis: Autosabotaje y Autocrítica</h1>
+            <p>Descubre cómo te estás saboteando a ti misma y bloqueando tus bendiciones con tu propia voz interna</p>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+        <div class="content" id="questionsContainer">
+            <!-- Questions will be generated here -->
+        </div>
+
+        <div class="navigation">
+            <button class="btn" id="nextBtn" onclick="nextQuestion()">Siguiente</button>
+            <button class="btn" id="submitBtn" onclick="calculateResult()" style="display: none;">Ver Resultado</button>
+            <button class="btn" id="prevBtn" onclick="previousQuestion()" style="display: none;">Anterior</button>
+        </div>
+
+        <div class="result" id="resultContainer">
+            <!-- Result will be shown here -->
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                q: "Cuando estás a punto de lograr algo importante, ¿qué suele pasar?",
+                options: [
+                    { text: "Encuentro formas de sabotearlo justo antes de lograrlo - es un patrón constante", value: 1 },
+                    { text: "Me pongo ansiosa y frecuentemente hago algo que arruina mi progreso", value: 2 },
+                    { text: "A veces me saboteo, especialmente cuando estoy a punto de alcanzar algo grande", value: 3 },
+                    { text: "Me mantengo enfocada y completo lo que empiezo sin sabotearme", value: 4 }
+                ]
+            },
+            {
+                q: "¿Cómo es tu diálogo interno cuando cometes un error?",
+                options: [
+                    { text: "Brutal y destructivo - me insulto y ataco verbalmente por horas o días", value: 1 },
+                    { text: "Muy crítico - me recuerdo todos mis errores pasados y confirmo que 'siempre fallo'", value: 2 },
+                    { text: "Crítico pero intento balancearlo con algo de compasión", value: 3 },
+                    { text: "Compasivo y realista - reconozco el error sin atacarme como persona", value: 4 }
+                ]
+            },
+            {
+                q: "¿Con qué frecuencia te convences de que 'no mereces' cosas buenas?",
+                options: [
+                    { text: "Constantemente - es mi creencia fundamental sobre mí misma", value: 1 },
+                    { text: "Frecuentemente - especialmente cuando algo bueno está por suceder", value: 2 },
+                    { text: "Ocasionalmente - reconozco el patrón y lucho contra él", value: 3 },
+                    { text: "Rara vez - sé que soy digna de las bendiciones de Dios", value: 4 }
+                ]
+            },
+            {
+                q: "Cuando alguien te ofrece ayuda, una oportunidad o un cumplido, ¿cómo respondes?",
+                options: [
+                    { text: "Lo rechazo automáticamente - no puedo aceptar cosas buenas", value: 1 },
+                    { text: "Me siento incómoda y busco razones para descalificar por qué me lo ofrecen", value: 2 },
+                    { text: "Lo acepto con dificultad, sintiendo que no lo merezco", value: 3 },
+                    { text: "Lo recibo con gratitud, sabiendo que soy digna de bendiciones", value: 4 }
+                ]
+            },
+            {
+                q: "¿Qué tan seguido procrastinas o abandonas proyectos importantes justo antes de terminarlos?",
+                options: [
+                    { text: "Siempre - tengo un cementerio de proyectos abandonados al 90%", value: 1 },
+                    { text: "Frecuentemente - es un patrón frustrante que no puedo romper", value: 2 },
+                    { text: "Ocasionalmente - lo hago cuando el miedo al éxito o fracaso es muy grande", value: 3 },
+                    { text: "Rara vez - termino lo que empiezo consistentemente", value: 4 }
+                ]
+            },
+            {
+                q: "Cuando las cosas van bien en tu vida, ¿qué sientes y haces?",
+                options: [
+                    { text: "Pánico - inconscientemente busco formas de sabotear la felicidad", value: 1 },
+                    { text: "Ansiedad - espero que 'algo malo' suceda y frecuentemente lo provoco yo misma", value: 2 },
+                    { text: "Incomodidad - me cuesta disfrutar las temporadas buenas sin preocupación", value: 3 },
+                    { text: "Gratitud y disfrute - puedo recibir las bendiciones sin sabotearlas", value: 4 }
+                ]
+            },
+            {
+                q: "¿Cómo te hablas a ti misma comparado con cómo hablas a tus amigas?",
+                options: [
+                    { text: "Me trato infinitamente peor - nunca le hablaría a nadie como me hablo a mí", value: 1 },
+                    { text: "Soy mucho más dura conmigo misma que con cualquier otra persona", value: 2 },
+                    { text: "Todavía soy más crítica conmigo que con otros pero estoy mejorando", value: 3 },
+                    { text: "Me hablo con la misma gracia y compasión que ofrezco a otros", value: 4 }
+                ]
+            },
+            {
+                q: "¿Qué haces cuando estás cerca de un avance o bendición importante?",
+                options: [
+                    { text: "Creo conflictos, me enfermo, o encuentro formas de alejarme de la bendición", value: 1 },
+                    { text: "Me pongo extremadamente ansiosa y frecuentemente hago algo impulsivo que lo arruina", value: 2 },
+                    { text: "Siento miedo intenso pero trato de no actuar sobre él", value: 3 },
+                    { text: "Me mantengo estable y recibo la bendición sin sabotearla", value: 4 }
+                ]
+            },
+            {
+                q: "¿Con qué frecuencia te castigas emocionalmente por tus errores o imperfecciones?",
+                options: [
+                    { text: "Constantemente - vivo en un estado de auto-castigo perpetuo", value: 1 },
+                    { text: "Frecuentemente - me niego cosas buenas como 'castigo' por mis fallas", value: 2 },
+                    { text: "Ocasionalmente - reconozco cuando lo hago y trabajo en detenerlo", value: 3 },
+                    { text: "Rara vez - he aprendido que el castigo no viene de Dios", value: 4 }
+                ]
+            },
+            {
+                q: "Si escribieras todo lo que te dices a ti misma en un día, ¿cómo se vería?",
+                options: [
+                    { text: "Como abuso verbal puro - sería devastador leerlo en voz alta", value: 1 },
+                    { text: "Mayormente crítico y negativo - muy poco amor o gracia", value: 2 },
+                    { text: "Mixto - crítica entremezclada con intentos de ser más amable", value: 3 },
+                    { text: "Mayormente amoroso y veraz - como Dios me habla", value: 4 }
+                ]
+            }
+        ];
+
+        let currentQuestion = 0;
+        let answers = {};
+
+        function initQuiz() {
+            const container = document.getElementById('questionsContainer');
+            questions.forEach((question, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = `question ${index === 0 ? 'active' : ''}`;
+                questionDiv.id = `question-${index}`;
+                
+                let optionsHTML = '<div class="options">';
+                question.options.forEach((option, optIndex) => {
+                    optionsHTML += `
+                        <label class="option" onclick="selectOption(${index}, ${option.value}, this)">
+                            <input type="radio" name="q${index}" value="${option.value}">
+                            <span>${option.text}</span>
+                        </label>
+                    `;
+                });
+                optionsHTML += '</div>';
+                
+                questionDiv.innerHTML = `
+                    <h3><span class="question-number">${index + 1}</span>${question.q}</h3>
+                    ${optionsHTML}
+                `;
+                
+                container.appendChild(questionDiv);
+            });
+            updateProgress();
+        }
+
+        function selectOption(questionIndex, value, element) {
+            answers[questionIndex] = value;
+            
+            const options = element.parentElement.querySelectorAll('.option');
+            options.forEach(opt => opt.classList.remove('selected'));
+            element.classList.add('selected');
+            
+            document.getElementById('nextBtn').disabled = false;
+            if (currentQuestion === questions.length - 1) {
+                document.getElementById('submitBtn').disabled = false;
+            }
+        }
+
+        function nextQuestion() {
+            if (!answers.hasOwnProperty(currentQuestion)) {
+                alert('Por favor selecciona una respuesta antes de continuar');
+                return;
+            }
+            
+            document.getElementById(`question-${currentQuestion}`).classList.remove('active');
+            currentQuestion++;
+            document.getElementById(`question-${currentQuestion}`).classList.add('active');
+            
+            updateButtons();
+            updateProgress();
+        }
+
+        function previousQuestion() {
+            document.getElementById(`question-${currentQuestion}`).classList.remove('active');
+            currentQuestion--;
+            document.getElementById(`question-${currentQuestion}`).classList.add('active');
+            
+            updateButtons();
+            updateProgress();
+        }
+
+        function updateButtons() {
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const submitBtn = document.getElementById('submitBtn');
+            
+            prevBtn.style.display = currentQuestion > 0 ? 'block' : 'none';
+            
+            if (currentQuestion === questions.length - 1) {
+                nextBtn.style.display = 'none';
+                submitBtn.style.display = 'block';
+                submitBtn.disabled = !answers.hasOwnProperty(currentQuestion);
+            } else {
+                nextBtn.style.display = 'block';
+                submitBtn.style.display = 'none';
+                nextBtn.disabled = !answers.hasOwnProperty(currentQuestion);
+            }
+        }
+
+        function updateProgress() {
+            const progress = ((currentQuestion + 1) / questions.length) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        function calculateResult() {
+            if (Object.keys(answers).length !== questions.length) {
+                alert('Por favor responde todas las preguntas');
+                return;
+            }
+            
+            const totalScore = Object.values(answers).reduce((sum, val) => sum + val, 0);
+            const maxScore = questions.length * 4;
+            const percentage = (totalScore / maxScore) * 100;
+            
+            let resultTitle, resultDescription, recommendations;
+            
+            if (percentage <= 40) {
+                resultTitle = "Nivel: Autosabotaje Severo - Tu Peor Enemiga";
+                resultDescription = `<p><strong>Mujer,</strong> este autoanálisis revela una verdad dolorosa: tú eres tu propia peor enemiga. El autosabotaje y la autocrítica destructiva están bloqueando cada bendición, oportunidad y avance en tu vida. No es el enemigo externo quien te está deteniendo - eres tú misma.</p>
+                <p><strong>Tu realidad actual:</strong> Tienes un patrón establecido de sabotear tu propio éxito justo antes de lograrlo. Te hablas con una crueldad que nunca permitirías hacia otra persona. Rechazas cosas buenas porque internamente crees que no las mereces. Cuando las cosas van bien, inconscientemente buscas formas de destruir la felicidad. Vives en un ciclo perpetuo de auto-castigo y auto-destrucción.</p>
+                <p><strong>La verdad urgente:</strong> Dios no está bloqueando tus bendiciones - tú lo estás haciendo. Cada vez que te saboteas, estás rechazando lo que Él ya preparó para ti. Tu voz interna se ha convertido en la voz del enemigo, convenciéndote de que no mereces lo bueno que Dios tiene para ti.</p>`;
+                recommendations = `
+                    <li>Reconoce el autosabotaje como patrón - documenta cada vez que te saboteas para ver la realidad</li>
+                    <li>Busca consejería profesional cristiana - este nivel de autosabotaje necesita ayuda experta</li>
+                    <li>Haz un pacto de no hablar mal de ti misma por 30 días - literalmente ponte una liga en la muñeca y jálala cada vez que te critiques</li>
+                    <li>Escribe una carta de perdón hacia ti misma - necesitas perdonarte como Dios ya te perdonó</li>
+                    <li>Identifica la raíz del autosabotaje: ¿trauma? ¿vergüenza? ¿creencia de indignidad? Trabaja en esa raíz</li>
+                    <li>Crea un sistema de rendición de cuentas - alguien que te llame cuando te estés saboteando</li>
+                    <li>Cuando estés cerca de un avance, dobla tu vigilancia - reconoce cuándo el autosabotaje quiere aparecer</li>
+                    <li>Lee Romanos 8:1 diariamente - no hay condenación en Cristo</li>
+                `;
+            } else if (percentage <= 60) {
+                resultTitle = "Nivel: Autosabotaje Activo - En Guerra Interna";
+                resultDescription = `<p><strong>Mujer,</strong> estás en una guerra interna constante. Una parte de ti quiere crecer y avanzar, mientras otra parte te sabotea y critica cruelmente. Esta batalla interna está agotándote y frenando tu progreso hacia todo lo que Dios tiene para ti.</p>
+                <p><strong>Tu realidad actual:</strong> Reconoces algunos de tus patrones de autosabotaje pero sigues cayendo en ellos. Te criticas con más dureza de la que usas con cualquier otra persona. A veces rechazas bendiciones porque no te sientes digna. Tienes dificultad terminando proyectos importantes. Cuando las cosas van bien, esperas ansiosamente que algo malo suceda - y a veces inconscientemente lo provocas.</p>
+                <p><strong>El punto de inflexión:</strong> Estás lo suficientemente consciente como para ver el problema, pero todavía no has desarrollado las herramientas para detenerlo consistentemente. Este es el momento de decidir: ¿vas a seguir siendo tu obstáculo o te vas a convertir en tu aliada?</p>`;
+                recommendations = `
+                    <li>Lleva un 'diario de autosabotaje' - anota cada instancia y busca patrones sobre cuándo y por qué sucede</li>
+                    <li>Desarrolla una 'voz de verdad' que contrarreste tu autocrítica - literalmente responde en voz alta con verdad bíblica</li>
+                    <li>Practica 'autocompasión radical' - trátate como tratarías a tu mejor amiga</li>
+                    <li>Identifica tus 'momentos vulnerables' - cuándo es más probable que te sabotees</li>
+                    <li>Crea un plan de acción específico para cuando sientas la urgencia de sabotearte</li>
+                    <li>Trabaja con un coach o terapeuta en romper los patrones de autosabotaje</li>
+                    <li>Practica completar pequeños proyectos sin sabotearlos - construye evidencia de que puedes lograrlo</li>
+                    <li>Memoriza Filipenses 4:8 - piensa en lo que es verdadero, noble, justo sobre ti</li>
+                `;
+            } else if (percentage <= 80) {
+                resultTitle = "Nivel: Consciencia Creciente - Rompiendo Patrones";
+                resultDescription = `<p><strong>Mujer,</strong> has hecho un progreso significativo en reconocer y romper tus patrones de autosabotaje y autocrítica. La mayoría del tiempo, te tratas con más gracia y completas lo que empiezas. Sin embargo, todavía hay momentos donde los viejos patrones intentan regresar.</p>
+                <p><strong>Tu realidad actual:</strong> Reconoces rápidamente cuando estás comenzando a sabotearte y puedes detenerte antes. Tu autocrítica ha disminuido considerablemente. Puedes recibir bendiciones y cumplidos con más facilidad. Completas proyectos más consistentemente. Sin embargo, en momentos de alto estrés o cuando algo muy grande está por suceder, las tendencias de autosabotaje todavía aparecen.</p>
+                <p><strong>Tu próximo nivel:</strong> Eliminar completamente los patrones de autosabotaje hasta que tu respuesta automática sea apoyarte, no sabotearte. Convertirte en tu propia aliada más poderosa en lugar de tu crítica más dura.</p>`;
+                recommendations = `
+                    <li>Identifica tus últimas áreas de vulnerabilidad al autosabotaje y trabaja en ellas específicamente</li>
+                    <li>Celebra cada vez que NO te saboteas - construye nueva programación neural</li>
+                    <li>Comparte tu historia de romper el autosabotaje para ayudar a otras mujeres</li>
+                    <li>Desarrolla rituales de 'auto-apoyo' para momentos de alta presión</li>
+                    <li>Cuando completes algo importante, reconócelo y celébralo intencionalmente</li>
+                    <li>Practica recibir bendiciones grandes sin incomodidad o culpa</li>
+                    <li>Mentorea a alguien que lucha con autosabotaje - tu experiencia es valiosa</li>
+                    <li>Continúa renovando tu diálogo interno con la verdad de Dios sobre ti</li>
+                `;
+            } else {
+                resultTitle = "Nivel: Auto-Apoyo Activo - Tu Propia Aliada";
+                resultDescription = `<p><strong>Mujer,</strong> has logrado algo extraordinario: te has convertido en tu propia aliada en lugar de tu enemiga. Has roto los patrones de autosabotaje y autocrítica, y ahora te apoyas activamente en tu jornada. Eres un testimonio vivo de lo que significa tratarse con la gracia de Dios.</p>
+                <p><strong>Tu realidad actual:</strong> Te hablas con amor y verdad. Completas lo que empiezas sin sabotearte. Recibes bendiciones y oportunidades con gratitud, sabiendo que las mereces. Cuando cometes errores, te das gracia en lugar de castigarte. Eres tan compasiva contigo como lo eres con otros. Tu voz interna refleja la voz de Dios, no la del enemigo.</p>
+                <p><strong>Tu llamado ahora:</strong> Usar tu libertad del autosabotaje para liberar a otras mujeres. Tu jornada de ser tu peor enemiga a ser tu mejor aliada es un mapa que otras necesitan desesperadamente. Dios te sanó no solo para tu beneficio, sino para que seas instrumento de sanidad para tu generación.</p>`;
+                recommendations = `
+                    <li>Mantén tu vigilancia - el autosabotaje puede intentar regresar en momentos vulnerables</li>
+                    <li>Desarrolla contenido o ministerio sobre romper el autosabotaje y la autocrítica</li>
+                    <li>Comparte públicamente tu testimonio de transformación</li>
+                    <li>Mentorea intencionalmente a mujeres atrapadas en ciclos de autosabotaje</li>
+                    <li>Continúa celebrando tus logros y bendiciones sin minimizarlos</li>
+                    <li>Sé modelo visible de auto-compasión y auto-apoyo para otras</li>
+                    <li>Crea espacios seguros donde mujeres puedan ser honestas sobre su autosabotaje</li>
+                    <li>Intercede por mujeres que están destruyendo sus propias bendiciones</li>
+                `;
+            }
+            
+            const resultHTML = `
+                <div class="result-card">
+                    <div class="result-title">${resultTitle}</div>
+                    <div class="result-description">${resultDescription}</div>
+                    <div class="result-recommendations">
+                        <h4>Pasos Para Romper el Autosabotaje y la Autocrítica:</h4>
+                        <ul>${recommendations}</ul>
+                    </div>
+                    <div class="final-message">
+                        <p><strong>Recuerda:</strong> El autosabotaje no es tu identidad, es un patrón aprendido que puede romperse. La autocrítica no es motivación, es destrucción disfrazada. Dios no te critica cruelmente - Él te corrige con amor. No te sabotea - Él te impulsa. No te rechaza - Él te recibe. Es tiempo de tratarte como Dios te trata: con gracia abundante, amor incondicional y fe en tu potencial.</p>
+                        <p>"Ahora, pues, ninguna condenación hay para los que están en Cristo Jesús." - Romanos 8:1</p>
+                    </div>
+                    <button class="btn restart-btn" onclick="location.reload()">Realizar Autoanálisis Nuevamente</button>
+                </div>
+            `;
+            
+            document.getElementById('questionsContainer').style.display = 'none';
+            document.querySelector('.navigation').style.display = 'none';
+            document.querySelector('.progress-bar').style.display = 'none';
+            
+            const resultContainer = document.getElementById('resultContainer');
+            resultContainer.innerHTML = resultHTML;
+            resultContainer.classList.add('active');
+        }
+
+        // Initialize the quiz when page loads
+        initQuiz();
+    </script>
+</body>
+</html>
