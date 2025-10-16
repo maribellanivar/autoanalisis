@@ -1,1 +1,638 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autoanálisis: Tu Círculo de Proximidad</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        body {
+            font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #fafafa;
+            min-height: 100vh;
+            padding: 40px 20px;
+            color: #1d1d1f;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #806459 0%, #96776c 100%);
+            color: white;
+            padding: 60px 40px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: -0.5px;
+        }
+
+        .header p {
+            font-size: 1.15em;
+            opacity: 0.9;
+            line-height: 1.6;
+            text-align: left;
+            font-weight: 300;
+            max-width: 700px;
+        }
+
+        .content {
+            padding: 50px 40px;
+        }
+
+        .question {
+            margin-bottom: 40px;
+            padding: 0;
+            display: none;
+        }
+
+        .question.active {
+            display: block;
+            animation: fadeIn 0.6s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .question h3 {
+            color: #806459;
+            margin-bottom: 30px;
+            font-size: 1.3em;
+            line-height: 1.5;
+            font-weight: 600;
+            letter-spacing: -0.3px;
+        }
+
+        .question-number {
+            display: inline-block;
+            background: #806459;
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 36px;
+            margin-right: 12px;
+            font-weight: 600;
+            font-size: 0.95em;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .option {
+            padding: 20px 24px;
+            background: #f5f5f7;
+            border: 2px solid transparent;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            font-weight: 400;
+        }
+
+        .option:hover {
+            background: #e8e8ed;
+            transform: translateX(2px);
+        }
+
+        .option.selected {
+            background: #806459;
+            color: white;
+            border-color: #806459;
+            font-weight: 500;
+        }
+
+        .option input[type="radio"] {
+            margin-right: 16px;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: #806459;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+            padding: 0 40px;
+            gap: 20px;
+        }
+
+        .btn {
+            padding: 16px 40px;
+            background: #806459;
+            color: white;
+            border: none;
+            border-radius: 980px;
+            cursor: pointer;
+            font-size: 1.05em;
+            font-weight: 500;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            font-family: 'Montserrat', sans-serif;
+            letter-spacing: -0.2px;
+        }
+
+        .btn:hover {
+            background: #6e5449;
+            transform: scale(1.02);
+        }
+
+        .btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .progress-bar {
+            height: 4px;
+            background: #e8e8ed;
+            margin: 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #806459;
+            width: 0%;
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .result {
+            display: none;
+            padding: 50px 40px;
+        }
+
+        .result.active {
+            display: block;
+            animation: fadeIn 0.6s ease-in;
+        }
+
+        .result-card {
+            background: #f5f5f7;
+            border-radius: 20px;
+            padding: 40px;
+            margin-top: 30px;
+        }
+
+        .result-title {
+            color: #806459;
+            font-size: 2.2em;
+            margin-bottom: 24px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .result-description {
+            line-height: 1.8;
+            margin-bottom: 30px;
+            font-size: 1.05em;
+            font-weight: 400;
+            color: #1d1d1f;
+        }
+
+        .result-description p {
+            margin-bottom: 20px;
+        }
+
+        .result-recommendations {
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            margin-top: 30px;
+        }
+
+        .result-recommendations h4 {
+            color: #806459;
+            margin-bottom: 20px;
+            font-size: 1.4em;
+            font-weight: 600;
+            letter-spacing: -0.3px;
+        }
+
+        .result-recommendations ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .result-recommendations li {
+            padding: 14px 0;
+            padding-left: 35px;
+            position: relative;
+            line-height: 1.7;
+            font-weight: 400;
+            color: #1d1d1f;
+        }
+
+        .result-recommendations li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #806459;
+            font-weight: 600;
+            font-size: 1.2em;
+        }
+
+        .restart-btn {
+            margin-top: 35px;
+            background: transparent;
+            color: #806459;
+            border: 2px solid #806459;
+        }
+
+        .restart-btn:hover {
+            background: #806459;
+            color: white;
+        }
+
+        .final-message {
+            margin-top: 35px;
+            padding: 30px;
+            background: white;
+            border-radius: 16px;
+            border-left: 4px solid #806459;
+        }
+
+        .final-message p {
+            font-size: 1.05em;
+            line-height: 1.8;
+            color: #1d1d1f;
+            margin-bottom: 18px;
+        }
+
+        .final-message p:last-child {
+            font-style: italic;
+            color: #424245;
+            margin-bottom: 0;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 40px 30px;
+            }
+
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .content {
+                padding: 30px 20px;
+            }
+
+            .navigation {
+                flex-direction: column;
+                padding: 0 20px;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            .result {
+                padding: 30px 20px;
+            }
+
+            .result-card {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Autoanálisis: Tu Círculo de Proximidad</h1>
+            <p>Descubre si las personas más cercanas a ti te impulsan hacia tus sueños o te mantienen estancada</p>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+        <div class="content" id="questionsContainer">
+            <!-- Questions will be generated here -->
+        </div>
+
+        <div class="navigation">
+            <button class="btn" id="nextBtn" onclick="nextQuestion()">Siguiente</button>
+            <button class="btn" id="submitBtn" onclick="calculateResult()" style="display: none;">Ver Resultado</button>
+            <button class="btn" id="prevBtn" onclick="previousQuestion()" style="display: none;">Anterior</button>
+        </div>
+
+        <div class="result" id="resultContainer">
+            <!-- Result will be shown here -->
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                q: "Cuando compartes tus sueños o metas con las personas más cercanas a ti, ¿cómo reaccionan?",
+                options: [
+                    { text: "Con negatividad, dudas o 'realismo' que me desanima - me hacen cuestionar todo", value: 1 },
+                    { text: "Con indiferencia o poco apoyo genuino - no se emocionan por mi crecimiento", value: 2 },
+                    { text: "Con apoyo tibio - dicen que me apoyan pero no lo demuestran con acciones", value: 3 },
+                    { text: "Con entusiasmo genuino, fe y acciones que demuestran que creen en mí", value: 4 }
+                ]
+            },
+            {
+                q: "¿Qué tipo de conversaciones predominan con las personas más cercanas a ti?",
+                options: [
+                    { text: "Quejas, chismes, negatividad y hablar de problemas sin buscar soluciones", value: 1 },
+                    { text: "Superficiales o enfocadas en entretenimiento - rara vez hablamos de crecimiento", value: 2 },
+                    { text: "Mixtas - algunas constructivas, algunas que me drenan energía", value: 3 },
+                    { text: "Edificantes, motivadoras, sobre crecimiento y propósito - me inspiran", value: 4 }
+                ]
+            },
+            {
+                q: "¿Cómo se sienten las personas cercanas a ti cuando tienes éxito o logros?",
+                options: [
+                    { text: "Incómodas, envidiosas o hacen comentarios que minimizan mis logros", value: 1 },
+                    { text: "Neutras - no celebran pero tampoco critican abiertamente", value: 2 },
+                    { text: "Celebran superficialmente pero percibo incomodidad o competencia", value: 3 },
+                    { text: "Genuinamente felices - celebran mis victorias como si fueran suyas", value: 4 }
+                ]
+            },
+            {
+                q: "¿Las personas más cercanas a ti están donde tú quieres estar o están creciendo hacia algo más grande?",
+                options: [
+                    { text: "No - están estancadas y cómodas donde están, sin planes de crecer", value: 1 },
+                    { text: "No - están en un nivel muy diferente al que yo aspiro y no entienden mi visión", value: 2 },
+                    { text: "Algunas sí, otras no - mi círculo es mixto en términos de aspiraciones", value: 3 },
+                    { text: "Sí - están creciendo activamente o ya están donde aspiro llegar", value: 4 }
+                ]
+            },
+            {
+                q: "Después de pasar tiempo con las personas más cercanas a ti, ¿cómo te sientes?",
+                options: [
+                    { text: "Agotada, desanimada o cuestionando mis sueños - me drenan completamente", value: 1 },
+                    { text: "Igual que antes - ni mejor ni peor, solo tiempo pasado", value: 2 },
+                    { text: "A veces inspirada, a veces drenada - depende de la persona o el día", value: 3 },
+                    { text: "Energizada, motivada e inspirada - me impulsan hacia mis metas", value: 4 }
+                ]
+            },
+            {
+                q: "¿Las personas más cercanas a ti te retan a crecer o te mantienen en tu zona de confort?",
+                options: [
+                    { text: "Me mantienen cómoda - incluso sabotean activamente cuando intento crecer", value: 1 },
+                    { text: "Me mantienen donde estoy - no me retan ni me apoyan en cambios", value: 2 },
+                    { text: "Algunas me retan, otras prefieren que me quede igual", value: 3 },
+                    { text: "Me retan constantemente - no me dejan conformarme con menos de mi potencial", value: 4 }
+                ]
+            },
+            {
+                q: "¿Qué tanto han invertido las personas cercanas a ti en tu crecimiento y sueños?",
+                options: [
+                    { text: "Nada - ni siquiera preguntan sobre mis metas o progreso", value: 1 },
+                    { text: "Muy poco - palabras de apoyo pero ninguna acción real", value: 2 },
+                    { text: "Moderadamente - apoyo emocional pero poco más", value: 3 },
+                    { text: "Significativamente - tiempo, recursos, conexiones, oración y apoyo tangible", value: 4 }
+                ]
+            },
+            {
+                q: "¿Las personas más cercanas a ti te conectan con oportunidades o te aíslan?",
+                options: [
+                    { text: "Me aíslan - me mantienen en un círculo cerrado sin exposición a nuevas oportunidades", value: 1 },
+                    { text: "Ni conectan ni aíslan - simplemente no tienen acceso a donde necesito ir", value: 2 },
+                    { text: "Ocasionalmente hacen conexiones pero no es su prioridad", value: 3 },
+                    { text: "Constantemente me conectan con personas, recursos y oportunidades que me impulsan", value: 4 }
+                ]
+            },
+            {
+                q: "¿Cómo reaccionan las personas cercanas a ti cuando estableces límites o cambias para crecer?",
+                options: [
+                    { text: "Con resistencia, manipulación o culpa - hacen todo para mantenerme igual", value: 1 },
+                    { text: "Con ofensa o distanciamiento - no aceptan mi evolución", value: 2 },
+                    { text: "Con incomodidad pero eventual aceptación", value: 3 },
+                    { text: "Con apoyo y celebración - entienden que mi crecimiento requiere cambios", value: 4 }
+                ]
+            },
+            {
+                q: "Si tuvieras que evaluar honestamente: ¿Tu círculo cercano te está llevando hacia arriba o te está manteniendo abajo?",
+                options: [
+                    { text: "Definitivamente hacia abajo - son anclas que me mantienen estancada", value: 1 },
+                    { text: "Me mantienen donde estoy - no suben ni bajan, solo estancamiento", value: 2 },
+                    { text: "Mixto - algunas personas me impulsan, otras me frenan", value: 3 },
+                    { text: "Hacia arriba - mi círculo me eleva constantemente a nuevos niveles", value: 4 }
+                ]
+            }
+        ];
+
+        let currentQuestion = 0;
+        let answers = {};
+
+        function initQuiz() {
+            const container = document.getElementById('questionsContainer');
+            questions.forEach((question, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = `question ${index === 0 ? 'active' : ''}`;
+                questionDiv.id = `question-${index}`;
+                
+                let optionsHTML = '<div class="options">';
+                question.options.forEach((option, optIndex) => {
+                    optionsHTML += `
+                        <label class="option" onclick="selectOption(${index}, ${option.value}, this)">
+                            <input type="radio" name="q${index}" value="${option.value}">
+                            <span>${option.text}</span>
+                        </label>
+                    `;
+                });
+                optionsHTML += '</div>';
+                
+                questionDiv.innerHTML = `
+                    <h3><span class="question-number">${index + 1}</span>${question.q}</h3>
+                    ${optionsHTML}
+                `;
+                
+                container.appendChild(questionDiv);
+            });
+            updateProgress();
+        }
+
+        function selectOption(questionIndex, value, element) {
+            answers[questionIndex] = value;
+            
+            const options = element.parentElement.querySelectorAll('.option');
+            options.forEach(opt => opt.classList.remove('selected'));
+            element.classList.add('selected');
+            
+            document.getElementById('nextBtn').disabled = false;
+            if (currentQuestion === questions.length - 1) {
+                document.getElementById('submitBtn').disabled = false;
+            }
+        }
+
+        function nextQuestion() {
+            if (!answers.hasOwnProperty(currentQuestion)) {
+                alert('Por favor selecciona una respuesta antes de continuar');
+                return;
+            }
+            
+            document.getElementById(`question-${currentQuestion}`).classList.remove('active');
+            currentQuestion++;
+            document.getElementById(`question-${currentQuestion}`).classList.add('active');
+            
+            updateButtons();
+            updateProgress();
+        }
+
+        function previousQuestion() {
+            document.getElementById(`question-${currentQuestion}`).classList.remove('active');
+            currentQuestion--;
+            document.getElementById(`question-${currentQuestion}`).classList.add('active');
+            
+            updateButtons();
+            updateProgress();
+        }
+
+        function updateButtons() {
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const submitBtn = document.getElementById('submitBtn');
+            
+            prevBtn.style.display = currentQuestion > 0 ? 'block' : 'none';
+            
+            if (currentQuestion === questions.length - 1) {
+                nextBtn.style.display = 'none';
+                submitBtn.style.display = 'block';
+                submitBtn.disabled = !answers.hasOwnProperty(currentQuestion);
+            } else {
+                nextBtn.style.display = 'block';
+                submitBtn.style.display = 'none';
+                nextBtn.disabled = !answers.hasOwnProperty(currentQuestion);
+            }
+        }
+
+        function updateProgress() {
+            const progress = ((currentQuestion + 1) / questions.length) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        function calculateResult() {
+            if (Object.keys(answers).length !== questions.length) {
+                alert('Por favor responde todas las preguntas');
+                return;
+            }
+            
+            const totalScore = Object.values(answers).reduce((sum, val) => sum + val, 0);
+            const maxScore = questions.length * 4;
+            const percentage = (totalScore / maxScore) * 100;
+            
+            let resultTitle, resultDescription, recommendations;
+            
+            if (percentage <= 40) {
+                resultTitle = "Nivel: Círculo Tóxico - Rodeada de Anclas";
+                resultDescription = `<p><strong>Mujer,</strong> este autoanálisis revela una verdad urgente: tu círculo cercano no te está impulsando hacia tus sueños - te está hundiendo. Estás rodeada de personas que drenan tu energía, minimizan tu visión, sabotean tu crecimiento y te mantienen pequeña. Son anclas, no alas.</p>
+                <p><strong>Tu realidad actual:</strong> Las personas más cercanas reaccionan negativamente cuando compartes sueños. Tus conversaciones están llenas de quejas y negatividad. No celebran tus logros genuinamente. Después de estar con ellos, te sientes agotada y desanimada. No te retan a crecer - te mantienen cómoda donde estás. Cuando intentas cambiar, resisten activamente. Tu círculo no te está llevando hacia arriba - te está arrastrando hacia abajo.</p>
+                <p><strong>La verdad difícil pero necesaria:</strong> No puedes alcanzar tu siguiente nivel con las personas de tu nivel actual. Algunos en tu círculo no están destinados a ir contigo a donde Dios te está llevando. Y está bien. Amar a alguien no significa permitir que te detengan. Es tiempo de evaluar seriamente quién tiene acceso a tu vida.</p>`;
+                recommendations = `
+                    <li>Haz un inventario honesto - identifica quiénes específicamente te drenan vs. quiénes te impulsan</li>
+                    <li>Establece límites inmediatos con personas tóxicas - reduce tiempo y vulnerabilidad con ellas</li>
+                    <li>Busca intencionalmente UN mentor o persona que esté donde quieres estar</li>
+                    <li>Únete a un grupo, comunidad o espacio donde haya personas con tu visión de crecimiento</li>
+                    <li>Deja de compartir tus sueños con personas que constantemente los minimizan</li>
+                    <li>Lee sobre 'las 5 personas' - cómo tu círculo determina tu destino</li>
+                    <li>Ora por sabiduría para saber quién debe estar cerca y quién debe estar lejos</li>
+                    <li>Entiende: no eres cruel por proteger tu propósito - eres sabia</li>
+                `;
+            } else if (percentage <= 60) {
+                resultTitle = "Nivel: Círculo Mixto - Entre Anclas y Alas";
+                resultDescription = `<p><strong>Mujer,</strong> tu círculo es una mezcla - algunas personas te impulsan, otras te frenan. Esta inconsistencia te mantiene en un tira y afloja constante entre crecimiento y estancamiento. Avanzas un poco, retrocedes un poco. El problema es que las anclas tienen tanto o más acceso a tu vida que las alas.</p>
+                <p><strong>Tu realidad actual:</strong> Tienes algunas personas que apoyan tu crecimiento pero también tienes personas que lo sabotean. Tus conversaciones varían entre inspiradoras y drenantes. Algunos celebran tus logros, otros los minimizan. Te sientes energizada con algunas personas, agotada con otras. Algunas te retan a crecer, otras te mantienen cómoda. Tu círculo es inconsistente y esa inconsistencia te está costando velocidad hacia tus sueños.</p>
+                <p><strong>La decisión necesaria:</strong> Es tiempo de ser intencional sobre quién tiene acceso cercano a ti. No todos necesitan el mismo nivel de proximidad. Puedes amar a distancia. Puedes reducir tiempo sin eliminar completamente. Pero debes priorizar tu crecimiento sobre el comfort de mantener relaciones que no te sirven.</p>`;
+                recommendations = `
+                    <li>Crea niveles de proximidad - círculo íntimo, círculo medio, círculo externo</li>
+                    <li>Identifica quiénes deben estar en qué nivel basado en su impacto en tu crecimiento</li>
+                    <li>Aumenta tiempo con las personas que te impulsan, reduce con las que te frenan</li>
+                    <li>Establece límites claros sobre qué compartes con quién</li>
+                    <li>Busca activamente más 'alas' - personas que te eleven</li>
+                    <li>No te sientas culpable por priorizar tu crecimiento al elegir con quién pasas tiempo</li>
+                    <li>Evalúa relaciones anualmente - pregunta: '¿Esta persona me acerca o me aleja de mis metas?'</li>
+                    <li>Rodéate de personas cuyo 'normal' sea tu 'siguiente nivel'</li>
+                `;
+            } else if (percentage <= 80) {
+                resultTitle = "Nivel: Círculo Saludable - Mayormente Alas";
+                resultDescription = `<p><strong>Mujer,</strong> has hecho un trabajo hermoso curando tu círculo. La mayoría de las personas cercanas a ti te impulsan, te retan y celebran tu crecimiento. Tienes más alas que anclas. Sin embargo, todavía hay algunas personas o situaciones donde sientes que te frenan en lugar de impulsarte.</p>
+                <p><strong>Tu realidad actual:</strong> Tu círculo mayormente te apoya y celebra. Las conversaciones son en su mayoría edificantes. Te sientes energizada después de estar con tu gente. Te retan a crecer y no te dejan conformarte. Han invertido en ti de formas tangibles. Sin embargo, todavía hay uno o dos espacios donde sientes resistencia a tu crecimiento o falta de verdadero apoyo.</p>
+                <p><strong>Tu próximo nivel:</strong> Afinar aún más tu círculo. Asegurarte de que tu círculo íntimo esté completamente alineado con tu visión. Convertirte en el tipo de persona que también impulsa a otros hacia sus sueños. Tu círculo no solo debe apoyarte - debe elevarte.</p>`;
+                recommendations = `
+                    <li>Identifica las últimas 'anclas' en tu vida - evalúa si necesitan límites más firmes</li>
+                    <li>Profundiza relaciones con las personas que más te impulsan</li>
+                    <li>Sé más intencional sobre nuevas personas que permites en tu círculo íntimo</li>
+                    <li>Conviértete en 'ala' para alguien más - impulsa como has sido impulsada</li>
+                    <li>Crea o únete a una mastermind de mujeres con visiones similares</li>
+                    <li>Evalúa: ¿hay alguien en tu círculo que necesitas elevar a círculo más íntimo?</li>
+                    <li>Practica gratitud por las personas que te han impulsado</li>
+                    <li>Continúa siendo selectiva - tu círculo es tu activo más valioso</li>
+                `;
+            } else {
+                resultTitle = "Nivel: Círculo Poderoso - Rodeada de Alas";
+                resultDescription = `<p><strong>Mujer,</strong> has logrado algo extraordinario: has construido un círculo que te eleva constantemente. Estás rodeada de personas que creen en ti, te retan, celebran tus victorias y te impulsan hacia tu siguiente nivel. Tu círculo no es accidente - es resultado de decisiones intencionales y sabiduría.</p>
+                <p><strong>Tu realidad actual:</strong> Las personas cercanas reaccionan con entusiasmo genuino a tus sueños. Tus conversaciones son edificantes y te inspiran. Celebran tus logros como si fueran suyos. Te sientes energizada después de estar con ellos. Te retan constantemente a no conformarte. Han invertido tangiblemente en tu crecimiento. Te conectan con oportunidades. Tu círculo te lleva hacia arriba consistentemente.</p>
+                <p><strong>Tu llamado ahora:</strong> Proteger este círculo precioso y usar tu experiencia para ayudar a otras mujeres a construir círculos saludables. Convertirte en 'ala' intencional para mujeres que necesitan ser impulsadas. Tu círculo poderoso no es solo para tu beneficio - es para multiplicar el impacto.</p>`;
+                recommendations = `
+                    <li>Protege tu círculo vigilantemente - sé muy selectiva sobre nuevas adiciones</li>
+                    <li>Invierte en las relaciones que te impulsan - no las des por sentado</li>
+                    <li>Comparte tu testimonio de cómo construiste un círculo saludable</li>
+                    <li>Mentorea a alguien intencionalmente - sé el 'ala' que quizás no tuviste al inicio</li>
+                    <li>Crea espacios donde mujeres puedan conectar y construir círculos saludables</li>
+                    <li>Enseña sobre la importancia de proximidad intencional</li>
+                    <li>Continúa buscando personas que te eleven - siempre hay siguiente nivel</li>
+                    <li>Usa tu plataforma para normalizar límites saludables en relaciones</li>
+                `;
+            }
+            
+            const resultHTML = `
+                <div class="result-card">
+                    <div class="result-title">${resultTitle}</div>
+                    <div class="result-description">${resultDescription}</div>
+                    <div class="result-recommendations">
+                        <h4>Pasos Para Construir un Círculo que Te Impulse:</h4>
+                        <ul>${recommendations}</ul>
+                    </div>
+                    <div class="final-message">
+                        <p><strong>Recuerda:</strong> Eres el promedio de las 5 personas con las que más tiempo pasas. Tu círculo no es neutral - o te impulsa hacia arriba o te arrastra hacia abajo. Algunas personas fueron para una temporada, no para toda tu vida. Amar a alguien no significa darles acceso ilimitado a tu vida y energía. Proteger tu círculo no es egoísmo - es sabiduría. No puedes volar con águilas si sigues rodeándote de gallinas. Tu destino es demasiado importante para dejarlo en manos de personas que no creen en él.</p>
+                        <p>"No se dejen engañar: 'Las malas compañías corrompen las buenas costumbres.'" - 1 Corintios 15:33</p>
+                    </div>
+                    <button class="btn restart-btn" onclick="location.reload()">Realizar Autoanálisis Nuevamente</button>
+                </div>
+            `;
+            
+            document.getElementById('questionsContainer').style.display = 'none';
+            document.querySelector('.navigation').style.display = 'none';
+            document.querySelector('.progress-bar').style.display = 'none';
+            
+            const resultContainer = document.getElementById('resultContainer');
+            resultContainer.innerHTML = resultHTML;
+            resultContainer.classList.add('active');
+        }
+
+        // Initialize the quiz when page loads
+        initQuiz();
+    </script>
+</body>
+</html>
