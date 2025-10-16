@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autoanálisis: Mentalidad de Víctima</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #fafafa;
+            min-height: 100vh;
+            padding: 40px 20px;
+            color: #1d1d1f;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #806459 0%, #96776c 100%);
+            color: white;
+            padding: 60px 40px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: -0.5px;
+        }
+
+        .header p {
+            font-size: 1.15em;
+            opacity: 0.9;
+            line-height: 1.6;
+            text-align: left;
+            font-weight: 300;
+            max-width: 700px;
+        }
+
+        .content {
+            padding: 50px 40px;
+        }
+
+        .question {
+            margin-bottom: 40px;
+            padding: 0;
+            display: none;
+        }
+
+        .question.active {
+            display: block;
+            animation: fadeIn 0.6s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .question h3 {
+            color: #806459;
+            margin-bottom: 30px;
+            font-size: 1.3em;
+            line-height: 1.5;
+            font-weight: 600;
+            letter-spacing: -0.3px;
+        }
+
+        .question-number {
+            display: inline-block;
+            background: #806459;
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 36px;
+            margin-right: 12px;
+            font-weight: 600;
+            font-size: 0.95em;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .option {
+            padding: 20px 24px;
+            background: #f5f5f7;
+            border: 2px solid transparent;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            font-weight: 400;
+        }
+
+        .option:hover {
+            background: #e8e8ed;
+            transform: translateX(2px);
+        }
+
+        .option.selected {
+            background: #806459;
+            color: white;
+            border-color: #806459;
+            font-weight: 500;
+        }
+
+        .option input[type="radio"] {
+            margin-right: 16px;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: #806459;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+            padding: 0 40px;
+            gap: 20px;
+        }
+
+        .btn {
+            padding: 16px 40px;
+            background: #806459;
+            color: white;
+            border: none;
+            border-radius: 980px;
+            cursor: pointer;
+            font-size: 1.05em;
+            font-weight: 500;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            font-family: 'Montserrat', sans-serif;
+            letter-spacing: -0.2px;
+        }
+
+        .btn:hover {
+            background: #6e5449;
+            transform: scale(1.02);
+        }
+
+        .btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .progress-bar {
+            height: 4px;
+            background: #e8e8ed;
+            margin: 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #806459;
+            width: 0%;
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .result {
+            display: none;
+            padding: 50px 40px;
+        }
+
+        .result.active {
+            display: block;
+            animation: fadeIn 0.6s ease-in;
+        }
+
+        .result-card {
+            background: #f5f5f7;
+            border-radius: 20px;
+            padding: 40px;
+            margin-top: 30px;
+        }
+
+        .result-title {
+            color: #806459;
+            font-size: 2.2em;
+            margin-bottom: 24px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .result-description {
+            line-height: 1.8;
+            margin-bottom: 30px;
+            font-size: 1.05em;
+            font-weight: 400;
+            color: #1d1d1f;
+        }
+
+        .result-description p {
+            margin-bottom: 20px;
+        }
+
+        .result-recommendations {
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            margin-top: 30px;
+        }
+
+        .result-recommendations h4 {
+            color: #806459;
+            margin-bottom: 20px;
+            font-size: 1.4em;
+            font-weight: 600;
+            letter-spacing: -0.3px;
+        }
+
+        .result-recommendations ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .result-recommendations li {
+            padding: 14px 0;
+            padding-left: 35px;
+            position: relative;
+            line-height: 1.7;
+            font-weight: 400;
+            color: #1d1d1f;
+        }
+
+        .result-recommendations li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #806459;
+            font-weight: 600;
+            font-size: 1.2em;
+        }
+
+        .restart-btn {
+            margin-top: 35px;
+            background: transparent;
+            color: #806459;
+            border: 2px solid #806459;
+        }
+
+        .restart-btn:hover {
+            background: #806459;
+            color: white;
+        }
+
+        .final-message {
+            margin-top: 35px;
+            padding: 30px;
+            background: white;
+            border-radius: 16px;
+            border-left: 4px solid #806459;
+        }
+
+        .final-message p {
+            font-size: 1.05em;
+            line-height: 1.8;
+            color: #1d1d1f;
+            margin-bottom: 18px;
+        }
+
+        .final-message p:last-child {
+            font-style: italic;
+            color: #424245;
+            margin-bottom: 0;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 40px 30px;
+            }
+
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .content {
+                padding: 30px 20px;
+            }
+
+            .navigation {
+                flex-direction: column;
+                padding: 0 20px;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            .result {
+                padding: 30px 20px;
+            }
+
+            .result-card {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Autoanálisis: Mentalidad de Víctima</h1>
+            <p>Descubre si estás atrapada en una mentalidad de víctima que te impide avanzar hacia tus sueños y proyectos</p>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+        <div class="content" id="questionsContainer">
+            <!-- Questions will be generated here -->
+        </div>
+
+        <div class="navigation">
+            <button class="btn" id="nextBtn" onclick="nextQuestion()">Siguiente</button>
+            <button class="btn" id="submitBtn" onclick="calculateResult()" style="display: none;">Ver Resultado</button>
+            <button class="btn" id="prevBtn" onclick="previousQuestion()" style="display: none;">Anterior</button>
+        </div>
+
+        <div class="result" id="resultContainer">
+            <!-- Result will be shown here -->
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                q: "Cuando algo no sale como esperabas, ¿cuál es tu primera reacción?",
+                options: [
+                    { text: "Culpar inmediatamente a factores externos - nunca es mi responsabilidad", value: 1 },
+                    { text: "Buscar a quién o qué culpar - raramente examino mi parte en la situación", value: 2 },
+                    { text: "A veces asumo responsabilidad, a veces culpo a circunstancias", value: 3 },
+                    { text: "Examino qué puedo aprender y qué está en mi control cambiar", value: 4 }
+                ]
+            },
+            {
+                q: "¿Con qué frecuencia usas frases como 'es que...', 'pero es que...', 'si tan solo...' para explicar por qué no avanzas?",
+                options: [
+                    { text: "Constantemente - mi vida es una lista interminable de justificaciones externas", value: 1 },
+                    { text: "Frecuentemente - siempre tengo una razón externa de por qué no puedo", value: 2 },
+                    { text: "Ocasionalmente - reconozco cuando lo hago y trato de cambiar el patrón", value: 3 },
+                    { text: "Rara vez - me enfoco en lo que puedo hacer, no en excusas", value: 4 }
+                ]
+            },
+            {
+                q: "¿Cómo describes tu vida cuando hablas con otros?",
+                options: [
+                    { text: "Como una serie de desgracias e injusticias que me han pasado - soy la protagonista del sufrimiento", value: 1 },
+                    { text: "Enfocándome principalmente en lo negativo y en cómo todo está en mi contra", value: 2 },
+                    { text: "Con una mezcla de desafíos y bendiciones, aunque tiendo a enfatizar lo difícil", value: 3 },
+                    { text: "Con balance - reconozco desafíos pero también mi capacidad de superarlos", value: 4 }
+                ]
+            },
+            {
+                q: "Cuando alguien te ofrece una solución o consejo para tu situación, ¿cómo respondes?",
+                options: [
+                    { text: "Con un 'sí, pero...' - encuentro inmediatamente por qué no funcionará", value: 1 },
+                    { text: "Con resistencia - prefiero quejarme que actuar sobre soluciones", value: 2 },
+                    { text: "Escucho pero frecuentemente me enfoco en los obstáculos", value: 3 },
+                    { text: "Con apertura - evalúo si puedo aplicarlo a mi situación", value: 4 }
+                ]
+            },
+            {
+                q: "¿Qué porcentaje de tus conversaciones incluyen quejas sobre tu situación, otras personas o circunstancias?",
+                options: [
+                    { text: "La mayoría o todo - quejarme es mi forma principal de comunicación", value: 1 },
+                    { text: "Mucho - paso más tiempo quejándome que buscando soluciones", value: 2 },
+                    { text: "Algo - todavía me quejo más de lo que quisiera", value: 3 },
+                    { text: "Poco - prefiero enfocarme en soluciones y gratitud", value: 4 }
+                ]
+            },
+            {
+                q: "¿Cuánto de tu falta de progreso atribuyes a factores fuera de tu control?",
+                options: [
+                    { text: "Todo - mi estancamiento es 100% culpa de circunstancias, personas o mi pasado", value: 1 },
+                    { text: "La mayoría - rara vez considero qué está en mi poder cambiar", value: 2 },
+                    { text: "La mitad - reconozco algunos factores externos pero también mi responsabilidad", value: 3 },
+                    { text: "Poco - entiendo que aunque hay factores externos, mi respuesta determina mi progreso", value: 4 }
+                ]
+            },
+            {
+                q: "¿Cómo hablas de las personas que 'te hicieron daño' o 'te causaron problemas'?",
+                options: [
+                    { text: "Como villanos de mi historia - toda mi vida está definida por lo que otros me hicieron", value: 1 },
+                    { text: "Con resentimiento constante - no puedo avanzar porque ellos me lastimaron", value: 2 },
+                    { text: "Con dolor pero intentando procesar y soltar", value: 3 },
+                    { text: "Con compasión y perspectiva - me lastimaron pero no defino mi futuro por mi pasado", value: 4 }
+                ]
+            },
+            {
+                q: "Cuando ves a alguien que superó circunstancias similares o peores que las tuyas, ¿qué piensas?",
+                options: [
+                    { text: "'Ellos tuvieron suerte' o 'Mi situación es diferente/peor' - siempre justifico por qué yo no puedo", value: 1 },
+                    { text: "'No entienden lo difícil que ES realmente' - me molesta que otros lo logren", value: 2 },
+                    { text: "Inspiración mezclada con excusas de por qué es más difícil para mí", value: 3 },
+                    { text: "Inspiración genuina - si ellos pudieron, yo también puedo", value: 4 }
+                ]
+            },
+            {
+                q: "¿Qué tan cómoda te sientes asumiendo responsabilidad total por tu vida actual?",
+                options: [
+                    { text: "Muy incómoda - mi vida es resultado de lo que otros hicieron, no de mis decisiones", value: 1 },
+                    { text: "Incómoda - prefiero tener a quién culpar que asumir el poder de cambiar", value: 2 },
+                    { text: "Algo incómoda - estoy aprendiendo pero todavía culpo circunstancias frecuentemente", value: 3 },
+                    { text: "Cómoda - reconozco que aunque hay factores externos, mis decisiones crearon mi presente", value: 4 }
+                ]
+            },
+            {
+                q: "Si mañana todas tus 'excusas válidas' desaparecieran, ¿qué pasaría?",
+                options: [
+                    { text: "Entraría en pánico - mi identidad está construida sobre ser víctima de circunstancias", value: 1 },
+                    { text: "No sabría quién ser - mis excusas me definen y protegen de responsabilidad", value: 2 },
+                    { text: "Me sentiría vulnerable pero lista para intentar avanzar", value: 3 },
+                    { text: "Me sentiría liberada - ya he identificado que son excusas, no realidades absolutas", value: 4 }
+                ]
+            }
+        ];
+
+        let currentQuestion = 0;
+        let answers = {};
+
+        function initQuiz() {
+            const container = document.getElementById('questionsContainer');
+            questions.forEach((question, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = `question ${index === 0 ? 'active' : ''}`;
+                questionDiv.id = `question-${index}`;
+                
+                let optionsHTML = '<div class="options">';
+                question.options.forEach((option, optIndex) => {
+                    optionsHTML += `
+                        <label class="option" onclick="selectOption(${index}, ${option.value}, this)">
+                            <input type="radio" name="q${index}" value="${option.value}">
+                            <span>${option.text}</span>
+                        </label>
+                    `;
+                });
+                optionsHTML += '</div>';
+                
+                questionDiv.innerHTML = `
+                    <h3><span class="question-number">${index + 1}</span>${question.q}</h3>
+                    ${optionsHTML}
+                `;
+                
+                container.appendChild(questionDiv);
+            });
+            updateProgress();
+        }
+
+        function selectOption(questionIndex, value, element) {
+            answers[questionIndex] = value;
+            
+            const options = element.parentElement.querySelectorAll('.option');
+            options.forEach(opt => opt.classList.remove('selected'));
+            element.classList.add('selected');
+            
+            document.getElementById('nextBtn').disabled = false;
+            if (currentQuestion === questions.length - 1) {
+                document.getElementById('submitBtn').disabled = false;
+            }
+        }
+
+        function nextQuestion() {
+            if (!answers.hasOwnProperty(currentQuestion)) {
+                alert('Por favor selecciona una respuesta antes de continuar');
+                return;
+            }
+            
+            document.getElementById(`question-${currentQuestion}`).classList.remove('active');
+            currentQuestion++;
+            document.getElementById(`question-${currentQuestion}`).classList.add('active');
+            
+            updateButtons();
+            updateProgress();
+        }
+
+        function previousQuestion() {
+            document.getElementById(`question-${currentQuestion}`).classList.remove('active');
+            currentQuestion--;
+            document.getElementById(`question-${currentQuestion}`).classList.add('active');
+            
+            updateButtons();
+            updateProgress();
+        }
+
+        function updateButtons() {
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const submitBtn = document.getElementById('submitBtn');
+            
+            prevBtn.style.display = currentQuestion > 0 ? 'block' : 'none';
+            
+            if (currentQuestion === questions.length - 1) {
+                nextBtn.style.display = 'none';
+                submitBtn.style.display = 'block';
+                submitBtn.disabled = !answers.hasOwnProperty(currentQuestion);
+            } else {
+                nextBtn.style.display = 'block';
+                submitBtn.style.display = 'none';
+                nextBtn.disabled = !answers.hasOwnProperty(currentQuestion);
+            }
+        }
+
+        function updateProgress() {
+            const progress = ((currentQuestion + 1) / questions.length) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        function calculateResult() {
+            if (Object.keys(answers).length !== questions.length) {
+                alert('Por favor responde todas las preguntas');
+                return;
+            }
+            
+            const totalScore = Object.values(answers).reduce((sum, val) => sum + val, 0);
+            const maxScore = questions.length * 4;
+            const percentage = (totalScore / maxScore) * 100;
+            
+            let resultTitle, resultDescription, recommendations;
+            
+            if (percentage <= 40) {
+                resultTitle = "Nivel: Victimismo Profundo - Identidad de Víctima";
+                resultDescription = `<p><strong>Mujer,</strong> este autoanálisis revela una verdad urgente: has adoptado una mentalidad de víctima como tu identidad. Tu vida está completamente definida por lo que te ha pasado, lo que otros te hicieron, y las circunstancias que enfrentaste. Esta mentalidad no solo te mantiene estancada - te mantiene prisionera de tu pasado y tus excusas.</p>
+                <p><strong>Tu realidad actual:</strong> Tu vocabulario está lleno de culpas externas y justificaciones. Rechazas soluciones con un 'sí, pero...'. Tus conversaciones son quejas constantes. Tu pasado define tu presente y tu futuro. No asumes responsabilidad por tu vida porque es más cómodo culpar. Has construido tu identidad sobre el sufrimiento y las injusticias. Mientras sigas siendo víctima, no podrás ser victoriosa.</p>
+                <p><strong>La verdad liberadora pero dura:</strong> Tu pasado pasó. Las injusticias fueron reales. Pero seguir en mentalidad de víctima es una decisión que tomas cada día. No puedes cambiar lo que te pasó, pero SÍ puedes cambiar cómo lo usas. Víctima o Victoriosa - solo tú decides.</p>`;
+                recommendations = `
+                    <li>Reconoce la mentalidad de víctima como tu prisión actual - admítelo sin justificarte</li>
+                    <li>Haz un ayuno de quejas por 21 días - cada vez que te quejes, cambia la queja por gratitud o solución</li>
+                    <li>Elimina las frases 'es que...', 'pero es que...', 'si tan solo...' de tu vocabulario completamente</li>
+                    <li>Busca terapia profesional para trabajar trauma real sin usarlo como excusa perpetua</li>
+                    <li>Escribe tu historia en dos versiones: como víctima y como victoriosa - elige cuál vivir</li>
+                    <li>Asume responsabilidad por UNA área de tu vida esta semana - sin culpar a nadie ni nada</li>
+                    <li>Identifica qué ganas al permanecer como víctima (atención, excusa, identidad) y suéltalo</li>
+                    <li>Lee historias de personas que superaron victimismo y se convirtieron en vencedoras</li>
+                `;
+            } else if (percentage <= 60) {
+                resultTitle = "Nivel: Victimismo Activo - Atrapada en Excusas";
+                resultDescription = `<p><strong>Mujer,</strong> aunque no vives completamente en mentalidad de víctima, todavía usas el victimismo como refugio cuando las cosas se ponen difíciles. Alternas entre asumir responsabilidad y culpar circunstancias externas. Esta inconsistencia te mantiene dando vueltas en el mismo lugar sin avanzar realmente.</p>
+                <p><strong>Tu realidad actual:</strong> Reconoces algunos de tus patrones de victimismo pero todavía caes en ellos frecuentemente. Tienes más excusas que acciones. Cuando alguien ofrece soluciones, tu primera respuesta es listar obstáculos. Te quejas más de lo que actúas. Tu pasado todavía tiene demasiado poder sobre tu presente. Sabes que debes cambiar pero el victimismo se siente más seguro que la responsabilidad.</p>
+                <p><strong>El punto de decisión:</strong> Estás en una encrucijada. Puedes seguir usando tus circunstancias como excusas perpetuas, o puedes decidir que aunque fueron reales, no definirán tu futuro. Víctima es cómodo. Victoriosa requiere valentía. ¿Qué elegirás?</p>`;
+                recommendations = `
+                    <li>Lleva un 'diario de víctima vs victoriosa' - documenta cada vez que actúes desde una u otra mentalidad</li>
+                    <li>Por cada queja que digas, encuentra DOS soluciones posibles</li>
+                    <li>Practica responder 'Sí, y...' en lugar de 'Sí, pero...' cuando recibas consejos</li>
+                    <li>Identifica tus 3 excusas favoritas y reemplázalas con acciones concretas</li>
+                    <li>Rodéate de personas que no permitan tu victimismo y te reten con amor</li>
+                    <li>Cada semana, asume responsabilidad total por un área donde antes culpabas a otros</li>
+                    <li>Transforma tu narrativa - cuenta tu historia enfocándote en cómo superaste, no solo en lo que sufriste</li>
+                    <li>Lee Filipenses 3:13-14 sobre olvidar lo que queda atrás</li>
+                `;
+            } else if (percentage <= 80) {
+                resultTitle = "Nivel: Responsabilidad Creciente - Saliendo del Victimismo";
+                resultDescription = `<p><strong>Mujer,</strong> has hecho un progreso hermoso en salir de la mentalidad de víctima. La mayoría del tiempo, asumes responsabilidad por tu vida y buscas soluciones en lugar de excusas. Aunque todavía hay momentos donde el victimismo intenta regresar, reconoces el patrón rápidamente y lo corriges.</p>
+                <p><strong>Tu realidad actual:</strong> Ves tu pasado con perspectiva - te afectó pero no te define. Asumes responsabilidad por tu presente y futuro. Cuando algo no sale bien, examinas tu parte antes de culpar factores externos. Recibes consejos con apertura. Te quejas menos y actúas más. Sin embargo, en momentos de presión o dolor, la tentación de volver al victimismo todavía aparece.</p>
+                <p><strong>Tu próximo nivel:</strong> Eliminar completamente los últimos vestigios de mentalidad de víctima. Vivir en responsabilidad total por tu vida mientras das gracia a tu proceso. Convertirte en testimonio de que es posible pasar de víctima a victoriosa.</p>`;
+                recommendations = `
+                    <li>Identifica tus últimos 'puntos de víctima' - situaciones donde todavía culpas en lugar de actuar</li>
+                    <li>Comparte tu testimonio de cómo saliste del victimismo para inspirar a otras</li>
+                    <li>Practica gratitud radical - agradece incluso por las circunstancias difíciles que te forjaron</li>
+                    <li>Mentorea a alguien atrapada en mentalidad de víctima</li>
+                    <li>Cuando enfrentes adversidad, pregunta inmediatamente: '¿Qué puedo hacer YO con esto?'</li>
+                    <li>Celebra cada vez que asumas responsabilidad en lugar de culpar</li>
+                    <li>Desarrolla una teología sólida de redención - cómo Dios usa todo para bien</li>
+                    <li>Continúa renovando tu narrativa de vida con enfoque en victoria, no victimismo</li>
+                `;
+            } else {
+                resultTitle = "Nivel: Mentalidad de Victoriosa - Dueña de Tu Historia";
+                resultDescription = `<p><strong>Mujer,</strong> has alcanzado algo extraordinario: libertad total de la mentalidad de víctima. Vives como victoriosa, no como víctima. Asumes responsabilidad completa por tu vida mientras das gracia a tu proceso. Tu pasado te forjó, pero no te define. Eres dueña de tu historia, no prisionera de ella.</p>
+                <p><strong>Tu realidad actual:</strong> No usas tu pasado como excusa sino como testimonio. Asumes responsabilidad por tus decisiones y sus consecuencias. Cuando algo no sale bien, examinas qué aprender en lugar de a quién culpar. No te quejas, actúas. Recibes consejos con apertura. Tu narrativa está llena de superación, no de sufrimiento perpetuo. Eres libre.</p>
+                <p><strong>Tu llamado ahora:</strong> Usar tu libertad del victimismo para liberar a otras mujeres. Tu testimonio de víctima a victoriosa es un mapa que otras necesitan desesperadamente. Dios te liberó no solo para tu beneficio, sino para que seas instrumento que rompa cadenas de victimismo en tu generación.</p>`;
+                recommendations = `
+                    <li>Mantén tu mentalidad de victoriosa vigilante - el victimismo puede regresar en crisis</li>
+                    <li>Desarrolla contenido o ministerio sobre pasar de víctima a victoriosa</li>
+                    <li>Comparte públicamente tu jornada de transformación</li>
+                    <li>Mentorea intencionalmente a mujeres atrapadas en mentalidad de víctima</li>
+                    <li>Sé modelo visible de responsabilidad total por la propia vida</li>
+                    <li>Enseña a otras cómo transformar su narrativa de sufrimiento a superación</li>
+                    <li>Crea espacios donde mujeres puedan ser honestas sobre su victimismo sin juicio</li>
+                    <li>Intercede por mujeres prisioneras de su pasado y sus excusas</li>
+                `;
+            }
+            
+            const resultHTML = `
+                <div class="result-card">
+                    <div class="result-title">${resultTitle}</div>
+                    <div class="result-description">${resultDescription}</div>
+                    <div class="result-recommendations">
+                        <h4>Pasos Para Pasar de Víctima a Victoriosa:</h4>
+                        <ul>${recommendations}</ul>
+                    </div>
+                    <div class="final-message">
+                        <p><strong>Recuerda:</strong> Víctima o Victoriosa - es tu decisión cada día. Lo que te pasó fue real. El dolor fue real. La injusticia fue real. Pero quedarte ahí es una elección. No puedes controlar lo que te sucedió, pero SÍ puedes controlar lo que haces con ello. Tu pasado puede ser tu prisión o tu plataforma. Tu sufrimiento puede ser tu identidad o tu testimonio. Dios no te llamó a ser víctima perpetua - te llamó a ser más que vencedora. Es tiempo de soltar las excusas y tomar tu poder de vuelta.</p>
+                        <p>"Hermanos, yo mismo no pretendo haberlo ya alcanzado; pero una cosa hago: olvidando ciertamente lo que queda atrás, y extendiéndome a lo que está delante, prosigo a la meta." - Filipenses 3:13-14</p>
+                    </div>
+                    <button class="btn restart-btn" onclick="location.reload()">Realizar Autoanálisis Nuevamente</button>
+                </div>
+            `;
+            
+            document.getElementById('questionsContainer').style.display = 'none';
+            document.querySelector('.navigation').style.display = 'none';
+            document.querySelector('.progress-bar').style.display = 'none';
+            
+            const resultContainer = document.getElementById('resultContainer');
+            resultContainer.innerHTML = resultHTML;
+            resultContainer.classList.add('active');
+        }
+
+        // Initialize the quiz when page loads
+        initQuiz();
+    </script>
+</body>
+</html>
