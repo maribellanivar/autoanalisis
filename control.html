@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autoanálisis: Soltar el Control</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #fafafa;
+            min-height: 100vh;
+            padding: 40px 20px;
+            color: #1d1d1f;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #806459 0%, #96776c 100%);
+            color: white;
+            padding: 60px 40px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: -0.5px;
+        }
+
+        .header p {
+            font-size: 1.15em;
+            opacity: 0.9;
+            line-height: 1.6;
+            text-align: left;
+            font-weight: 300;
+            max-width: 700px;
+        }
+
+        .content {
+            padding: 50px 40px;
+        }
+
+        .question {
+            margin-bottom: 40px;
+            padding: 0;
+            display: none;
+        }
+
+        .question.active {
+            display: block;
+            animation: fadeIn 0.6s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .question h3 {
+            color: #806459;
+            margin-bottom: 30px;
+            font-size: 1.3em;
+            line-height: 1.5;
+            font-weight: 600;
+            letter-spacing: -0.3px;
+        }
+
+        .question-number {
+            display: inline-block;
+            background: #806459;
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 36px;
+            margin-right: 12px;
+            font-weight: 600;
+            font-size: 0.95em;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .option {
+            padding: 20px 24px;
+            background: #f5f5f7;
+            border: 2px solid transparent;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            font-weight: 400;
+        }
+
+        .option:hover {
+            background: #e8e8ed;
+            transform: translateX(2px);
+        }
+
+        .option.selected {
+            background: #806459;
+            color: white;
+            border-color: #806459;
+            font-weight: 500;
+        }
+
+        .option input[type="radio"] {
+            margin-right: 16px;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: #806459;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+            padding: 0 40px;
+            gap: 20px;
+        }
+
+        .btn {
+            padding: 16px 40px;
+            background: #806459;
+            color: white;
+            border: none;
+            border-radius: 980px;
+            cursor: pointer;
+            font-size: 1.05em;
+            font-weight: 500;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            font-family: 'Montserrat', sans-serif;
+            letter-spacing: -0.2px;
+        }
+
+        .btn:hover {
+            background: #6e5449;
+            transform: scale(1.02);
+        }
+
+        .btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .progress-bar {
+            height: 4px;
+            background: #e8e8ed;
+            margin: 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #806459;
+            width: 0%;
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .result {
+            display: none;
+            padding: 50px 40px;
+        }
+
+        .result.active {
+            display: block;
+            animation: fadeIn 0.6s ease-in;
+        }
+
+        .result-card {
+            background: #f5f5f7;
+            border-radius: 20px;
+            padding: 40px;
+            margin-top: 30px;
+        }
+
+        .result-title {
+            color: #806459;
+            font-size: 2.2em;
+            margin-bottom: 24px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .result-description {
+            line-height: 1.8;
+            margin-bottom: 30px;
+            font-size: 1.05em;
+            font-weight: 400;
+            color: #1d1d1f;
+        }
+
+        .result-description p {
+            margin-bottom: 20px;
+        }
+
+        .result-recommendations {
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            margin-top: 30px;
+        }
+
+        .result-recommendations h4 {
+            color: #806459;
+            margin-bottom: 20px;
+            font-size: 1.4em;
+            font-weight: 600;
+            letter-spacing: -0.3px;
+        }
+
+        .result-recommendations ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .result-recommendations li {
+            padding: 14px 0;
+            padding-left: 35px;
+            position: relative;
+            line-height: 1.7;
+            font-weight: 400;
+            color: #1d1d1f;
+        }
+
+        .result-recommendations li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #806459;
+            font-weight: 600;
+            font-size: 1.2em;
+        }
+
+        .restart-btn {
+            margin-top: 35px;
+            background: transparent;
+            color: #806459;
+            border: 2px solid #806459;
+        }
+
+        .restart-btn:hover {
+            background: #806459;
+            color: white;
+        }
+
+        .final-message {
+            margin-top: 35px;
+            padding: 30px;
+            background: white;
+            border-radius: 16px;
+            border-left: 4px solid #806459;
+        }
+
+        .final-message p {
+            font-size: 1.05em;
+            line-height: 1.8;
+            color: #1d1d1f;
+            margin-bottom: 18px;
+        }
+
+        .final-message p:last-child {
+            font-style: italic;
+            color: #424245;
+            margin-bottom: 0;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 40px 30px;
+            }
+
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .content {
+                padding: 30px 20px;
+            }
+
+            .navigation {
+                flex-direction: column;
+                padding: 0 20px;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            .result {
+                padding: 30px 20px;
+            }
+
+            .result-card {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Autoanálisis: Soltar el Control</h1>
+            <p>Descubre si estás confiando en tus propios planes o si realmente has soltado el control a Dios</p>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+        <div class="content" id="questionsContainer">
+            <!-- Questions will be generated here -->
+        </div>
+
+        <div class="navigation">
+            <button class="btn" id="prevBtn" onclick="previousQuestion()" style="display: none;">Anterior</button>
+            <button class="btn" id="nextBtn" onclick="nextQuestion()">Siguiente</button>
+            <button class="btn" id="submitBtn" onclick="calculateResult()" style="display: none;">Ver Resultado</button>
+        </div>
+
+        <div class="result" id="resultContainer">
+            <!-- Result will be shown here -->
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                q: "Cuando tus planes no salen como esperabas, ¿cuál es tu primera reacción?",
+                options: [
+                    { text: "Entro en pánico y trato de forzar que las cosas funcionen a toda costa", value: 1 },
+                    { text: "Me frustro intensamente y cuestiono por qué Dios lo permitió", value: 2 },
+                    { text: "Me decepciono pero intento ajustar y buscar una solución rápidamente", value: 3 },
+                    { text: "Respiro, oro y busco entender qué está enseñándome Dios en esta redirección", value: 4 }
+                ]
+            },
+            {
+                q: "¿Cómo te sientes cuando tienes que esperar por algo que deseas profundamente?",
+                options: [
+                    { text: "Desesperada e impaciente - busco formas de acelerar el proceso por mi cuenta", value: 1 },
+                    { text: "Ansiosa y constantemente preocupada de que nunca sucederá", value: 2 },
+                    { text: "Inquieta pero intento mantenerme ocupada para distraerme", value: 3 },
+                    { text: "En paz, confiando que Dios tiene el tiempo perfecto aunque no lo entienda", value: 4 }
+                ]
+            },
+            {
+                q: "¿Con qué frecuencia intentas manipular o controlar situaciones para lograr 'tu' resultado?",
+                options: [
+                    { text: "Constantemente - tengo un plan para todo y necesito que se cumpla", value: 1 },
+                    { text: "Frecuentemente - me cuesta confiar y prefiero tener todo bajo mi control", value: 2 },
+                    { text: "Ocasionalmente - en áreas donde siento mucho miedo o inseguridad", value: 3 },
+                    { text: "Rara vez - he aprendido que el control es una ilusión y confío en Dios", value: 4 }
+                ]
+            },
+            {
+                q: "Cuando oras por algo específico, ¿cómo terminas tus oraciones?",
+                options: [
+                    { text: "Le digo exactamente a Dios cómo debe responder y en qué tiempo", value: 1 },
+                    { text: "Oro por lo que quiero pero con mucha ansiedad de que no suceda", value: 2 },
+                    { text: "Presento mi petición pero todavía me aferra mentalmente al resultado que deseo", value: 3 },
+                    { text: "Presento mi petición y genuinamente digo 'pero que se haga Tu voluntad, no la mía'", value: 4 }
+                ]
+            },
+            {
+                q: "¿Cómo reaccionas cuando alguien tiene una idea diferente a la tuya sobre cómo hacer algo?",
+                options: [
+                    { text: "Me molesto y defiendo mi forma porque 'sé' que es la mejor", value: 1 },
+                    { text: "Me pongo a la defensiva pero cedo con resentimiento", value: 2 },
+                    { text: "Escucho pero intento convencer sutilmente de que mi forma es mejor", value: 3 },
+                    { text: "Escucho con apertura y considero que quizás Dios habla a través de otros", value: 4 }
+                ]
+            },
+            {
+                q: "En las áreas importantes de tu vida (relaciones, finanzas, carrera), ¿quién tiene realmente la última palabra?",
+                options: [
+                    { text: "Yo - planifico todo y Dios solo debe bendecir mis planes", value: 1 },
+                    { text: "Yo principalmente, pero oro para que Dios me ayude a lograr lo que quiero", value: 2 },
+                    { text: "Es una mezcla - a veces consulto a Dios, a veces decido sola", value: 3 },
+                    { text: "Dios - busco Su dirección primero y ajusto mis planes según Su guía", value: 4 }
+                ]
+            },
+            {
+                q: "¿Cómo manejas la incertidumbre sobre el futuro?",
+                options: [
+                    { text: "Con terror - hago listas exhaustivas y planes de contingencia para todo", value: 1 },
+                    { text: "Con mucha ansiedad - paso noches sin dormir pensando en 'qué pasaría si...'", value: 2 },
+                    { text: "Con nerviosismo pero trato de recordarme que debo confiar en Dios", value: 3 },
+                    { text: "Con confianza tranquila - sé que Dios ya está en mi futuro", value: 4 }
+                ]
+            },
+            {
+                q: "Cuando tienes que dejar ir algo o alguien que amas, ¿qué haces?",
+                options: [
+                    { text: "No lo suelto - me aferro desesperadamente aunque Dios me pida dejarlo ir", value: 1 },
+                    { text: "Lo suelto externamente pero internamente sigo obsesionada con recuperarlo", value: 2 },
+                    { text: "Lucho entre soltar y aferrarme - es un proceso doloroso y lento", value: 3 },
+                    { text: "Aunque duela, abro mis manos y confío que Dios tiene algo mejor", value: 4 }
+                ]
+            },
+            {
+                q: "¿Cómo te sientes cuando las cosas están fuera de tu control?",
+                options: [
+                    { text: "Completamente descontrolada - mi paz depende de controlar mi entorno", value: 1 },
+                    { text: "Muy ansiosa y vulnerable - necesito saber y controlar para sentirme segura", value: 2 },
+                    { text: "Incómoda pero reconozco que el control es limitado", value: 3 },
+                    { text: "En paz - mi seguridad está en Dios, no en controlar las circunstancias", value: 4 }
+                ]
+            },
+            {
+                q: "¿Qué tan seguido dices 'No entiendo por qué esto está pasando, pero confío en Ti, Dios' y REALMENTE lo sientes?",
+                options: [
+                    { text: "Nunca - siempre necesito entender para poder confiar", value: 1 },
+                    { text: "Rara vez - lo digo pero no lo siento genuinamente", value: 2 },
+                    { text: "A veces - depende de la situación y cuánto me afecta", value: 3 },
+                    { text: "Frecuentemente - he aprendido que no necesito entender para confiar", value: 4 }
+                ]
+            }
+        ];
+
+        let currentQuestion = 0;
+        let answers = {};
+
+        function initQuiz() {
+            const container = document.getElementById('questionsContainer');
+            questions.forEach((question, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = `question ${index === 0 ? 'active' : ''}`;
+                questionDiv.id = `question-${index}`;
+                
+                let optionsHTML = '<div class="options">';
+                question.options.forEach((option, optIndex) => {
+                    optionsHTML += `
+                        <label class="option" onclick="selectOption(${index}, ${option.value}, this)">
+                            <input type="radio" name="q${index}" value="${option.value}">
+                            <span>${option.text}</span>
+                        </label>
+                    `;
+                });
+                optionsHTML += '</div>';
+                
+                questionDiv.innerHTML = `
+                    <h3><span class="question-number">${index + 1}</span>${question.q}</h3>
+                    ${optionsHTML}
+                `;
+                
+                container.appendChild(questionDiv);
+            });
+            updateProgress();
+        }
+
+        function selectOption(questionIndex, value, element) {
+            answers[questionIndex] = value;
+            
+            const options = element.parentElement.querySelectorAll('.option');
+            options.forEach(opt => opt.classList.remove('selected'));
+            element.classList.add('selected');
+            
+            document.getElementById('nextBtn').disabled = false;
+            if (currentQuestion === questions.length - 1) {
+                document.getElementById('submitBtn').disabled = false;
+            }
+        }
+
+        function nextQuestion() {
+            if (!answers.hasOwnProperty(currentQuestion)) {
+                alert('Por favor selecciona una respuesta antes de continuar');
+                return;
+            }
+            
+            document.getElementById(`question-${currentQuestion}`).classList.remove('active');
+            currentQuestion++;
+            document.getElementById(`question-${currentQuestion}`).classList.add('active');
+            
+            updateButtons();
+            updateProgress();
+        }
+
+        function previousQuestion() {
+            document.getElementById(`question-${currentQuestion}`).classList.remove('active');
+            currentQuestion--;
+            document.getElementById(`question-${currentQuestion}`).classList.add('active');
+            
+            updateButtons();
+            updateProgress();
+        }
+
+        function updateButtons() {
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const submitBtn = document.getElementById('submitBtn');
+            
+            prevBtn.style.display = currentQuestion > 0 ? 'block' : 'none';
+            
+            if (currentQuestion === questions.length - 1) {
+                nextBtn.style.display = 'none';
+                submitBtn.style.display = 'block';
+                submitBtn.disabled = !answers.hasOwnProperty(currentQuestion);
+            } else {
+                nextBtn.style.display = 'block';
+                submitBtn.style.display = 'none';
+                nextBtn.disabled = !answers.hasOwnProperty(currentQuestion);
+            }
+        }
+
+        function updateProgress() {
+            const progress = ((currentQuestion + 1) / questions.length) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        function calculateResult() {
+            if (Object.keys(answers).length !== questions.length) {
+                alert('Por favor responde todas las preguntas');
+                return;
+            }
+            
+            const totalScore = Object.values(answers).reduce((sum, val) => sum + val, 0);
+            const maxScore = questions.length * 4;
+            const percentage = (totalScore / maxScore) * 100;
+            
+            let resultTitle, resultDescription, recommendations;
+            
+            if (percentage <= 40) {
+                resultTitle = "Nivel: Control Total - Puños Cerrados";
+                resultDescription = `<p><strong>Mujer,</strong> este autoanálisis revela que estás operando en control total. Tus manos están fuertemente cerradas alrededor de tus planes, sueños y circunstancias. Has construido tu vida sobre la ilusión de que puedes y debes controlar todo para sentirte segura.</p>
+                <p><strong>Tu realidad actual:</strong> El control se ha convertido en tu mecanismo de defensa contra el miedo y la incertidumbre. Cuando las cosas no salen según tus planes, entras en crisis. Tu paz está directamente ligada a tu capacidad de controlar tu entorno, lo cual te mantiene en un estado constante de ansiedad porque la realidad es que muy poco está realmente bajo tu control.</p>
+                <p><strong>La verdad liberadora:</strong> El control es una ilusión que te está robando la paz, la libertad y los planes perfectos de Dios para ti. Mientras sigas aferrada a tus propios planes, no podrás recibir lo que Dios tiene preparado.</p>`;
+                recommendations = `
+                    <li>Identifica las áreas específicas donde estás tratando de controlar - escríbelas y entrégalas conscientemente a Dios cada día</li>
+                    <li>Practica decir "Dios, confío en Ti con esto" cada vez que sientas la urgencia de controlar</li>
+                    <li>Comienza un ayuno de planificación excesiva - da espacio a que Dios dirija sin tu agenda rígida</li>
+                    <li>Lee historias bíblicas de personas que soltaron el control (Abraham, María, José)</li>
+                    <li>Cuando algo no salga según tu plan, antes de reaccionar, detente y pregunta "Dios, ¿qué estás haciendo aquí?"</li>
+                    <li>Practica la rendición diaria: cada mañana, abre tus manos físicamente y suelta tus planes a Dios</li>
+                    <li>Busca consejería o mentoría para trabajar el miedo subyacente que alimenta tu necesidad de control</li>
+                `;
+            } else if (percentage <= 60) {
+                resultTitle = "Nivel: Control Compartido - Manos Semi-Abiertas";
+                resultDescription = `<p><strong>Mujer,</strong> estás en un punto intermedio. Conoces intelectualmente que debes soltar el control a Dios, pero tu corazón todavía lucha con confiar plenamente. Alternas entre momentos de rendición genuina y momentos de tomar el control de vuelta.</p>
+                <p><strong>Tu realidad actual:</strong> Oras pidiendo la voluntad de Dios, pero internamente ya tienes el resultado que esperas. Dices que confías, pero tus acciones revelan ansiedad y necesidad de controlar. Estás en una batalla constante entre tu voluntad y la de Dios, lo cual te mantiene en tensión espiritual y emocional.</p>
+                <p><strong>El siguiente paso:</strong> Necesitas pasar de conocer sobre la rendición a vivirla consistentemente. La diferencia entre donde estás y donde Dios quiere llevarte está en soltar completamente, no a medias.</p>`;
+                recommendations = `
+                    <li>Identifica tus "pero..." - esas áreas donde dices "confío en Dios, PERO..." y trabájalas específicamente</li>
+                    <li>Cada vez que ores por algo, termina con "no se haga mi voluntad sino la Tuya" y medita en esas palabras</li>
+                    <li>Lleva un diario de rendición: escribe qué estás soltando cada día y cómo te sientes</li>
+                    <li>Cuando tengas que esperar, en lugar de buscar distracciones, siéntate con Dios en la espera</li>
+                    <li>Practica la obediencia inmediata - cuando Dios te pida algo, hazlo sin negociar</li>
+                    <li>Rodéate de personas que vivan en rendición genuina y aprende de ellas</li>
+                    <li>Memoriza Proverbios 3:5-6 y decláralo cuando sientas la tentación de controlar</li>
+                    <li>Establece "zonas de no control" - áreas donde conscientemente decides no intervenir y dejar actuar a Dios</li>
+                `;
+            } else if (percentage <= 80) {
+                resultTitle = "Nivel: Confianza Creciente - Manos Abiertas";
+                resultDescription = `<p><strong>Mujer,</strong> has avanzado significativamente en soltar el control a Dios. La mayoría del tiempo, confías en Sus planes más que en los tuyos. Has experimentado suficiente fidelidad de Dios como para saber que Él es confiable, aunque todavía hay momentos donde la tentación de controlar resurge.</p>
+                <p><strong>Tu realidad actual:</strong> Vives con mayor paz porque has aprendido que no necesitas controlar para estar segura. Cuando las cosas no salen según tus planes, tu primera reacción es buscar a Dios en lugar de entrar en pánico. Sin embargo, en ciertas áreas vulnerables o bajo presión extrema, todavía luchas con soltar completamente.</p>
+                <p><strong>Tu próximo nivel:</strong> Consolidar tu confianza en Dios hasta el punto donde tu paz no se vea afectada por las circunstancias incontrolables. Convertirte en un testimonio vivo de rendición para otras mujeres.</p>`;
+                recommendations = `
+                    <li>Identifica tus "puntos de control de emergencia" - esas áreas donde vuelves al control bajo estrés</li>
+                    <li>Profundiza tu intimidad con Dios - el control resurge cuando nos alejamos de Su presencia</li>
+                    <li>Comparte tu testimonio de cómo has aprendido a soltar el control para animar a otras</li>
+                    <li>Cuando enfrentes incertidumbre, en lugar de planificar, pregunta "Dios, ¿qué quieres que haga?"</li>
+                    <li>Practica la acción de gracias anticipada - agradece a Dios por lo que hará aunque no lo veas aún</li>
+                    <li>Establece recordatorios diarios de los momentos donde Dios demostró ser fiel cuando soltaste</li>
+                    <li>Busca oportunidades de soltar cosas más grandes - propiedades, relaciones, sueños - para crecer en fe</li>
+                    <li>Mentorea a una mujer que esté luchando con el control</li>
+                `;
+            } else {
+                resultTitle = "Nivel: Rendición Total - Manos Completamente Abiertas";
+                resultDescription = `<p><strong>Mujer,</strong> has alcanzado un nivel hermoso de rendición. Vives con las manos abiertas ante Dios, confiando plenamente en Sus planes por encima de los tuyos. Has experimentado la libertad profunda que viene de no necesitar controlar.</p>
+                <p><strong>Tu realidad actual:</strong> Tu paz no depende de tus circunstancias porque está arraigada en la soberanía de Dios. Cuando los planes cambian, no te desmoronas sino que buscas ver qué está haciendo Dios. Has aprendido que Sus caminos son más altos que los tuyos, y genuinamente deseas Su voluntad más que la tuya.</p>
+                <p><strong>Tu llamado ahora:</strong> Ser un faro de rendición para otras mujeres. Tu testimonio de vida en manos abiertas es poderoso y necesario para aquellas que todavía luchan con soltar el control. Dios te ha llevado a este lugar no solo para tu beneficio, sino para que guíes a otras al mismo lugar de libertad.</p>`;
+                recommendations = `
+                    <li>Mantén tu rendición fresca - nunca des por sentado este lugar de gracia</li>
+                    <li>Comparte públicamente tu jornada de aprender a soltar el control</li>
+                    <li>Desarrolla un ministerio o mentoría enfocado en ayudar a mujeres a soltar y confiar</li>
+                    <li>Escribe tu testimonio - cómo pasaste del control a la rendición</li>
+                    <li>Intercede por mujeres que están paralizadas por la necesidad de control</li>
+                    <li>Busca niveles más profundos de rendición - siempre hay más que Dios quiere enseñarte</li>
+                    <li>Sé modelo de paz en medio de la incertidumbre para tu familia y comunidad</li>
+                    <li>Crea recursos (devocionales, estudios, enseñanzas) sobre la rendición</li>
+                `;
+            }
+            
+            const resultHTML = `
+                <div class="result-card">
+                    <div class="result-title">${resultTitle}</div>
+                    <div class="result-description">${resultDescription}</div>
+                    <div class="result-recommendations">
+                        <h4>Pasos Para Soltar el Control y Confiar en Dios:</h4>
+                        <ul>${recommendations}</ul>
+                    </div>
+                    <div class="final-message">
+                        <p><strong>Recuerda:</strong> Soltar el control no es resignación, es confianza activa. No es dejar de actuar, es actuar desde un lugar de rendición a Dios en lugar de desde el miedo. Las manos abiertas pueden recibir lo que las manos cerradas nunca podrán: los planes perfectos de Dios para tu vida.</p>
+                        <p>"Confía en el Señor con todo tu corazón, y no te apoyes en tu propio entendimiento. Reconócelo en todos tus caminos, y Él enderezará tus sendas." - Proverbios 3:5-6</p>
+                    </div>
+                    <button class="btn restart-btn" onclick="location.reload()">Realizar Autoanálisis Nuevamente</button>
+                </div>
+            `;
+            
+            document.getElementById('questionsContainer').style.display = 'none';
+            document.querySelector('.navigation').style.display = 'none';
+            document.querySelector('.progress-bar').style.display = 'none';
+            
+            const resultContainer = document.getElementById('resultContainer');
+            resultContainer.innerHTML = resultHTML;
+            resultContainer.classList.add('active');
+        }
+
+        // Initialize the quiz when page loads
+        initQuiz();
+    </script>
+</body>
+</html>
