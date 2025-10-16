@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autoanálisis: La Trampa de la Comparación</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #fafafa;
+            min-height: 100vh;
+            padding: 40px 20px;
+            color: #1d1d1f;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #806459 0%, #96776c 100%);
+            color: white;
+            padding: 60px 40px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: -0.5px;
+        }
+
+        .header p {
+            font-size: 1.15em;
+            opacity: 0.9;
+            line-height: 1.6;
+            text-align: left;
+            font-weight: 300;
+            max-width: 700px;
+        }
+
+        .content {
+            padding: 50px 40px;
+        }
+
+        .question {
+            margin-bottom: 40px;
+            padding: 0;
+            display: none;
+        }
+
+        .question.active {
+            display: block;
+            animation: fadeIn 0.6s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .question h3 {
+            color: #806459;
+            margin-bottom: 30px;
+            font-size: 1.3em;
+            line-height: 1.5;
+            font-weight: 600;
+            letter-spacing: -0.3px;
+        }
+
+        .question-number {
+            display: inline-block;
+            background: #806459;
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 36px;
+            margin-right: 12px;
+            font-weight: 600;
+            font-size: 0.95em;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .option {
+            padding: 20px 24px;
+            background: #f5f5f7;
+            border: 2px solid transparent;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            font-weight: 400;
+        }
+
+        .option:hover {
+            background: #e8e8ed;
+            transform: translateX(2px);
+        }
+
+        .option.selected {
+            background: #806459;
+            color: white;
+            border-color: #806459;
+            font-weight: 500;
+        }
+
+        .option input[type="radio"] {
+            margin-right: 16px;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: #806459;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+            padding: 0 40px;
+            gap: 20px;
+        }
+
+        .btn {
+            padding: 16px 40px;
+            background: #806459;
+            color: white;
+            border: none;
+            border-radius: 980px;
+            cursor: pointer;
+            font-size: 1.05em;
+            font-weight: 500;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            font-family: 'Montserrat', sans-serif;
+            letter-spacing: -0.2px;
+        }
+
+        .btn:hover {
+            background: #6e5449;
+            transform: scale(1.02);
+        }
+
+        .btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .progress-bar {
+            height: 4px;
+            background: #e8e8ed;
+            margin: 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #806459;
+            width: 0%;
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .result {
+            display: none;
+            padding: 50px 40px;
+        }
+
+        .result.active {
+            display: block;
+            animation: fadeIn 0.6s ease-in;
+        }
+
+        .result-card {
+            background: #f5f5f7;
+            border-radius: 20px;
+            padding: 40px;
+            margin-top: 30px;
+        }
+
+        .result-title {
+            color: #806459;
+            font-size: 2.2em;
+            margin-bottom: 24px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .result-description {
+            line-height: 1.8;
+            margin-bottom: 30px;
+            font-size: 1.05em;
+            font-weight: 400;
+            color: #1d1d1f;
+        }
+
+        .result-description p {
+            margin-bottom: 20px;
+        }
+
+        .result-recommendations {
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            margin-top: 30px;
+        }
+
+        .result-recommendations h4 {
+            color: #806459;
+            margin-bottom: 20px;
+            font-size: 1.4em;
+            font-weight: 600;
+            letter-spacing: -0.3px;
+        }
+
+        .result-recommendations ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .result-recommendations li {
+            padding: 14px 0;
+            padding-left: 35px;
+            position: relative;
+            line-height: 1.7;
+            font-weight: 400;
+            color: #1d1d1f;
+        }
+
+        .result-recommendations li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #806459;
+            font-weight: 600;
+            font-size: 1.2em;
+        }
+
+        .restart-btn {
+            margin-top: 35px;
+            background: transparent;
+            color: #806459;
+            border: 2px solid #806459;
+        }
+
+        .restart-btn:hover {
+            background: #806459;
+            color: white;
+        }
+
+        .final-message {
+            margin-top: 35px;
+            padding: 30px;
+            background: white;
+            border-radius: 16px;
+            border-left: 4px solid #806459;
+        }
+
+        .final-message p {
+            font-size: 1.05em;
+            line-height: 1.8;
+            color: #1d1d1f;
+            margin-bottom: 18px;
+        }
+
+        .final-message p:last-child {
+            font-style: italic;
+            color: #424245;
+            margin-bottom: 0;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 40px 30px;
+            }
+
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .content {
+                padding: 30px 20px;
+            }
+
+            .navigation {
+                flex-direction: column;
+                padding: 0 20px;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            .result {
+                padding: 30px 20px;
+            }
+
+            .result-card {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Autoanálisis: La Trampa de la Comparación</h1>
+            <p>Descubre cómo la comparación está robando tu gozo, tu propósito y tus sueños únicos en Dios</p>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+        <div class="content" id="questionsContainer">
+            <!-- Questions will be generated here -->
+        </div>
+
+        <div class="navigation">
+            <button class="btn" id="nextBtn" onclick="nextQuestion()">Siguiente</button>
+            <button class="btn" id="submitBtn" onclick="calculateResult()" style="display: none;">Ver Resultado</button>
+            <button class="btn" id="prevBtn" onclick="previousQuestion()" style="display: none;">Anterior</button>
+        </div>
+
+        <div class="result" id="resultContainer">
+            <!-- Result will be shown here -->
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                q: "¿Con qué frecuencia te comparas con otras mujeres en tu vida diaria?",
+                options: [
+                    { text: "Constantemente - es automático e incontrolable, lo hago con cada mujer que veo", value: 1 },
+                    { text: "Muy frecuentemente - paso gran parte de mi día comparándome y siempre salgo perdiendo", value: 2 },
+                    { text: "Ocasionalmente - reconozco cuando lo hago y trato de detenerlo", value: 3 },
+                    { text: "Rara vez - he aprendido que la comparación roba mi gozo y propósito único", value: 4 }
+                ]
+            },
+            {
+                q: "Cuando ves a otra mujer teniendo éxito en el área donde tú también quieres crecer, ¿qué sientes?",
+                options: [
+                    { text: "Envidia dolorosa y confirmación de que 'eso no es para mí'", value: 1 },
+                    { text: "Desánimo profundo y la sensación de estar 'atrasada' o que es 'demasiado tarde para mí'", value: 2 },
+                    { text: "Una mezcla de inspiración con envidia - lucho entre celebrarla y resentirla", value: 3 },
+                    { text: "Inspiración genuina - su éxito me confirma que también es posible para mí", value: 4 }
+                ]
+            },
+            {
+                q: "¿Cuánto tiempo pasas en redes sociales comparando tu vida con las vidas 'perfectas' de otros?",
+                options: [
+                    { text: "Horas diarias - es mi forma de torturarme y confirmar que mi vida no es suficiente", value: 1 },
+                    { text: "Mucho tiempo - salgo de redes sociales sintiéndome 'menos que' casi siempre", value: 2 },
+                    { text: "Algo de tiempo - estoy tratando de limitar mi exposición porque sé cómo me afecta", value: 3 },
+                    { text: "Poco tiempo - he establecido límites saludables y no dejo que redes sociales dicten mi valor", value: 4 }
+                ]
+            },
+            {
+                q: "¿Cómo afecta la comparación tu capacidad de celebrar los logros de otras mujeres?",
+                options: [
+                    { text: "No puedo celebrarlas genuinamente - su éxito me duele porque resalta mi 'fracaso'", value: 1 },
+                    { text: "Finjo celebrar externamente pero internamente me siento mal conmigo misma", value: 2 },
+                    { text: "Puedo celebrarlas pero todavía con una punzada de envidia o inseguridad", value: 3 },
+                    { text: "Celebro genuinamente - su bendición no disminuye la mía", value: 4 }
+                ]
+            },
+            {
+                q: "Cuando Dios te muestra una visión para tu vida, ¿qué haces?",
+                options: [
+                    { text: "Inmediatamente la comparo con lo que otras están haciendo y me convenzo de que la mía es 'menor'", value: 1 },
+                    { text: "Me emociono pero luego veo a otras y pienso que debería hacer lo que ellas hacen", value: 2 },
+                    { text: "Intento mantenerme enfocada pero me distraigo comparando mi progreso con el de otras", value: 3 },
+                    { text: "Me enfoco en mi carril único - lo que Dios me dio es específico para mí", value: 4 }
+                ]
+            },
+            {
+                q: "¿Cuántos de tus sueños has abandonado o modificado porque viste que alguien más ya lo estaba haciendo?",
+                options: [
+                    { text: "Todos o casi todos - si alguien más ya lo hace, asumo que yo no debería", value: 1 },
+                    { text: "Muchos - constantemente cambio de dirección basada en lo que veo que otros hacen", value: 2 },
+                    { text: "Algunos - me ha costado sueños pero estoy aprendiendo a mantener mi enfoque", value: 3 },
+                    { text: "Ninguno o muy pocos - entiendo que mi llamado es único aunque otros hagan algo similar", value: 4 }
+                ]
+            },
+            {
+                q: "¿Cómo te sientes sobre tu propio progreso cuando lo comparas con el de otras?",
+                options: [
+                    { text: "Devastada - siempre me siento 'atrasada', 'lenta' o 'insuficiente'", value: 1 },
+                    { text: "Desanimada - nunca es 'suficiente' porque siempre hay alguien más adelante", value: 2 },
+                    { text: "Insegura - reconozco mi progreso pero la comparación lo minimiza", value: 3 },
+                    { text: "Satisfecha - celebro mi propio ritmo sin medirlo contra el de otras", value: 4 }
+                ]
+            },
+            {
+                q: "¿Qué tanto te paraliza el miedo de no ser 'tan buena' como otras en tu área?",
+                options: [
+                    { text: "Completamente - no empiezo cosas porque 'alguien más ya lo hace mejor'", value: 1 },
+                    { text: "Significativamente - postergo mi llamado esperando ser 'tan buena como' alguien más", value: 2 },
+                    { text: "Algo - todavía me frena pero estoy trabajando en superarlo", value: 3 },
+                    { text: "Poco o nada - entiendo que no necesito ser como otras, solo ser yo", value: 4 }
+                ]
+            },
+            {
+                q: "Cuando recibes un cumplido o reconocimiento, ¿qué pasa en tu mente?",
+                options: [
+                    { text: "Inmediatamente pienso en alguien que lo hace mejor y descalifico el cumplido", value: 1 },
+                    { text: "Lo minimizo comparándome con estándares imposibles de otras", value: 2 },
+                    { text: "Intento recibirlo pero la voz de comparación rápidamente lo cuestiona", value: 3 },
+                    { text: "Lo recibo con gratitud sin necesidad de compararme con nadie", value: 4 }
+                ]
+            },
+            {
+                q: "Si pudieras liberarte completamente de la necesidad de compararte, ¿qué harías diferente?",
+                options: [
+                    { text: "Todo - literalmente viviría una vida completamente diferente sin el peso de la comparación", value: 1 },
+                    { text: "Mucho - perseguiría mis sueños únicos sin miedo a no ser 'suficiente' comparada con otras", value: 2 },
+                    { text: "Varias cosas importantes - hay áreas específicas donde la comparación me paraliza", value: 3 },
+                    { text: "Poco - ya vivo en esa libertad la mayor parte del tiempo", value: 4 }
+                ]
+            }
+        ];
+
+        let currentQuestion = 0;
+        let answers = {};
+
+        function initQuiz() {
+            const container = document.getElementById('questionsContainer');
+            questions.forEach((question, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = `question ${index === 0 ? 'active' : ''}`;
+                questionDiv.id = `question-${index}`;
+                
+                let optionsHTML = '<div class="options">';
+                question.options.forEach((option, optIndex) => {
+                    optionsHTML += `
+                        <label class="option" onclick="selectOption(${index}, ${option.value}, this)">
+                            <input type="radio" name="q${index}" value="${option.value}">
+                            <span>${option.text}</span>
+                        </label>
+                    `;
+                });
+                optionsHTML += '</div>';
+                
+                questionDiv.innerHTML = `
+                    <h3><span class="question-number">${index + 1}</span>${question.q}</h3>
+                    ${optionsHTML}
+                `;
+                
+                container.appendChild(questionDiv);
+            });
+            updateProgress();
+        }
+
+        function selectOption(questionIndex, value, element) {
+            answers[questionIndex] = value;
+            
+            const options = element.parentElement.querySelectorAll('.option');
+            options.forEach(opt => opt.classList.remove('selected'));
+            element.classList.add('selected');
+            
+            document.getElementById('nextBtn').disabled = false;
+            if (currentQuestion === questions.length - 1) {
+                document.getElementById('submitBtn').disabled = false;
+            }
+        }
+
+        function nextQuestion() {
+            if (!answers.hasOwnProperty(currentQuestion)) {
+                alert('Por favor selecciona una respuesta antes de continuar');
+                return;
+            }
+            
+            document.getElementById(`question-${currentQuestion}`).classList.remove('active');
+            currentQuestion++;
+            document.getElementById(`question-${currentQuestion}`).classList.add('active');
+            
+            updateButtons();
+            updateProgress();
+        }
+
+        function previousQuestion() {
+            document.getElementById(`question-${currentQuestion}`).classList.remove('active');
+            currentQuestion--;
+            document.getElementById(`question-${currentQuestion}`).classList.add('active');
+            
+            updateButtons();
+            updateProgress();
+        }
+
+        function updateButtons() {
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const submitBtn = document.getElementById('submitBtn');
+            
+            prevBtn.style.display = currentQuestion > 0 ? 'block' : 'none';
+            
+            if (currentQuestion === questions.length - 1) {
+                nextBtn.style.display = 'none';
+                submitBtn.style.display = 'block';
+                submitBtn.disabled = !answers.hasOwnProperty(currentQuestion);
+            } else {
+                nextBtn.style.display = 'block';
+                submitBtn.style.display = 'none';
+                nextBtn.disabled = !answers.hasOwnProperty(currentQuestion);
+            }
+        }
+
+        function updateProgress() {
+            const progress = ((currentQuestion + 1) / questions.length) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        function calculateResult() {
+            if (Object.keys(answers).length !== questions.length) {
+                alert('Por favor responde todas las preguntas');
+                return;
+            }
+            
+            const totalScore = Object.values(answers).reduce((sum, val) => sum + val, 0);
+            const maxScore = questions.length * 4;
+            const percentage = (totalScore / maxScore) * 100;
+            
+            let resultTitle, resultDescription, recommendations;
+            
+            if (percentage <= 40) {
+                resultTitle = "Nivel: Comparación Destructiva - Ladrona de Destino";
+                resultDescription = `<p><strong>Mujer,</strong> este autoanálisis revela una verdad dolorosa: la comparación se ha convertido en la ladrona de tu gozo, tu propósito y tus sueños. Vives atrapada en un ciclo interminable de medirte contra otras mujeres, y siempre, siempre sales perdiendo. La comparación no es solo un hábito - es una prisión que te está robando tu destino único.</p>
+                <p><strong>Tu realidad actual:</strong> Cada logro de otra mujer te recuerda tu 'fracaso'. Pasas horas torturándote en redes sociales. No puedes celebrar genuinamente a otras porque su bendición se siente como tu pérdida. Has abandonado sueños porque alguien más ya los está viviendo. Te sientes perpetuamente 'atrasada', 'insuficiente' y 'menos que'. La voz de comparación es más fuerte que la voz de Dios mostrándote tu llamado único.</p>
+                <p><strong>La verdad liberadora:</strong> Dios no te creó para que fueras como alguien más. Te creó para que fueras TÚ. Mientras sigas mirando el carril de otra, nunca correrás tu propia carrera. La comparación es el asesino silencioso de la individualidad y el propósito divino.</p>`;
+                recommendations = `
+                    <li>Reconoce la adicción - admite que la comparación ha tomado control de tu vida y decisiones</li>
+                    <li>Haz un ayuno total de redes sociales por 30 días - rompe el ciclo de comparación visual constante</li>
+                    <li>Escribe tu 'Declaración de Singularidad' - cómo Dios te hizo única e incomparable</li>
+                    <li>Cada vez que te compares, detente y declara: 'Mi carril es único e incomparable'</li>
+                    <li>Identifica las 3 mujeres con quien más te comparas y ora por ellas específicamente</li>
+                    <li>Busca terapia o consejería para trabajar la raíz de por qué necesitas compararte</li>
+                    <li>Practica celebrar logros de otras en voz alta - entrena tu corazón para la genuina celebración</li>
+                    <li>Memoriza 2 Corintios 10:12 - sobre la locura de compararse</li>
+                `;
+            } else if (percentage <= 60) {
+                resultTitle = "Nivel: Batalla de Comparación - Robada de Enfoque";
+                resultDescription = `<p><strong>Mujer,</strong> la comparación todavía tiene un poder significativo sobre ti. Aunque reconoces el problema y tienes momentos donde puedes enfocarte en tu propio camino, constantemente te encuentras mirando el progreso de otras y sintiéndote inadecuada. Esta batalla interna te está robando la energía que necesitas para tu propio propósito.</p>
+                <p><strong>Tu realidad actual:</strong> Empiezas bien pero la comparación te distrae del enfoque. Ves el éxito de otra y inmediatamente cuestionas el tuyo. Modificas tus sueños basándote en lo que ves que otras hacen. Te sientes 'atrasada' aunque estés avanzando. Las redes sociales todavía te dejan sintiéndote 'menos que'. Quieres celebrar a otras pero una parte de ti siente envidia.</p>
+                <p><strong>El punto de cambio:</strong> Estás consciente del problema pero todavía no has desarrollado las herramientas para detener el patrón consistentemente. Este es el momento de decidir: ¿seguirás corriendo en el carril de otra o correrás en el tuyo?</p>`;
+                recommendations = `
+                    <li>Lleva un 'diario de comparación' - documenta cuándo, con quién y por qué te comparas</li>
+                    <li>Limita redes sociales a 20 minutos diarios y solo sigue cuentas que te inspiren sin envidia</li>
+                    <li>Crea un 'muro de enfoque' - tu visión, tu llamado, tu progreso (sin comparación)</li>
+                    <li>Practica 'celebración radical' - celebra logros de otras hasta que sea genuino</li>
+                    <li>Identifica tu 'carril único' - qué te hace diferente, no igual a otras</li>
+                    <li>Cada mañana, declara: 'Hoy correré MI carrera, no la de otra persona'</li>
+                    <li>Encuentra una mentora que viva libre de comparación y aprende de ella</li>
+                    <li>Cuando sientas envidia, transforma la en oración - ora por la bendición de esa persona</li>
+                `;
+            } else if (percentage <= 80) {
+                resultTitle = "Nivel: Libertad Creciente - En Tu Carril";
+                resultDescription = `<p><strong>Mujer,</strong> has hecho un progreso hermoso en liberarte de la trampa de la comparación. La mayoría del tiempo, puedes enfocarte en tu propio camino sin medirte constantemente contra otras. Celebras logros ajenos sin sentir que disminuyen los tuyos. Sin embargo, todavía hay momentos donde la tentación de compararte aparece.</p>
+                <p><strong>Tu realidad actual:</strong> Corres tu propia carrera la mayor parte del tiempo. Reconoces rápidamente cuando empiezas a compararte y puedes redirigir tu enfoque. Puedes ver el éxito de otras como inspiración genuina. Tus decisiones están basadas en tu llamado único, no en lo que ves que otras hacen. Sin embargo, en ciertos contextos o con ciertas personas, la comparación todavía intenta regresar.</p>
+                <p><strong>Tu próximo nivel:</strong> Eliminar completamente los últimos vestigios de comparación. Vivir tan arraigada en tu singularidad que la idea de compararte con otra te parezca absurda. Ser modelo de enfoque en el propio carril para otras mujeres.</p>`;
+                recommendations = `
+                    <li>Identifica tus últimas 'zonas de comparación' - contextos donde todavía luchas</li>
+                    <li>Profundiza en tu comprensión de tu diseño único - cómo Dios te hizo específicamente</li>
+                    <li>Comparte tu testimonio de liberación de la comparación para ayudar a otras</li>
+                    <li>Mentorea a alguien atrapada en comparación constante</li>
+                    <li>Usa tu plataforma para normalizar 'carriles diferentes' sin comparación</li>
+                    <li>Celebra tu progreso sin necesidad de medirlo contra el de nadie</li>
+                    <li>Desarrolla relaciones auténticas donde cada una celebra los carriles únicos</li>
+                    <li>Continúa renovando tu mente con verdades sobre tu singularidad divina</li>
+                `;
+            } else {
+                resultTitle = "Nivel: Libertad Total - Corriendo Tu Carrera";
+                resultDescription = `<p><strong>Mujer,</strong> has alcanzado algo precioso: libertad total de la comparación. Vives tan arraigada en tu propio carril único que no pierdes tiempo ni energía comparándote con otras. Celebras genuinamente el éxito ajeno porque entiendes que no disminuye el tuyo. Eres libre.</p>
+                <p><strong>Tu realidad actual:</strong> Corres tu carrera con enfoque y propósito. El éxito de otras te inspira sin provocarte envidia. Tus decisiones están basadas en tu llamado único, no en lo que otros hacen. Celebras tu singularidad sin necesidad de compararla. Entiendes profundamente que Dios te creó incomparable. Eres un testimonio vivo de enfoque en el propio carril.</p>
+                <p><strong>Tu llamado ahora:</strong> Usar tu libertad para liberar a otras mujeres de la trampa de la comparación. Tu vida enfocada en tu carril único es un faro para aquellas que todavía corren mirando el carril de al lado. Dios te liberó para que seas instrumento de liberación.</p>`;
+                recommendations = `
+                    <li>Mantén tu libertad vigilante - la tentación de comparar puede aparecer sutilmente</li>
+                    <li>Desarrolla contenido o ministerio sobre vivir libre de comparación</li>
+                    <li>Comparte públicamente tu jornada de comparación a libertad</li>
+                    <li>Mentorea intencionalmente a mujeres atrapadas en ciclos de comparación</li>
+                    <li>Sé modelo visible de celebración genuina del éxito de otras</li>
+                    <li>Enseña sobre el concepto de 'carriles únicos e incomparables'</li>
+                    <li>Crea espacios donde mujeres puedan descubrir su singularidad sin comparación</li>
+                    <li>Intercede por mujeres que están perdiendo su propósito por compararse</li>
+                `;
+            }
+            
+            const resultHTML = `
+                <div class="result-card">
+                    <div class="result-title">${resultTitle}</div>
+                    <div class="result-description">${resultDescription}</div>
+                    <div class="result-recommendations">
+                        <h4>Pasos Para Liberarte de la Trampa de la Comparación:</h4>
+                        <ul>${recommendations}</ul>
+                    </div>
+                    <div class="final-message">
+                        <p><strong>Recuerda:</strong> La comparación es el ladrón del gozo y el asesino del propósito. Dios no te creó para que fueras una copia de alguien más - te creó para que fueras un original único. Tu carril es incomparable porque TÚ eres incomparable. Mientras sigas mirando el carril de otra, nunca verás la meta en el tuyo. Corre tu propia carrera. Celebra tu propio progreso. Vive tu propio llamado. Eres la única que puede ser tú.</p>
+                        <p>"No nos hagamos vanidosos, irritándonos unos a otros, envidiándonos unos a otros... Cada uno examine su propia obra, y entonces tendrá motivo de gloriarse sólo respecto de sí mismo, y no en otro." - Gálatas 5:26, 6:4</p>
+                    </div>
+                    <button class="btn restart-btn" onclick="location.reload()">Realizar Autoanálisis Nuevamente</button>
+                </div>
+            `;
+            
+            document.getElementById('questionsContainer').style.display = 'none';
+            document.querySelector('.navigation').style.display = 'none';
+            document.querySelector('.progress-bar').style.display = 'none';
+            
+            const resultContainer = document.getElementById('resultContainer');
+            resultContainer.innerHTML = resultHTML;
+            resultContainer.classList.add('active');
+        }
+
+        // Initialize the quiz when page loads
+        initQuiz();
+    </script>
+</body>
+</html>
