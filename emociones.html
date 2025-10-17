@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autoanálisis: Inteligencia Emocional</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #fafafa;
+            min-height: 100vh;
+            padding: 40px 20px;
+            color: #1d1d1f;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #806459 0%, #96776c 100%);
+            color: white;
+            padding: 60px 40px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: -0.5px;
+        }
+
+        .header p {
+            font-size: 1.15em;
+            opacity: 0.9;
+            line-height: 1.6;
+            text-align: left;
+            font-weight: 300;
+            max-width: 700px;
+        }
+
+        .content {
+            padding: 50px 40px;
+        }
+
+        .question {
+            margin-bottom: 40px;
+            padding: 0;
+            display: none;
+        }
+
+        .question.active {
+            display: block;
+            animation: fadeIn 0.6s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .question h3 {
+            color: #806459;
+            margin-bottom: 30px;
+            font-size: 1.3em;
+            line-height: 1.5;
+            font-weight: 600;
+            letter-spacing: -0.3px;
+        }
+
+        .question-number {
+            display: inline-block;
+            background: #806459;
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 36px;
+            margin-right: 12px;
+            font-weight: 600;
+            font-size: 0.95em;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .option {
+            padding: 20px 24px;
+            background: #f5f5f7;
+            border: 2px solid transparent;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            font-weight: 400;
+        }
+
+        .option:hover {
+            background: #e8e8ed;
+            transform: translateX(2px);
+        }
+
+        .option.selected {
+            background: #806459;
+            color: white;
+            border-color: #806459;
+            font-weight: 500;
+        }
+
+        .option input[type="radio"] {
+            margin-right: 16px;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: #806459;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+            padding: 0 40px;
+            gap: 20px;
+        }
+
+        .btn {
+            padding: 16px 40px;
+            background: #806459;
+            color: white;
+            border: none;
+            border-radius: 980px;
+            cursor: pointer;
+            font-size: 1.05em;
+            font-weight: 500;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            font-family: 'Montserrat', sans-serif;
+            letter-spacing: -0.2px;
+        }
+
+        .btn:hover {
+            background: #6e5449;
+            transform: scale(1.02);
+        }
+
+        .btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .progress-bar {
+            height: 4px;
+            background: #e8e8ed;
+            margin: 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #806459;
+            width: 0%;
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .result {
+            display: none;
+            padding: 50px 40px;
+        }
+
+        .result.active {
+            display: block;
+            animation: fadeIn 0.6s ease-in;
+        }
+
+        .result-card {
+            background: #f5f5f7;
+            border-radius: 20px;
+            padding: 40px;
+            margin-top: 30px;
+        }
+
+        .result-title {
+            color: #806459;
+            font-size: 2.2em;
+            margin-bottom: 24px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .result-description {
+            line-height: 1.8;
+            margin-bottom: 30px;
+            font-size: 1.05em;
+            font-weight: 400;
+            color: #1d1d1f;
+        }
+
+        .result-description p {
+            margin-bottom: 20px;
+        }
+
+        .result-recommendations {
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            margin-top: 30px;
+        }
+
+        .result-recommendations h4 {
+            color: #806459;
+            margin-bottom: 20px;
+            font-size: 1.4em;
+            font-weight: 600;
+            letter-spacing: -0.3px;
+        }
+
+        .result-recommendations ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .result-recommendations li {
+            padding: 14px 0;
+            padding-left: 35px;
+            position: relative;
+            line-height: 1.7;
+            font-weight: 400;
+            color: #1d1d1f;
+        }
+
+        .result-recommendations li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #806459;
+            font-weight: 600;
+            font-size: 1.2em;
+        }
+
+        .restart-btn {
+            margin-top: 35px;
+            background: transparent;
+            color: #806459;
+            border: 2px solid #806459;
+        }
+
+        .restart-btn:hover {
+            background: #806459;
+            color: white;
+        }
+
+        .final-message {
+            margin-top: 35px;
+            padding: 30px;
+            background: white;
+            border-radius: 16px;
+            border-left: 4px solid #806459;
+        }
+
+        .final-message p {
+            font-size: 1.05em;
+            line-height: 1.8;
+            color: #1d1d1f;
+            margin-bottom: 18px;
+        }
+
+        .final-message p:last-child {
+            font-style: italic;
+            color: #424245;
+            margin-bottom: 0;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 40px 30px;
+            }
+
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .content {
+                padding: 30px 20px;
+            }
+
+            .navigation {
+                flex-direction: column;
+                padding: 0 20px;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            .result {
+                padding: 30px 20px;
+            }
+
+            .result-card {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Autoanálisis: Inteligencia Emocional</h1>
+            <p>Descubre si tus emociones te controlan y te detienen, o si has desarrollado maestría sobre ellas para avanzar hacia tus metas</p>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+        <div class="content" id="questionsContainer">
+            <!-- Questions will be generated here -->
+        </div>
+
+        <div class="navigation">
+            <button class="btn" id="nextBtn" onclick="nextQuestion()">Siguiente</button>
+            <button class="btn" id="submitBtn" onclick="calculateResult()" style="display: none;">Ver Resultado</button>
+            <button class="btn" id="prevBtn" onclick="previousQuestion()" style="display: none;">Anterior</button>
+        </div>
+
+        <div class="result" id="resultContainer">
+            <!-- Result will be shown here -->
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                q: "Cuando sientes una emoción fuerte (enojo, tristeza, ansiedad), ¿cómo reaccionas?",
+                options: [
+                    { text: "Exploto o actúo impulsivamente - la emoción me controla completamente", value: 1 },
+                    { text: "Me abrumo y no puedo funcionar - la emoción me paraliza por horas o días", value: 2 },
+                    { text: "Me afecta significativamente pero eventualmente puedo procesarla", value: 3 },
+                    { text: "La reconozco, la proceso y puedo actuar con sabiduría a pesar de ella", value: 4 }
+                ]
+            },
+            {
+                q: "¿Con qué frecuencia tomas decisiones importantes basadas en cómo te sientes en ese momento?",
+                options: [
+                    { text: "Siempre - mis decisiones son completamente dictadas por mis emociones del momento", value: 1 },
+                    { text: "Frecuentemente - me cuesta separar emoción de razón al decidir", value: 2 },
+                    { text: "Ocasionalmente - a veces dejo que emociones temporales influyan demasiado", value: 3 },
+                    { text: "Rara vez - considero mis emociones pero no dejo que dominen decisiones importantes", value: 4 }
+                ]
+            },
+            {
+                q: "Cuando algo no sale como esperabas, ¿cuánto tiempo permaneces en la emoción negativa antes de recuperarte?",
+                options: [
+                    { text: "Días o semanas - me quedo atrapada en la emoción indefinidamente", value: 1 },
+                    { text: "Varios días - me cuesta mucho salir de estados emocionales negativos", value: 2 },
+                    { text: "Un día o dos - eventualmente me recupero pero me afecta significativamente", value: 3 },
+                    { text: "Horas - proceso la emoción rápidamente y sigo adelante", value: 4 }
+                ]
+            },
+            {
+                q: "¿Puedes identificar y nombrar tus emociones cuando las estás experimentando?",
+                options: [
+                    { text: "No - solo sé que 'me siento mal' sin poder identificar qué es", value: 1 },
+                    { text: "Rara vez - me confundo y no entiendo qué estoy sintiendo realmente", value: 2 },
+                    { text: "A veces - puedo identificar emociones básicas pero me cuesta con las complejas", value: 3 },
+                    { text: "Sí - tengo claridad sobre mis emociones y puedo nombrarlas específicamente", value: 4 }
+                ]
+            },
+            {
+                q: "¿Cuántas oportunidades o metas has abandonado porque 'no te sentías lista' o 'no te sentías bien'?",
+                options: [
+                    { text: "Muchas - si no 'siento' que es el momento, no actúo nunca", value: 1 },
+                    { text: "Varias - espero a 'sentirme lista' y ese momento nunca llega", value: 2 },
+                    { text: "Algunas - he perdido oportunidades esperando sentirme diferente", value: 3 },
+                    { text: "Pocas o ninguna - actúo aunque no me sienta 100% lista", value: 4 }
+                ]
+            },
+            {
+                q: "¿Cómo manejas el estrés y la presión cuando estás trabajando hacia tus metas?",
+                options: [
+                    { text: "Me colapso - el estrés me hace abandonar o paralizarme completamente", value: 1 },
+                    { text: "Me abrumo fácilmente - mi productividad y claridad desaparecen bajo presión", value: 2 },
+                    { text: "Me afecta pero puedo continuar, aunque no al nivel óptimo", value: 3 },
+                    { text: "Me mantengo estable - uso el estrés como combustible en lugar de obstáculo", value: 4 }
+                ]
+            },
+            {
+                q: "Cuando alguien te critica o confronta, ¿cuál es tu respuesta emocional?",
+                options: [
+                    { text: "Reacciono defensivamente o colapso - no puedo procesar críticas sin explotar o hundirme", value: 1 },
+                    { text: "Me afecta profundamente por días - no puedo separar la crítica de mi valor", value: 2 },
+                    { text: "Me duele pero intento procesarlo después de un tiempo", value: 3 },
+                    { text: "Escucho sin reaccionar - proceso la crítica objetivamente sin que destruya mi día", value: 4 }
+                ]
+            },
+            {
+                q: "¿Qué tan seguido postergas acciones importantes porque 'no tienes ganas' o 'no estás de humor'?",
+                options: [
+                    { text: "Constantemente - si no tengo ganas, no lo hago", value: 1 },
+                    { text: "Frecuentemente - mi motivación depende completamente de mi estado emocional", value: 2 },
+                    { text: "Ocasionalmente - a veces dejo que mi humor dicte mi productividad", value: 3 },
+                    { text: "Rara vez - hago lo que debo hacer independiente de cómo me sienta", value: 4 }
+                ]
+            },
+            {
+                q: "¿Puedes mantener relaciones saludables sin explotar emocionalmente o cerrarte cuando hay conflicto?",
+                options: [
+                    { text: "No - exploto o me cierro completamente, no hay término medio", value: 1 },
+                    { text: "Con mucha dificultad - el conflicto me desregula emocionalmente siempre", value: 2 },
+                    { text: "A veces - estoy mejorando pero todavía lucho con regulación emocional en conflictos", value: 3 },
+                    { text: "Sí - puedo manejar conflictos con calma y claridad emocional", value: 4 }
+                ]
+            },
+            {
+                q: "Si tuvieras que evaluar honestamente: ¿controlas tus emociones o tus emociones te controlan?",
+                options: [
+                    { text: "Mis emociones me controlan totalmente - soy pasajera de mis sentimientos", value: 1 },
+                    { text: "Mis emociones tienen más control del que quisiera - me arrastran frecuentemente", value: 2 },
+                    { text: "Es una batalla constante - a veces yo gano, a veces ellas ganan", value: 3 },
+                    { text: "Controlo mis emociones - las siento pero elijo cómo responder", value: 4 }
+                ]
+            }
+        ];
+
+        let currentQuestion = 0;
+        let answers = {};
+
+        function initQuiz() {
+            const container = document.getElementById('questionsContainer');
+            questions.forEach((question, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = `question ${index === 0 ? 'active' : ''}`;
+                questionDiv.id = `question-${index}`;
+                
+                let optionsHTML = '<div class="options">';
+                question.options.forEach((option, optIndex) => {
+                    optionsHTML += `
+                        <label class="option" onclick="selectOption(${index}, ${option.value}, this)">
+                            <input type="radio" name="q${index}" value="${option.value}">
+                            <span>${option.text}</span>
+                        </label>
+                    `;
+                });
+                optionsHTML += '</div>';
+                
+                questionDiv.innerHTML = `
+                    <h3><span class="question-number">${index + 1}</span>${question.q}</h3>
+                    ${optionsHTML}
+                `;
+                
+                container.appendChild(questionDiv);
+            });
+            updateProgress();
+        }
+
+        function selectOption(questionIndex, value, element) {
+            answers[questionIndex] = value;
+            
+            const options = element.parentElement.querySelectorAll('.option');
+            options.forEach(opt => opt.classList.remove('selected'));
+            element.classList.add('selected');
+            
+            document.getElementById('nextBtn').disabled = false;
+            if (currentQuestion === questions.length - 1) {
+                document.getElementById('submitBtn').disabled = false;
+            }
+        }
+
+        function nextQuestion() {
+            if (!answers.hasOwnProperty(currentQuestion)) {
+                alert('Por favor selecciona una respuesta antes de continuar');
+                return;
+            }
+            
+            document.getElementById(`question-${currentQuestion}`).classList.remove('active');
+            currentQuestion++;
+            document.getElementById(`question-${currentQuestion}`).classList.add('active');
+            
+            updateButtons();
+            updateProgress();
+        }
+
+        function previousQuestion() {
+            document.getElementById(`question-${currentQuestion}`).classList.remove('active');
+            currentQuestion--;
+            document.getElementById(`question-${currentQuestion}`).classList.add('active');
+            
+            updateButtons();
+            updateProgress();
+        }
+
+        function updateButtons() {
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const submitBtn = document.getElementById('submitBtn');
+            
+            prevBtn.style.display = currentQuestion > 0 ? 'block' : 'none';
+            
+            if (currentQuestion === questions.length - 1) {
+                nextBtn.style.display = 'none';
+                submitBtn.style.display = 'block';
+                submitBtn.disabled = !answers.hasOwnProperty(currentQuestion);
+            } else {
+                nextBtn.style.display = 'block';
+                submitBtn.style.display = 'none';
+                nextBtn.disabled = !answers.hasOwnProperty(currentQuestion);
+            }
+        }
+
+        function updateProgress() {
+            const progress = ((currentQuestion + 1) / questions.length) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        function calculateResult() {
+            if (Object.keys(answers).length !== questions.length) {
+                alert('Por favor responde todas las preguntas');
+                return;
+            }
+            
+            const totalScore = Object.values(answers).reduce((sum, val) => sum + val, 0);
+            const maxScore = questions.length * 4;
+            const percentage = (totalScore / maxScore) * 100;
+            
+            let resultTitle, resultDescription, recommendations;
+            
+            if (percentage <= 40) {
+                resultTitle = "Nivel: Desregulación Emocional - Controlada por Emociones";
+                resultDescription = `<p><strong>Mujer,</strong> este autoanálisis revela una verdad urgente: tus emociones te están controlando completamente. No estás manejando tus emociones - estás siendo manejada por ellas. Cada decisión, cada acción, cada día está dictado por cómo te sientes en ese momento. Esta falta de inteligencia emocional no solo te mantiene estancada - te mantiene en un ciclo perpetuo de caos emocional.</p>
+                <p><strong>Tu realidad actual:</strong> Explotas o te paralizas ante emociones fuertes. Tus decisiones son dictadas por sentimientos temporales. Permaneces atrapada en emociones negativas por días o semanas. No puedes identificar qué estás sintiendo realmente. Has abandonado metas porque 'no te sentías lista'. El estrés te colapsa. Las críticas te destruyen. Postergas constantemente porque 'no tienes ganas'. Tus relaciones son montañas rusas emocionales. Eres pasajera de tus emociones, no conductora.</p>
+                <p><strong>La verdad liberadora:</strong> Las emociones son datos, no dictadores. Sentir no es igual a obedecer. Puedes sentir miedo y actuar con valentía. Puedes sentir tristeza y seguir avanzando. Puedes sentir ansiedad y tomar decisiones sabias. La inteligencia emocional no es suprimir emociones - es gestionarlas en lugar de ser gestionada por ellas.</p>`;
+                recommendations = `
+                    <li>Busca terapia profesional - este nivel de desregulación requiere ayuda experta</li>
+                    <li>Aprende a nombrar tus emociones - usa una 'rueda de emociones' para identificar qué sientes</li>
+                    <li>Practica la pausa - cuenta hasta 10 antes de reaccionar emocionalmente</li>
+                    <li>Separa sentir de actuar - puedes sentir sin tener que actuar inmediatamente sobre esa emoción</li>
+                    <li>Lleva un diario emocional - documenta emociones, gatillos y patrones</li>
+                    <li>Aprende técnicas de regulación: respiración profunda, grounding, mindfulness</li>
+                    <li>Establece una regla: nunca tomes decisiones importantes en picos emocionales</li>
+                    <li>Lee sobre inteligencia emocional - educación es el primer paso hacia maestría</li>
+                `;
+            } else if (percentage <= 60) {
+                resultTitle = "Nivel: Inteligencia Emocional Débil - Vulnerable a Emociones";
+                resultDescription = `<p><strong>Mujer,</strong> aunque no estás completamente desregulada, tus emociones todavía tienen demasiado poder sobre tus decisiones y acciones. Tienes momentos de control emocional pero frecuentemente te arrastran las olas emocionales. Esta inconsistencia te mantiene en un patrón de progreso interrumpido.</p>
+                <p><strong>Tu realidad actual:</strong> Las emociones fuertes te afectan significativamente aunque no explotes siempre. Tus decisiones están influenciadas excesivamente por sentimientos temporales. Te recuperas de estados emocionales negativos pero te toma días. Puedes identificar emociones básicas pero te confunden las complejas. Has perdido oportunidades esperando 'sentirte lista'. El estrés reduce tu efectividad significativamente. Las críticas te afectan más de lo que deberían. Tu humor dicta tu productividad frecuentemente.</p>
+                <p><strong>El camino hacia maestría:</strong> Necesitas desarrollar las herramientas para gestionar emociones en lugar de ser gestionada por ellas. La inteligencia emocional es una habilidad que se aprende. Mientras sigas siendo vulnerable a cada ola emocional, seguirás siendo inconsistente en tu progreso.</p>`;
+                recommendations = `
+                    <li>Desarrolla autoconciencia emocional - pregúntate 3 veces al día: '¿Qué estoy sintiendo y por qué?'</li>
+                    <li>Practica 'observar sin reaccionar' - nota la emoción sin actuar inmediatamente</li>
+                    <li>Crea un 'protocolo emocional' - pasos específicos para cuando sientas emociones fuertes</li>
+                    <li>Aprende a diferenciar entre emoción primaria y emoción secundaria</li>
+                    <li>Establece 'reglas de decisión' - no decides nada importante cuando estés muy emocional</li>
+                    <li>Practica tolerancia al malestar - puedes sentir incomodidad sin que te paralice</li>
+                    <li>Desarrolla un 'toolkit emocional' - técnicas específicas para diferentes emociones</li>
+                    <li>Trabaja con un coach o terapeuta en inteligencia emocional</li>
+                `;
+            } else if (percentage <= 80) {
+                resultTitle = "Nivel: Inteligencia Emocional Creciente - Gestionando Emociones";
+                resultDescription = `<p><strong>Mujer,</strong> has desarrollado buena inteligencia emocional. La mayoría del tiempo, puedes reconocer, procesar y gestionar tus emociones sin que te controlen. Actúas con sabiduría a pesar de sentir emociones fuertes. Sin embargo, todavía hay situaciones donde tus emociones tienen más poder del que deberían.</p>
+                <p><strong>Tu realidad actual:</strong> Reconoces tus emociones y puedes procesarlas efectivamente la mayoría del tiempo. No dejas que sentimientos temporales dicten decisiones importantes. Te recuperas rápidamente de estados emocionales negativos. Puedes actuar aunque no te sientas lista. Manejas el estrés productivamente. Procesas críticas sin que te destruyan. Tu productividad no depende completamente de tu humor. Sin embargo, en situaciones de alta presión o emociones muy intensas, todavía eres vulnerable.</p>
+                <p><strong>Tu próximo nivel:</strong> Desarrollar maestría emocional completa. Que ninguna emoción, por intensa que sea, te saque de tu centro o te desvíe de tu propósito. Usar emociones como información valiosa sin darles el control de tu vida.</p>`;
+                recommendations = `
+                    <li>Identifica tus 'puntos ciegos emocionales' - situaciones donde todavía pierdes control</li>
+                    <li>Practica regulación emocional avanzada en situaciones progresivamente más difíciles</li>
+                    <li>Comparte tu testimonio de cómo desarrollaste inteligencia emocional</li>
+                    <li>Mentorea a alguien que lucha con regulación emocional</li>
+                    <li>Profundiza en comprensión de emociones complejas y su propósito</li>
+                    <li>Desarrolla resiliencia emocional - capacidad de mantener estabilidad bajo presión extrema</li>
+                    <li>Practica usar emociones como información sin darles poder de decisión</li>
+                    <li>Continúa expandiendo tu capacidad de actuar con sabiduría a pesar de emociones intensas</li>
+                `;
+            } else {
+                resultTitle = "Nivel: Maestría Emocional - Dueña de Tus Emociones";
+                resultDescription = `<p><strong>Mujer,</strong> has alcanzado maestría emocional. Tus emociones no te controlan - tú las gestionas con sabiduría. Sientes profundamente pero actúas estratégicamente. Las emociones te informan pero no te dictan. Esta inteligencia emocional te da una ventaja extraordinaria en la vida y el liderazgo.</p>
+                <p><strong>Tu realidad actual:</strong> Reconoces y procesas emociones rápidamente sin que te paralicen. Tus decisiones están basadas en sabiduría, no en sentimientos temporales. Te recuperas de estados emocionales negativos en horas. Puedes nombrar y entender emociones complejas. Actúas aunque no te sientas lista. El estrés te enfoca en lugar de colapsarte. Procesas críticas objetivamente. Tu productividad es consistente independiente de tu humor. Manejas conflictos con calma. Eres dueña de tus emociones.</p>
+                <p><strong>Tu llamado ahora:</strong> Usar tu maestría emocional para liderar y enseñar a otras mujeres. Tu capacidad de gestionar emociones sin suprimirlas es un modelo que otras necesitan. Dios te dio esta inteligencia emocional para multiplicarla en tu generación.</p>`;
+                recommendations = `
+                    <li>Mantén tu maestría vigilante - situaciones extremas pueden todavía desafiar tu regulación</li>
+                    <li>Desarrolla contenido o ministerio sobre inteligencia emocional</li>
+                    <li>Comparte públicamente cómo desarrollaste maestría emocional</li>
+                    <li>Mentorea intencionalmente a mujeres controladas por sus emociones</li>
+                    <li>Sé modelo de estabilidad emocional en situaciones de alta presión</li>
+                    <li>Enseña a otras cómo sentir profundamente sin ser controladas por emociones</li>
+                    <li>Usa tu inteligencia emocional para liderar con sabiduría y compasión</li>
+                    <li>Intercede por mujeres prisioneras de sus propias emociones</li>
+                `;
+            }
+            
+            const resultHTML = `
+                <div class="result-card">
+                    <div class="result-title">${resultTitle}</div>
+                    <div class="result-description">${resultDescription}</div>
+                    <div class="result-recommendations">
+                        <h4>Pasos Para Desarrollar Inteligencia Emocional:</h4>
+                        <ul>${recommendations}</ul>
+                    </div>
+                    <div class="final-message">
+                        <p><strong>Recuerda:</strong> Las emociones son información, no instrucciones. Sentir no es igual a obedecer. Puedes sentir miedo y actuar con valentía. Puedes sentir tristeza y seguir avanzando. Puedes sentir ansiedad y tomar decisiones sabias. La inteligencia emocional no es ignorar o suprimir emociones - es reconocerlas, procesarlas y elegir sabiamente cómo responder. Tus emociones no definen tu realidad, tu respuesta a ellas sí. Mientras permitas que cada emoción dicte tus acciones, permanecerás esclava de sentimientos temporales.</p>
+                        <p>"Toda persona debe estar lista para escuchar, y ser lenta para hablar y para enojarse; pues la ira humana no produce la vida justa que Dios quiere." - Santiago 1:19-20</p>
+                    </div>
+                    <button class="btn restart-btn" onclick="location.reload()">Realizar Autoanálisis Nuevamente</button>
+                </div>
+            `;
+            
+            document.getElementById('questionsContainer').style.display = 'none';
+            document.querySelector('.navigation').style.display = 'none';
+            document.querySelector('.progress-bar').style.display = 'none';
+            
+            const resultContainer = document.getElementById('resultContainer');
+            resultContainer.innerHTML = resultHTML;
+            resultContainer.classList.add('active');
+        }
+
+        // Initialize the quiz when page loads
+        initQuiz();
+    </script>
+</body>
+</html>
