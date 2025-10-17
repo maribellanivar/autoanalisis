@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autoevaluación: Disciplina</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #fafafa;
+            min-height: 100vh;
+            padding: 40px 20px;
+            color: #1d1d1f;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #806459 0%, #96776c 100%);
+            color: white;
+            padding: 60px 40px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: -0.5px;
+        }
+
+        .header p {
+            font-size: 1.15em;
+            opacity: 0.9;
+            line-height: 1.6;
+            text-align: left;
+            font-weight: 300;
+            max-width: 700px;
+        }
+
+        .content {
+            padding: 50px 40px;
+        }
+
+        .question {
+            margin-bottom: 40px;
+            padding: 0;
+            display: none;
+        }
+
+        .question.active {
+            display: block;
+            animation: fadeIn 0.6s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .question h3 {
+            color: #806459;
+            margin-bottom: 30px;
+            font-size: 1.3em;
+            line-height: 1.5;
+            font-weight: 600;
+            letter-spacing: -0.3px;
+        }
+
+        .question-number {
+            display: inline-block;
+            background: #806459;
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 36px;
+            margin-right: 12px;
+            font-weight: 600;
+            font-size: 0.95em;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .option {
+            padding: 20px 24px;
+            background: #f5f5f7;
+            border: 2px solid transparent;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            font-weight: 400;
+        }
+
+        .option:hover {
+            background: #e8e8ed;
+            transform: translateX(2px);
+        }
+
+        .option.selected {
+            background: #806459;
+            color: white;
+            border-color: #806459;
+            font-weight: 500;
+        }
+
+        .option input[type="radio"] {
+            margin-right: 16px;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: #806459;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+            padding: 0 40px;
+            gap: 20px;
+        }
+
+        .btn {
+            padding: 16px 40px;
+            background: #806459;
+            color: white;
+            border: none;
+            border-radius: 980px;
+            cursor: pointer;
+            font-size: 1.05em;
+            font-weight: 500;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            font-family: 'Montserrat', sans-serif;
+            letter-spacing: -0.2px;
+        }
+
+        .btn:hover {
+            background: #6e5449;
+            transform: scale(1.02);
+        }
+
+        .btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .progress-bar {
+            height: 4px;
+            background: #e8e8ed;
+            margin: 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #806459;
+            width: 0%;
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .result {
+            display: none;
+            padding: 50px 40px;
+        }
+
+        .result.active {
+            display: block;
+            animation: fadeIn 0.6s ease-in;
+        }
+
+        .result-card {
+            background: #f5f5f7;
+            border-radius: 20px;
+            padding: 40px;
+            margin-top: 30px;
+        }
+
+        .result-title {
+            color: #806459;
+            font-size: 2.2em;
+            margin-bottom: 24px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .result-description {
+            line-height: 1.8;
+            margin-bottom: 30px;
+            font-size: 1.05em;
+            font-weight: 400;
+            color: #1d1d1f;
+        }
+
+        .result-description p {
+            margin-bottom: 20px;
+        }
+
+        .result-recommendations {
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            margin-top: 30px;
+        }
+
+        .result-recommendations h4 {
+            color: #806459;
+            margin-bottom: 20px;
+            font-size: 1.4em;
+            font-weight: 600;
+            letter-spacing: -0.3px;
+        }
+
+        .result-recommendations ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .result-recommendations li {
+            padding: 14px 0;
+            padding-left: 35px;
+            position: relative;
+            line-height: 1.7;
+            font-weight: 400;
+            color: #1d1d1f;
+        }
+
+        .result-recommendations li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #806459;
+            font-weight: 600;
+            font-size: 1.2em;
+        }
+
+        .restart-btn {
+            margin-top: 35px;
+            background: transparent;
+            color: #806459;
+            border: 2px solid #806459;
+        }
+
+        .restart-btn:hover {
+            background: #806459;
+            color: white;
+        }
+
+        .final-message {
+            margin-top: 35px;
+            padding: 30px;
+            background: white;
+            border-radius: 16px;
+            border-left: 4px solid #806459;
+        }
+
+        .final-message p {
+            font-size: 1.05em;
+            line-height: 1.8;
+            color: #1d1d1f;
+            margin-bottom: 18px;
+        }
+
+        .final-message p:last-child {
+            font-style: italic;
+            color: #424245;
+            margin-bottom: 0;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 40px 30px;
+            }
+
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .content {
+                padding: 30px 20px;
+            }
+
+            .navigation {
+                flex-direction: column;
+                padding: 0 20px;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            .result {
+                padding: 30px 20px;
+            }
+
+            .result-card {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Autoevaluación: Disciplina</h1>
+            <p>Evalúa tu nivel de disciplina y compromiso personal para alcanzar tus metas</p>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+        <div class="content" id="questionsContainer">
+            <!-- Questions will be generated here -->
+        </div>
+
+        <div class="navigation">
+            <button class="btn" id="nextBtn" onclick="nextQuestion()">Siguiente</button>
+            <button class="btn" id="submitBtn" onclick="calculateResult()" style="display: none;">Ver Resultado</button>
+            <button class="btn" id="prevBtn" onclick="previousQuestion()" style="display: none;">Anterior</button>
+        </div>
+
+        <div class="result" id="resultContainer">
+            <!-- Result will be shown here -->
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                q: "¿Cumplo con mis rutinas y horarios establecidos de manera consistente?",
+                options: [
+                    { text: "Nunca - No tengo rutinas establecidas ni horarios fijos", value: 1 },
+                    { text: "A veces - Depende del día y de cómo me sienta", value: 2 },
+                    { text: "Casi siempre - Rara vez me desvío de mis rutinas establecidas", value: 3 },
+                    { text: "Siempre - Soy extremadamente constante con mis horarios y rutinas", value: 4 }
+                ]
+            },
+            {
+                q: "¿Termino las tareas que inicio, incluso cuando son difíciles o aburridas?",
+                options: [
+                    { text: "Nunca - Dejo muchas cosas sin terminar constantemente", value: 1 },
+                    { text: "A veces - Termino solo las tareas más importantes o urgentes", value: 2 },
+                    { text: "Casi siempre - Rara vez dejo proyectos incompletos", value: 3 },
+                    { text: "Siempre - Completo absolutamente todo lo que empiezo sin importar qué", value: 4 }
+                ]
+            },
+            {
+                q: "¿Resisto las distracciones cuando necesito concentrarme en algo importante?",
+                options: [
+                    { text: "Nunca - Las distracciones me controlan completamente", value: 1 },
+                    { text: "A veces - Depende de la tarea y mi estado de ánimo", value: 2 },
+                    { text: "Casi siempre - Generalmente logro mantenerme enfocada", value: 3 },
+                    { text: "Siempre - Tengo un control extraordinario sobre las distracciones", value: 4 }
+                ]
+            },
+            {
+                q: "¿Mantengo mis compromisos y promesas, incluso cuando es inconveniente?",
+                options: [
+                    { text: "Nunca - Frecuentemente cancelo o cambio mis compromisos", value: 1 },
+                    { text: "A veces - Cumplo solo los compromisos más importantes", value: 2 },
+                    { text: "Casi siempre - Rara vez fallo a mis compromisos", value: 3 },
+                    { text: "Siempre - Mis compromisos y promesas son absolutamente sagrados", value: 4 }
+                ]
+            },
+            {
+                q: "¿Practico el autocontrol con la alimentación, el ejercicio y otros hábitos saludables?",
+                options: [
+                    { text: "Nunca - No tengo ningún control sobre mis hábitos", value: 1 },
+                    { text: "A veces - Tengo rachas buenas y rachas malas constantemente", value: 2 },
+                    { text: "Casi siempre - Generalmente mantengo buenos hábitos saludables", value: 3 },
+                    { text: "Siempre - Tengo un autocontrol excepcional en todas estas áreas", value: 4 }
+                ]
+            },
+            {
+                q: "¿Me levanto temprano y aprovecho las mañanas productivamente?",
+                options: [
+                    { text: "Nunca - Definitivamente no soy persona de mañanas", value: 1 },
+                    { text: "A veces - Solo cuando tengo compromisos ineludibles", value: 2 },
+                    { text: "Casi siempre - Generalmente empiezo el día temprano", value: 3 },
+                    { text: "Siempre - Soy consistentemente madrugadora y muy productiva en las mañanas", value: 4 }
+                ]
+            },
+            {
+                q: "¿Planifico mis días y semanas con anticipación?",
+                options: [
+                    { text: "Nunca - No planifico absolutamente nada, voy improvisando", value: 1 },
+                    { text: "A veces - Planifico solo lo más esencial", value: 2 },
+                    { text: "Casi siempre - Generalmente tengo mis días bien planificados", value: 3 },
+                    { text: "Siempre - Tengo todo meticulosamente planificado con anticipación", value: 4 }
+                ]
+            },
+            {
+                q: "¿Persevero en mis metas a largo plazo, incluso cuando enfrento obstáculos?",
+                options: [
+                    { text: "Nunca - Abandono rápidamente ante las primeras dificultades", value: 1 },
+                    { text: "A veces - Depende del tamaño del obstáculo", value: 2 },
+                    { text: "Casi siempre - Los obstáculos generalmente me motivan más", value: 3 },
+                    { text: "Siempre - Absolutamente nada me detiene de alcanzar mis objetivos", value: 4 }
+                ]
+            },
+            {
+                q: "¿Evito las tentaciones y gratificaciones inmediatas por beneficios futuros?",
+                options: [
+                    { text: "Nunca - Siempre elijo la gratificación inmediata", value: 1 },
+                    { text: "A veces - Es una lucha constante entre presente y futuro", value: 2 },
+                    { text: "Casi siempre - Generalmente pienso en el largo plazo", value: 3 },
+                    { text: "Siempre - Consistentemente priorizo beneficios futuros sobre placeres inmediatos", value: 4 }
+                ]
+            },
+            {
+                q: "¿Mantengo mi espacio de trabajo y personal ordenado y organizado?",
+                options: [
+                    { text: "Nunca - El desorden y caos son mi estado natural permanente", value: 1 },
+                    { text: "A veces - Hay orden en lo básico pero no más", value: 2 },
+                    { text: "Casi siempre - Generalmente mantengo todo bien organizado", value: 3 },
+                    { text: "Siempre - Todo en mi vida está perfectamente organizado y ordenado", value: 4 }
+                ]
+            }
+        ];
+
+        let currentQuestion = 0;
+        let answers = {};
+
+        function initQuiz() {
+            const container = document.getElementById('questionsContainer');
+            questions.forEach((question, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = `question ${index === 0 ? 'active' : ''}`;
+                questionDiv.id = `question-${index}`;
+                
+                let optionsHTML = '<div class="options">';
+                question.options.forEach((option, optIndex) => {
+                    optionsHTML += `
+                        <label class="option" onclick="selectOption(${index}, ${option.value}, this)">
+                            <input type="radio" name="q${index}" value="${option.value}">
+                            <span>${option.text}</span>
+                        </label>
+                    `;
+                });
+                optionsHTML += '</div>';
+                
+                questionDiv.innerHTML = `
+                    <h3><span class="question-number">${index + 1}</span>${question.q}</h3>
+                    ${optionsHTML}
+                `;
+                
+                container.appendChild(questionDiv);
+            });
+            updateProgress();
+        }
+
+        function selectOption(questionIndex, value, element) {
+            answers[questionIndex] = value;
+            
+            const options = element.parentElement.querySelectorAll('.option');
+            options.forEach(opt => opt.classList.remove('selected'));
+            element.classList.add('selected');
+            
+            document.getElementById('nextBtn').disabled = false;
+            if (currentQuestion === questions.length - 1) {
+                document.getElementById('submitBtn').disabled = false;
+            }
+        }
+
+        function nextQuestion() {
+            if (!answers.hasOwnProperty(currentQuestion)) {
+                alert('Por favor selecciona una respuesta antes de continuar');
+                return;
+            }
+            
+            document.getElementById(`question-${currentQuestion}`).classList.remove('active');
+            currentQuestion++;
+            document.getElementById(`question-${currentQuestion}`).classList.add('active');
+            
+            updateButtons();
+            updateProgress();
+        }
+
+        function previousQuestion() {
+            document.getElementById(`question-${currentQuestion}`).classList.remove('active');
+            currentQuestion--;
+            document.getElementById(`question-${currentQuestion}`).classList.add('active');
+            
+            updateButtons();
+            updateProgress();
+        }
+
+        function updateButtons() {
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const submitBtn = document.getElementById('submitBtn');
+            
+            prevBtn.style.display = currentQuestion > 0 ? 'block' : 'none';
+            
+            if (currentQuestion === questions.length - 1) {
+                nextBtn.style.display = 'none';
+                submitBtn.style.display = 'block';
+                submitBtn.disabled = !answers.hasOwnProperty(currentQuestion);
+            } else {
+                nextBtn.style.display = 'block';
+                submitBtn.style.display = 'none';
+                nextBtn.disabled = !answers.hasOwnProperty(currentQuestion);
+            }
+        }
+
+        function updateProgress() {
+            const progress = ((currentQuestion + 1) / questions.length) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        function calculateResult() {
+            if (Object.keys(answers).length !== questions.length) {
+                alert('Por favor responde todas las preguntas');
+                return;
+            }
+            
+            const totalScore = Object.values(answers).reduce((sum, val) => sum + val, 0);
+            const maxScore = questions.length * 5;
+            const percentage = (totalScore / maxScore) * 100;
+            
+            let resultTitle, resultDescription, recommendations;
+            
+            if (percentage <= 35) {
+                resultTitle = "Nivel: Disciplina Crítica - Es Hora de un Cambio Radical";
+                resultDescription = `<p><strong>Mujer,</strong> este autoanálisis revela una verdad que necesitas escuchar: tu falta de disciplina está saboteando activamente tu futuro. No tienes rutinas establecidas, abandonas lo que empiezas, las distracciones te controlan, no cumples compromisos, no tienes autocontrol en hábitos básicos, y tu vida carece de la estructura necesaria para el éxito.</p>
+                <p><strong>Tu realidad actual:</strong> Cada día es caótico e improvisado. Empiezas cosas con entusiasmo pero las abandonas rápidamente. Las tentaciones y distracciones dictan tu día. Tus espacios están desordenados, reflejando el desorden interno. No sigues rutinas ni planificas. Prometes cosas que no cumples. Los obstáculos pequeños te detienen completamente.</p>
+                <p><strong>La verdad difícil:</strong> Sin disciplina, tus sueños seguirán siendo solo sueños. El talento sin disciplina es talento desperdiciado. La motivación es temporal, la disciplina es permanente. No puedes alcanzar metas extraordinarias con hábitos ordinarios. La disciplina no limita tu libertad - la crea.</p>`;
+                recommendations = `
+                    <li>Establece UNA rutina matutina simple - empieza con 15 minutos y constrúyela gradualmente</li>
+                    <li>Elige UN hábito pequeño para dominar primero - no intentes cambiar todo a la vez</li>
+                    <li>Usa la regla de los 2 minutos: si algo toma menos de 2 minutos, hazlo inmediatamente</li>
+                    <li>Elimina una distracción mayor - redes sociales, TV excesiva, o tu ladrón de tiempo principal</li>
+                    <li>Organiza UN espacio físico completamente - tu cama, escritorio o habitación</li>
+                    <li>Comprométete públicamente a UNA meta específica - la accountability cambia todo</li>
+                    <li>Lee "Atomic Habits" de James Clear - es transformador para construir disciplina</li>
+                    <li>Busca un accountability partner - alguien que te haga rendir cuentas semanalmente</li>
+                `;
+            } else if (percentage <= 55) {
+                resultTitle = "Nivel: Disciplina Inconsistente - Potencial Sin Realizar";
+                resultDescription = `<p><strong>Mujer,</strong> tienes destellos de disciplina, pero la inconsistencia está costándote velocidad hacia tus metas. A veces eres disciplinada, otras veces no. Tienes rachas buenas seguidas de rachas malas. Esta montaña rusa de disciplina te mantiene en un ciclo de avance y retroceso constante.</p>
+                <p><strong>Tu realidad actual:</strong> Algunas rutinas las mantienes, otras no. Completas algunas tareas importantes pero dejas muchas sin terminar. Tu autocontrol varía según tu estado de ánimo. Planificas cuando te sientes motivada pero improvisas cuando no. Los obstáculos te detienen más de lo que deberían. Tu organización es inconsistente.</p>
+                <p><strong>El problema central:</strong> Dependes de la motivación en lugar de la disciplina. La motivación es como el clima - cambia constantemente. La disciplina es como el agua que cae sobre la roca - consistente, predecible, imparable. Necesitas convertir acciones esporádicas en sistemas permanentes.</p>`;
+                recommendations = `
+                    <li>Identifica tus "triggers" - qué circunstancias rompen tu disciplina y prepárate para ellas</li>
+                    <li>Crea sistemas, no solo metas - automatiza decisiones para eliminar la negociación interna</li>
+                    <li>Implementa la regla "nunca dos días seguidos" - si fallas un día, no falles el siguiente</li>
+                    <li>Trackea tus hábitos visualmente - calendario, app o diario que muestre tu consistencia</li>
+                    <li>Diseña tu ambiente para el éxito - elimina tentaciones, facilita lo correcto</li>
+                    <li>Establece consecuencias reales para no cumplir - dinero, responsabilidad pública</li>
+                    <li>Practica la "disciplina en lo pequeño" - haz tu cama, cumple horarios simples</li>
+                    <li>Únete a un grupo de accountability - la comunidad fortalece la consistencia</li>
+                `;
+            } else if (percentage <= 75) {
+                resultTitle = "Nivel: Disciplina Sólida - Construyendo Momentum";
+                resultDescription = `<p><strong>Mujer,</strong> has desarrollado una base sólida de disciplina. Tienes rutinas que mantienes mayormente, completas la mayoría de lo que empiezas, resistes muchas distracciones, y tienes sistemas funcionando. Sin embargo, todavía hay áreas donde cedes demasiado fácilmente o donde la consistencia falla.</p>
+                <p><strong>Tu realidad actual:</strong> Generalmente mantienes tus rutinas y compromisos. Terminas la mayoría de tus proyectos. Tu autocontrol es bueno en algunas áreas pero débil en otras. Planificas regularmente y tienes estructura en tu vida. Los obstáculos te frenan pero no te detienen completamente. Tu espacio generalmente está organizado.</p>
+                <p><strong>Tu próximo nivel:</strong> Pasar de "buena disciplina" a "disciplina excepcional". Cerrar las brechas donde aún eres inconsistente. Construir sobre tu fundación sólida para alcanzar niveles élite de disciplina. Convertirte en alguien inquebrantable.</p>`;
+                recommendations = `
+                    <li>Identifica tus "puntos débiles" de disciplina - dónde aún eres vulnerable</li>
+                    <li>Implementa rituales pre-decisión - elimina negociación en momentos de debilidad</li>
+                    <li>Eleva tus estándares - lo que antes era "suficiente" ahora es "mínimo aceptable"</li>
+                    <li>Practica gratificación diferida intencionalmente - entrena el músculo del autocontrol</li>
+                    <li>Estudia personas con disciplina excepcional - atletas olímpicos, Navy SEALs, monjes</li>
+                    <li>Implementa "hard rules" en áreas donde aún eres inconsistente - cero excepciones</li>
+                    <li>Expande tu disciplina a nuevas áreas - finanzas, relaciones, salud</li>
+                    <li>Mentorea a alguien en disciplina - enseñar solidifica tu propio compromiso</li>
+                `;
+            } else {
+                resultTitle = "Nivel: Disciplina Excepcional - Viviendo con Excelencia";
+                resultDescription = `<p><strong>Mujer,</strong> has alcanzado un nivel extraordinario de disciplina. Eres consistente con rutinas, terminas lo que empiezas, resistes distracciones, cumples compromisos, practicas autocontrol, planificas con anticipación, perseveras ante obstáculos, priorizas el largo plazo y mantienes organización. Tu disciplina no es accidente - es el resultado de decisiones intencionales repetidas.</p>
+                <p><strong>Tu realidad actual:</strong> Tienes rutinas inquebrantables. Completas absolutamente todo lo que empiezas. Las distracciones no te controlan. Tus compromisos son sagrados. Tu autocontrol es ejemplar. Tus mañanas son productivas. Planificas con anticipación consistentemente. Los obstáculos te fortalecen en lugar de detenerte. Priorizas el futuro sobre placeres inmediatos. Tu espacio refleja tu disciplina interna.</p>
+                <p><strong>Tu llamado ahora:</strong> Usar tu disciplina excepcional para impacto mayor. Enseñar a otras mujeres. Alcanzar metas que otros consideran imposibles. Convertirte en ejemplo viviente de que la disciplina es el camino al verdadero éxito y libertad.</p>`;
+                recommendations = `
+                    <li>Documenta tu sistema de disciplina - escribe tu proceso para enseñar a otros</li>
+                    <li>Establece metas que requieran tu nivel de disciplina - marathons, libros, negocios</li>
+                    <li>Mentorea intencionalmente a mujeres que luchan con disciplina</li>
+                    <li>Protege tu disciplina vigilantemente - no permitas que se erosione</li>
+                    <li>Usa tu disciplina para causas mayores - propósito más allá de ti misma</li>
+                    <li>Profundiza tu "por qué" - conecta tu disciplina con propósito trascendente</li>
+                    <li>Comparte tu testimonio - tu historia puede transformar vidas</li>
+                    <li>Continúa creciendo - siempre hay siguiente nivel, incluso en disciplina</li>
+                `;
+            }
+            
+            const resultHTML = `
+                <div class="result-card">
+                    <div class="result-title">${resultTitle}</div>
+                    <div class="result-description">${resultDescription}</div>
+                    <div class="result-recommendations">
+                        <h4>Pasos Para Fortalecer Tu Disciplina:</h4>
+                        <ul>${recommendations}</ul>
+                    </div>
+                    <div class="final-message">
+                        <p><strong>Recuerda:</strong> La disciplina es el puente entre tus metas y tus logros. No es restrictiva - es liberadora. La disciplina te da libertad para vivir la vida que realmente quieres en lugar de la vida que las circunstancias te imponen. Cada pequeña decisión disciplinada es un voto a favor de la persona que quieres ser. La motivación te hace empezar, la disciplina te hace terminar. No necesitas ser perfecta, necesitas ser consistente. La mujer disciplinada no es la que nunca falla - es la que siempre se levanta y continúa. Tu futuro será construido por tus hábitos diarios, no por tus intenciones ocasionales.</p>
+                        <p>"Porque Dios no nos ha dado un espíritu de cobardía, sino de poder, de amor y de dominio propio." - 2 Timoteo 1:7</p>
+                    </div>
+                    <button class="btn restart-btn" onclick="location.reload()">Realizar Autoevaluación Nuevamente</button>
+                </div>
+            `;
+            
+            document.getElementById('questionsContainer').style.display = 'none';
+            document.querySelector('.navigation').style.display = 'none';
+            document.querySelector('.progress-bar').style.display = 'none';
+            
+            const resultContainer = document.getElementById('resultContainer');
+            resultContainer.innerHTML = resultHTML;
+            resultContainer.classList.add('active');
+        }
+
+        // Initialize the quiz when page loads
+        initQuiz();
+    </script>
+</body>
+</html>
