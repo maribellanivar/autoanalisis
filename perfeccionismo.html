@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autoevaluación: Perfeccionismo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #fafafa;
+            min-height: 100vh;
+            padding: 40px 20px;
+            color: #1d1d1f;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #806459 0%, #96776c 100%);
+            color: white;
+            padding: 60px 40px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: -0.5px;
+        }
+
+        .header p {
+            font-size: 1.15em;
+            opacity: 0.9;
+            line-height: 1.6;
+            text-align: left;
+            font-weight: 300;
+            max-width: 700px;
+        }
+
+        .content {
+            padding: 50px 40px;
+        }
+
+        .question {
+            margin-bottom: 40px;
+            padding: 0;
+            display: none;
+        }
+
+        .question.active {
+            display: block;
+            animation: fadeIn 0.6s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .question h3 {
+            color: #806459;
+            margin-bottom: 30px;
+            font-size: 1.3em;
+            line-height: 1.5;
+            font-weight: 600;
+            letter-spacing: -0.3px;
+        }
+
+        .question-number {
+            display: inline-block;
+            background: #806459;
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 36px;
+            margin-right: 12px;
+            font-weight: 600;
+            font-size: 0.95em;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .option {
+            padding: 20px 24px;
+            background: #f5f5f7;
+            border: 2px solid transparent;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            font-weight: 400;
+        }
+
+        .option:hover {
+            background: #e8e8ed;
+            transform: translateX(2px);
+        }
+
+        .option.selected {
+            background: #806459;
+            color: white;
+            border-color: #806459;
+            font-weight: 500;
+        }
+
+        .option input[type="radio"] {
+            margin-right: 16px;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: #806459;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+            padding: 0 40px;
+            gap: 20px;
+        }
+
+        .btn {
+            padding: 16px 40px;
+            background: #806459;
+            color: white;
+            border: none;
+            border-radius: 980px;
+            cursor: pointer;
+            font-size: 1.05em;
+            font-weight: 500;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            font-family: 'Montserrat', sans-serif;
+            letter-spacing: -0.2px;
+        }
+
+        .btn:hover {
+            background: #6e5449;
+            transform: scale(1.02);
+        }
+
+        .btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .progress-bar {
+            height: 4px;
+            background: #e8e8ed;
+            margin: 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #806459;
+            width: 0%;
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .result {
+            display: none;
+            padding: 50px 40px;
+        }
+
+        .result.active {
+            display: block;
+            animation: fadeIn 0.6s ease-in;
+        }
+
+        .result-card {
+            background: #f5f5f7;
+            border-radius: 20px;
+            padding: 40px;
+            margin-top: 30px;
+        }
+
+        .result-title {
+            color: #806459;
+            font-size: 2.2em;
+            margin-bottom: 24px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .result-description {
+            line-height: 1.8;
+            margin-bottom: 30px;
+            font-size: 1.05em;
+            font-weight: 400;
+            color: #1d1d1f;
+        }
+
+        .result-description p {
+            margin-bottom: 20px;
+        }
+
+        .result-recommendations {
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            margin-top: 30px;
+        }
+
+        .result-recommendations h4 {
+            color: #806459;
+            margin-bottom: 20px;
+            font-size: 1.4em;
+            font-weight: 600;
+            letter-spacing: -0.3px;
+        }
+
+        .result-recommendations ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .result-recommendations li {
+            padding: 14px 0;
+            padding-left: 35px;
+            position: relative;
+            line-height: 1.7;
+            font-weight: 400;
+            color: #1d1d1f;
+        }
+
+        .result-recommendations li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #806459;
+            font-weight: 600;
+            font-size: 1.2em;
+        }
+
+        .restart-btn {
+            margin-top: 35px;
+            background: transparent;
+            color: #806459;
+            border: 2px solid #806459;
+        }
+
+        .restart-btn:hover {
+            background: #806459;
+            color: white;
+        }
+
+        .final-message {
+            margin-top: 35px;
+            padding: 30px;
+            background: white;
+            border-radius: 16px;
+            border-left: 4px solid #806459;
+        }
+
+        .final-message p {
+            font-size: 1.05em;
+            line-height: 1.8;
+            color: #1d1d1f;
+            margin-bottom: 18px;
+        }
+
+        .final-message p:last-child {
+            font-style: italic;
+            color: #424245;
+            margin-bottom: 0;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 40px 30px;
+            }
+
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .content {
+                padding: 30px 20px;
+            }
+
+            .navigation {
+                flex-direction: column;
+                padding: 0 20px;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            .result {
+                padding: 30px 20px;
+            }
+
+            .result-card {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Autoevaluación: Perfeccionismo</h1>
+            <p>Descubre cómo el perfeccionismo puede estar bloqueando tus sueños y el propósito de Dios para tu vida</p>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+        <div class="content" id="questionsContainer">
+            <!-- Questions will be generated here -->
+        </div>
+
+        <div class="navigation">
+            <button class="btn" id="nextBtn" onclick="nextQuestion()">Siguiente</button>
+            <button class="btn" id="submitBtn" onclick="calculateResult()" style="display: none;">Ver Resultado</button>
+            <button class="btn" id="prevBtn" onclick="previousQuestion()" style="display: none;">Anterior</button>
+        </div>
+
+        <div class="result" id="resultContainer">
+            <!-- Result will be shown here -->
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                q: "¿Retraso o evito comenzar proyectos porque temo que no salgan perfectos?",
+                options: [
+                    { text: "Nunca - Empiezo las cosas sin importar si serán perfectas o no", value: 1 },
+                    { text: "A veces - Ocasionalmente me frena el miedo a no hacerlo perfecto", value: 2 },
+                    { text: "Frecuentemente - El perfeccionismo retrasa muchos de mis proyectos", value: 3 },
+                    { text: "Siempre - Rara vez empiezo algo por miedo a que no sea perfecto", value: 4 }
+                ]
+            },
+            {
+                q: "¿Critico duramente mi trabajo o me enfoco en los errores más que en los logros?",
+                options: [
+                    { text: "Nunca - Celebro mis logros y acepto mis errores como aprendizaje", value: 1 },
+                    { text: "A veces - Ocasionalmente soy dura conmigo misma", value: 2 },
+                    { text: "Frecuentemente - Mi crítica interna es muy fuerte y constante", value: 3 },
+                    { text: "Siempre - Nunca estoy satisfecha y solo veo lo que falta", value: 4 }
+                ]
+            },
+            {
+                q: "¿Evito compartir mis dones, talentos o trabajo porque siento que no están 'listos'?",
+                options: [
+                    { text: "Nunca - Comparto libremente aunque no sea perfecto", value: 1 },
+                    { text: "A veces - Ocasionalmente espero más de lo necesario", value: 2 },
+                    { text: "Frecuentemente - Guardo muchas cosas sin compartir por no estar 'listas'", value: 3 },
+                    { text: "Siempre - Casi nunca comparto porque nunca me siento suficientemente preparada", value: 4 }
+                ]
+            },
+            {
+                q: "¿Comparo mi trabajo con el de otros y me siento inferior o inadecuada?",
+                options: [
+                    { text: "Nunca - Celebro el éxito de otros sin compararme", value: 1 },
+                    { text: "A veces - Me comparo ocasionalmente pero no me afecta mucho", value: 2 },
+                    { text: "Frecuentemente - La comparación me hace sentir inferior constantemente", value: 3 },
+                    { text: "Siempre - Vivo comparándome y sintiéndome que nunca soy suficiente", value: 4 }
+                ]
+            },
+            {
+                q: "¿Paso tiempo excesivo puliendo detalles que otros ni siquiera notan?",
+                options: [
+                    { text: "Nunca - Entrego las cosas cuando están bien hechas, no perfectas", value: 1 },
+                    { text: "A veces - Ocasionalmente me pierdo en detalles innecesarios", value: 2 },
+                    { text: "Frecuentemente - Paso mucho tiempo en detalles que no importan realmente", value: 3 },
+                    { text: "Siempre - Pierdo tiempo valioso obsesionándome con detalles mínimos", value: 4 }
+                ]
+            },
+            {
+                q: "¿He dejado pasar oportunidades porque sentía que no estaba 'suficientemente lista'?",
+                options: [
+                    { text: "Nunca - Tomo oportunidades aunque no me sienta 100% lista", value: 1 },
+                    { text: "A veces - He perdido algunas oportunidades esperando estar más lista", value: 2 },
+                    { text: "Frecuentemente - El 'no estar lista' me ha costado muchas oportunidades", value: 3 },
+                    { text: "Siempre - Constantemente pierdo oportunidades esperando estar perfecta", value: 4 }
+                ]
+            },
+            {
+                q: "¿Me paraliza el miedo al fracaso o a la crítica de otros?",
+                options: [
+                    { text: "Nunca - El miedo no me detiene de actuar", value: 1 },
+                    { text: "A veces - Ocasionalmente el miedo me frena un poco", value: 2 },
+                    { text: "Frecuentemente - El miedo al fracaso limita muchas de mis acciones", value: 3 },
+                    { text: "Siempre - Vivo paralizada por el miedo a fallar o ser criticada", value: 4 }
+                ]
+            },
+            {
+                q: "¿Siento que mi valor depende de lo bien que hago las cosas?",
+                options: [
+                    { text: "Nunca - Mi valor está en quién soy, no en lo que hago", value: 1 },
+                    { text: "A veces - Ocasionalmente confundo mi valor con mi desempeño", value: 2 },
+                    { text: "Frecuentemente - Mi autoestima depende mucho de mi desempeño", value: 3 },
+                    { text: "Siempre - Solo me siento valiosa cuando hago las cosas perfectamente", value: 4 }
+                ]
+            },
+            {
+                q: "¿Evito intentar cosas nuevas por miedo a no ser buena inmediatamente?",
+                options: [
+                    { text: "Nunca - Disfruto aprender cosas nuevas sin importar si soy buena al inicio", value: 1 },
+                    { text: "A veces - Ocasionalmente evito lo nuevo por miedo a no ser buena", value: 2 },
+                    { text: "Frecuentemente - El miedo a no ser buena me impide probar muchas cosas", value: 3 },
+                    { text: "Siempre - Solo hago cosas en las que ya soy buena", value: 4 }
+                ]
+            },
+            {
+                q: "¿Siento que Dios está esperando que yo sea perfecta antes de usarme?",
+                options: [
+                    { text: "Nunca - Sé que Dios me usa en mi imperfección", value: 1 },
+                    { text: "A veces - Ocasionalmente pienso que necesito estar 'lista' para que Dios me use", value: 2 },
+                    { text: "Frecuentemente - Creo que Dios no puede usarme hasta que lo haga todo bien", value: 3 },
+                    { text: "Siempre - Estoy convencida de que debo ser perfecta para que Dios me use", value: 4 }
+                ]
+            }
+        ];
+
+        let currentQuestion = 0;
+        let answers = {};
+
+        function initQuiz() {
+            const container = document.getElementById('questionsContainer');
+            questions.forEach((question, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = `question ${index === 0 ? 'active' : ''}`;
+                questionDiv.id = `question-${index}`;
+                
+                let optionsHTML = '<div class="options">';
+                question.options.forEach((option, optIndex) => {
+                    optionsHTML += `
+                        <label class="option" onclick="selectOption(${index}, ${option.value}, this)">
+                            <input type="radio" name="q${index}" value="${option.value}">
+                            <span>${option.text}</span>
+                        </label>
+                    `;
+                });
+                optionsHTML += '</div>';
+                
+                questionDiv.innerHTML = `
+                    <h3><span class="question-number">${index + 1}</span>${question.q}</h3>
+                    ${optionsHTML}
+                `;
+                
+                container.appendChild(questionDiv);
+            });
+            updateProgress();
+        }
+
+        function selectOption(questionIndex, value, element) {
+            answers[questionIndex] = value;
+            
+            const options = element.parentElement.querySelectorAll('.option');
+            options.forEach(opt => opt.classList.remove('selected'));
+            element.classList.add('selected');
+            
+            document.getElementById('nextBtn').disabled = false;
+            if (currentQuestion === questions.length - 1) {
+                document.getElementById('submitBtn').disabled = false;
+            }
+        }
+
+        function nextQuestion() {
+            if (!answers.hasOwnProperty(currentQuestion)) {
+                alert('Por favor selecciona una respuesta antes de continuar');
+                return;
+            }
+            
+            document.getElementById(`question-${currentQuestion}`).classList.remove('active');
+            currentQuestion++;
+            document.getElementById(`question-${currentQuestion}`).classList.add('active');
+            
+            updateButtons();
+            updateProgress();
+        }
+
+        function previousQuestion() {
+            document.getElementById(`question-${currentQuestion}`).classList.remove('active');
+            currentQuestion--;
+            document.getElementById(`question-${currentQuestion}`).classList.add('active');
+            
+            updateButtons();
+            updateProgress();
+        }
+
+        function updateButtons() {
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const submitBtn = document.getElementById('submitBtn');
+            
+            prevBtn.style.display = currentQuestion > 0 ? 'block' : 'none';
+            
+            if (currentQuestion === questions.length - 1) {
+                nextBtn.style.display = 'none';
+                submitBtn.style.display = 'block';
+                submitBtn.disabled = !answers.hasOwnProperty(currentQuestion);
+            } else {
+                nextBtn.style.display = 'block';
+                submitBtn.style.display = 'none';
+                nextBtn.disabled = !answers.hasOwnProperty(currentQuestion);
+            }
+        }
+
+        function updateProgress() {
+            const progress = ((currentQuestion + 1) / questions.length) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        function calculateResult() {
+            if (Object.keys(answers).length !== questions.length) {
+                alert('Por favor responde todas las preguntas');
+                return;
+            }
+            
+            const totalScore = Object.values(answers).reduce((sum, val) => sum + val, 0);
+            const maxScore = questions.length * 4;
+            const percentage = (totalScore / maxScore) * 100;
+            
+            let resultTitle, resultDescription, recommendations;
+            
+            if (percentage <= 35) {
+                resultTitle = "Nivel: Libertad en la Imperfección";
+                resultDescription = `<p><strong>Mujer,</strong> ¡qué hermoso! Has encontrado libertad en tu imperfección. No permites que el perfeccionismo te paralice ni te impida compartir tus dones. Entiendes que Dios no está esperando tu perfección - Él te usa exactamente como eres. Celebras el progreso sobre la perfección y te atreves a intentar cosas nuevas sin miedo.</p>
+                <p><strong>Tu realidad actual:</strong> Comienzas proyectos sin esperar que todo sea perfecto. Celebras tus logros y ves los errores como aprendizaje. Compartes libremente tus dones aunque no te sientas 100% lista. No vives comparándote con otros. El miedo al fracaso no te paraliza. Sabes que tu valor no depende de tu desempeño. Te atreves a probar cosas nuevas. Entiendes que Dios te usa en tu imperfección.</p>
+                <p><strong>Tu llamado ahora:</strong> Ser ejemplo y mentora para otras mujeres que luchan con perfeccionismo paralizante. Tu libertad puede liberar a otras. Enseña lo que has aprendido sobre valor, gracia y acción imperfecta. Continúa caminando en esta libertad.</p>`;
+                recommendations = `
+                    <li>Comparte tu testimonio de libertad con mujeres que luchan con perfeccionismo</li>
+                    <li>Mentorea a alguien que está paralizada por el miedo a no ser perfecta</li>
+                    <li>Sigue modelando acción imperfecta sobre perfección paralizante</li>
+                    <li>Enseña sobre la diferencia entre excelencia y perfeccionismo</li>
+                    <li>Celebra públicamente tus "fracasos" como aprendizajes</li>
+                    <li>Crea espacios donde otras mujeres puedan compartir sin temor al juicio</li>
+                    <li>Escribe sobre tu jornada de perfeccionismo a libertad</li>
+                    <li>Continúa recordándote que Dios usa vasijas imperfectas</li>
+                `;
+            } else if (percentage <= 55) {
+                resultTitle = "Nivel: Perfeccionismo Moderado - En la Balanza";
+                resultDescription = `<p><strong>Mujer,</strong> estás en un punto intermedio. Algunas veces te atreves a actuar imperfectamente, otras veces el perfeccionismo te frena. A veces celebras tus logros, otras veces te enfocas solo en lo que falta. Esta inconsistencia te mantiene oscilando entre avanzar y quedarte estancada. El perfeccionismo no te controla completamente, pero tampoco estás completamente libre.</p>
+                <p><strong>Tu realidad actual:</strong> Ocasionalmente retrasas proyectos por querer que sean perfectos. A veces eres muy crítica contigo misma. Esperas más de lo necesario antes de compartir tu trabajo. Te comparas con otros ocasionalmente. Algunos detalles innecesarios te consumen tiempo. Has perdido algunas oportunidades esperando estar más lista. El miedo al fracaso te frena ocasionalmente. Tu autoestima a veces depende de tu desempeño.</p>
+                <p><strong>La decisión necesaria:</strong> Es tiempo de elegir conscientemente el progreso sobre la perfección. Identificar los patrones específicos donde el perfeccionismo te frena y decidir actuar a pesar del miedo. Reclamar la verdad de que Dios te usa en tu imperfección.</p>`;
+                recommendations = `
+                    <li>Identifica las áreas específicas donde el perfeccionismo te paraliza más</li>
+                    <li>Practica "lanzar antes de estar lista" - empieza algo imperfecto esta semana</li>
+                    <li>Establece límites de tiempo para evitar pulir excesivamente los detalles</li>
+                    <li>Celebra conscientemente cada pequeño logro antes de ver lo que falta</li>
+                    <li>Elimina o limita el tiempo en redes sociales si alimentan la comparación</li>
+                    <li>Busca un mentor o coach que te ayude a separar excelencia de perfeccionismo</li>
+                    <li>Lee "The Gifts of Imperfection" de Brené Brown</li>
+                    <li>Pregúntale a Dios: "¿Qué no estoy haciendo por miedo a no hacerlo perfectamente?"</li>
+                `;
+            } else if (percentage <= 75) {
+                resultTitle = "Nivel: Perfeccionismo Significativo - La Jaula Dorada";
+                resultDescription = `<p><strong>Mujer,</strong> el perfeccionismo te tiene en una jaula hermosa pero limitante. Frecuentemente retrasas o evitas comenzar cosas por miedo a que no sean perfectas. Tu crítica interna es fuerte y constante. Guardas tus dones sin compartir porque nunca te sientes suficientemente lista. La comparación te hace sentir inferior. Has perdido muchas oportunidades esperando estar perfecta.</p>
+                <p><strong>Tu realidad actual:</strong> El perfeccionismo retrasa muchos de tus proyectos y decisiones. Eres duramente crítica contigo misma constantemente. Guardas mucho de tu trabajo sin compartir por no estar "listo". Vives comparándote y sintiéndote inferior. Pierdes tiempo valioso en detalles que nadie nota. El miedo al fracaso y la crítica limita muchas de tus acciones. Tu autoestima depende mucho de tu desempeño. Evitas probar cosas nuevas por miedo a no ser buena inmediatamente.</p>
+                <p><strong>La verdad urgente:</strong> El perfeccionismo no es virtud - es prisión. Te está robando tu propósito. Dios no está esperando tu perfección para usarte - Él quiere usarte AHORA, en tu imperfección. Cada día que esperas estar "lista" es un día que tu don no impacta al mundo.</p>`;
+                recommendations = `
+                    <li>Reconoce que el perfeccionismo es miedo disfrazado de estándar alto</li>
+                    <li>Haz una cosa "mal" intencionalmente esta semana para romper el patrón</li>
+                    <li>Comparte algo sin estar lista - un mensaje, una idea, tu historia</li>
+                    <li>Identifica de dónde viene tu perfeccionismo - ¿padres, trauma, cultura?</li>
+                    <li>Busca ayuda profesional - consejería o coaching para trabajar esto profundamente</li>
+                    <li>Practica autocompasión activamente - háblate como le hablarías a una amiga</li>
+                    <li>Estudia las historias bíblicas de personas imperfectas que Dios usó poderosamente</li>
+                    <li>Declara en voz alta: "El progreso imperfecto es mejor que la perfección paralizante"</li>
+                `;
+            } else {
+                resultTitle = "Nivel: Perfeccionismo Paralizante - Prisionera de la Perfección";
+                resultDescription = `<p><strong>Mujer,</strong> este autoanálisis revela una verdad dolorosa pero liberadora: el perfeccionismo te tiene completamente paralizada. Rara vez empiezas algo por miedo a que no sea perfecto. Nunca estás satisfecha y solo ves lo que falta. Casi nunca compartes tus dones porque nunca te sientes suficientemente preparada. Vives comparándote y sintiéndote inferior. Constantemente pierdes oportunidades esperando estar perfecta. Vives paralizada por el miedo al fracaso.</p>
+                <p><strong>Tu realidad devastadora:</strong> El perfeccionismo controla cada decisión. Tu crítica interna es implacable. Tus dones están guardados, sin impactar a nadie. La comparación te consume. Obsesionas con detalles que nadie verá. Las oportunidades pasan mientras esperas estar "lista". El miedo te paraliza completamente. Tu valor depende de tu desempeño. Solo haces lo que ya dominas. Y lo más trágico: crees que Dios no puede usarte hasta que seas perfecta.</p>
+                <p><strong>La verdad que te hará libre:</strong> El perfeccionismo NO es de Dios. Es una mentira del enemigo para mantenerte callada, pequeña e inefectiva. Dios NUNCA usó personas perfectas - usó personas disponibles. Moisés tartamudeaba. David era adúltero. Pedro negó a Jesús. Pablo perseguía cristianos. Y Dios los usó poderosamente. Tu perfección no es el requisito - tu disponibilidad sí. Cada día que esperas ser perfecta, tu don no llega a quien lo necesita. Es tiempo de romper esta prisión.</p>`;
+                recommendations = `
+                    <li>URGENTE: Busca ayuda profesional - terapeuta cristiana especializada en perfeccionismo</li>
+                    <li>Esta semana, comparte algo imperfecto públicamente - post, video, escrito</li>
+                    <li>Identifica la mentira central: ¿De dónde viene tu creencia de que debes ser perfecta?</li>
+                    <li>Estudia 2 Corintios 12:9 diariamente - "Mi poder se perfecciona en la debilidad"</li>
+                    <li>Únete a un grupo de mujeres donde puedas ser vulnerable sin perfección</li>
+                    <li>Practica diariamente: hacer una cosa mal intencionalmente para romper el patrón</li>
+                    <li>Declara en voz alta cada mañana: "Dios me usa en mi imperfección. Hoy elijo progreso sobre perfección"</li>
+                    <li>Ayuna de redes sociales si alimentan la comparación y el perfeccionismo</li>
+                `;
+            }
+            
+            const resultHTML = `
+                <div class="result-card">
+                    <div class="result-title">${resultTitle}</div>
+                    <div class="result-description">${resultDescription}</div>
+                    <div class="result-recommendations">
+                        <h4>Pasos Para Liberarte del Perfeccionismo:</h4>
+                        <ul>${recommendations}</ul>
+                    </div>
+                    <div class="final-message">
+                        <p><strong>Recuerda:</strong> Dios no te llamó a ser perfecta - te llamó a ser disponible. El perfeccionismo no es estándar alto, es miedo disfrazado. Cada día que esperas estar "lista perfectamente" es un día que tu don no impacta al mundo. La excelencia honra a Dios, pero el perfeccionismo lo deshonra porque dice "Tu gracia no es suficiente hasta que yo sea perfecta". Tu valor no viene de lo que haces - viene de quién eres en Cristo. El progreso imperfecto siempre vence a la perfección paralizante. Dios usó a Moisés el tartamudo, a David el adúltero, a Pedro el negador. No está esperando tu perfección - está esperando tu "sí". Las personas que Dios usa no son perfectas - son obedientes.</p>
+                        <p>"Pero Él me dijo: 'Te basta con mi gracia, pues mi poder se perfecciona en la debilidad.'" - 2 Corintios 12:9</p>
+                    </div>
+                    <button class="btn restart-btn" onclick="location.reload()">Realizar Autoevaluación Nuevamente</button>
+                </div>
+            `;
+            
+            document.getElementById('questionsContainer').style.display = 'none';
+            document.querySelector('.navigation').style.display = 'none';
+            document.querySelector('.progress-bar').style.display = 'none';
+            
+            const resultContainer = document.getElementById('resultContainer');
+            resultContainer.innerHTML = resultHTML;
+            resultContainer.classList.add('active');
+        }
+
+        // Initialize the quiz when page loads
+        initQuiz();
+    </script>
+</body>
+</html>
