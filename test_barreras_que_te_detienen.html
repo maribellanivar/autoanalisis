@@ -1,0 +1,1425 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Identifica Tus Barreras - La Mujer que Nací para Ser</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+            background: #690303;
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 6px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            overflow: hidden;
+        }
+
+        .header {
+            background: #690303;
+            color: white;
+            padding: 50px 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 1.7em;
+            margin-bottom: 8px;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+        }
+
+        .header p {
+            font-size: 0.9em;
+            opacity: 0.85;
+            font-weight: 300;
+            letter-spacing: 0.2px;
+        }
+
+        .content {
+            padding: 40px 30px;
+        }
+
+        .intro-section {
+            text-align: center;
+            margin-bottom: 40px;
+            display: none;
+        }
+
+        .intro-section.active {
+            display: block;
+        }
+
+        .intro-section h2 {
+            color: #690303;
+            margin-bottom: 20px;
+            font-size: 1.2em;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+        }
+
+        .intro-section p {
+            line-height: 1.7;
+            margin-bottom: 15px;
+            font-size: 0.93em;
+            color: #666;
+            font-weight: 300;
+        }
+
+        .start-btn {
+            background: #690303;
+            color: white;
+            border: none;
+            padding: 11px 36px;
+            font-size: 0.9em;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 30px;
+            transition: all 0.2s;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+        }
+
+        .start-btn:hover {
+            background: #4a0505;
+            box-shadow: 0 3px 10px rgba(105, 3, 3, 0.15);
+        }
+
+        .questions-section {
+            display: none;
+        }
+
+        .questions-section.active {
+            display: block;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 2px;
+            background: #e5e5e5;
+            border-radius: 1px;
+            margin-bottom: 35px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #690303;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .question-block {
+            display: none;
+            animation: fadeIn 0.35s ease;
+        }
+
+        .question-block.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .question-text {
+            font-size: 1.1em;
+            color: #333;
+            margin-bottom: 24px;
+            font-weight: 500;
+            line-height: 1.6;
+            letter-spacing: 0.2px;
+        }
+
+        .question-number {
+            color: #999;
+            font-size: 0.75em;
+            margin-bottom: 10px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option {
+            display: flex;
+            align-items: flex-start;
+            padding: 13px 14px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: white;
+        }
+
+        .option:hover {
+            border-color: #690303;
+            background: #fef9f9;
+        }
+
+        .option input[type="radio"] {
+            margin-right: 11px;
+            margin-top: 2px;
+            cursor: pointer;
+            accent-color: #690303;
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
+        }
+
+        .option-text {
+            flex: 1;
+            font-size: 0.92em;
+            line-height: 1.5;
+            color: #555;
+            font-weight: 300;
+        }
+
+        .option.selected {
+            border-color: #690303;
+            background: #fcf3f3;
+        }
+
+        .navigation {
+            display: flex;
+            gap: 10px;
+            margin-top: 35px;
+            justify-content: space-between;
+        }
+
+        .btn {
+            padding: 9px 20px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 0.85em;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 500;
+            letter-spacing: 0.2px;
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #690303;
+            border-color: #ddd;
+        }
+
+        .btn-secondary:hover {
+            border-color: #690303;
+            background: #f9f9f9;
+        }
+
+        .btn-secondary:disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
+        }
+
+        .btn-primary {
+            background: #690303;
+            color: white;
+            border: none;
+            margin-left: auto;
+        }
+
+        .btn-primary:hover {
+            background: #4a0505;
+            box-shadow: 0 2px 6px rgba(105, 3, 3, 0.12);
+        }
+
+        .results-section {
+            display: none;
+        }
+
+        .results-section.active {
+            display: block;
+        }
+
+        .results-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .results-header h2 {
+            color: #690303;
+            font-size: 1.5em;
+            margin-bottom: 10px;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+        }
+
+        .results-header p {
+            color: #888;
+            font-size: 0.85em;
+            font-weight: 300;
+            letter-spacing: 0.2px;
+        }
+
+        .barrier-area {
+            background: #fcf3f3;
+            padding: 22px;
+            border-radius: 4px;
+            margin-bottom: 18px;
+            border-left: 3px solid #690303;
+        }
+
+        .barrier-area.top-barrier {
+            border-left-color: #d4526e;
+        }
+
+        .barrier-area.second-barrier {
+            border-left-color: #f59f5e;
+        }
+
+        .barrier-area h3 {
+            color: #690303;
+            font-size: 1.1em;
+            margin-bottom: 10px;
+            font-weight: 600;
+            letter-spacing: 0.2px;
+        }
+
+        .barrier-area.top-barrier h3 {
+            color: #d4526e;
+        }
+
+        .barrier-area.second-barrier h3 {
+            color: #f59f5e;
+        }
+
+        .barrier-percentage {
+            font-size: 2em;
+            color: #690303;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .barrier-area.top-barrier .barrier-percentage {
+            color: #d4526e;
+        }
+
+        .barrier-area.second-barrier .barrier-percentage {
+            color: #f59f5e;
+        }
+
+        .barrier-description {
+            color: #666;
+            line-height: 1.65;
+            font-size: 0.88em;
+            margin-bottom: 16px;
+            font-weight: 300;
+        }
+
+        .barrier-signs {
+            background: white;
+            padding: 12px;
+            border-radius: 3px;
+            margin-top: 12px;
+        }
+
+        .barrier-signs h4 {
+            color: #690303;
+            margin-bottom: 8px;
+            font-size: 0.8em;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.35px;
+        }
+
+        .barrier-area.top-barrier .barrier-signs h4 {
+            color: #d4526e;
+        }
+
+        .barrier-area.second-barrier .barrier-signs h4 {
+            color: #f59f5e;
+        }
+
+        .barrier-signs ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .barrier-signs li {
+            padding: 5px 0;
+            color: #666;
+            padding-left: 16px;
+            position: relative;
+            font-size: 0.85em;
+            font-weight: 300;
+            line-height: 1.5;
+        }
+
+        .barrier-signs li:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #690303;
+            font-weight: 600;
+            font-size: 0.9em;
+        }
+
+        .strength-bar {
+            background: #e8e8e8;
+            height: 4px;
+            border-radius: 2px;
+            margin-top: 9px;
+            overflow: hidden;
+        }
+
+        .strength-fill {
+            height: 100%;
+            background: #690303;
+            width: 0%;
+            transition: width 0.4s ease;
+        }
+
+        .barrier-area.top-barrier .strength-fill {
+            background: #d4526e;
+        }
+
+        .barrier-area.second-barrier .strength-fill {
+            background: #f59f5e;
+        }
+
+        .message {
+            background: white;
+            border-left: 3px solid #690303;
+            padding: 16px;
+            border-radius: 4px;
+            margin-top: 30px;
+            color: #666;
+            line-height: 1.7;
+            font-size: 0.85em;
+            font-weight: 300;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 30px;
+            justify-content: center;
+        }
+
+        .btn-restart {
+            background: #690303;
+            color: white;
+            border: none;
+            padding: 10px 32px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.85em;
+            transition: all 0.2s;
+            font-weight: 500;
+            letter-spacing: 0.2px;
+        }
+
+        .btn-restart:hover {
+            background: #4a0505;
+            box-shadow: 0 2px 6px rgba(105, 3, 3, 0.12);
+        }
+
+        @media (max-width: 600px) {
+            .header h1 {
+                font-size: 1.3em;
+            }
+
+            .question-text {
+                font-size: 1em;
+            }
+
+            .navigation {
+                flex-direction: column;
+            }
+
+            .btn-primary {
+                margin-left: 0;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Identifica Tus Barreras</h1>
+            <p>Descubramos juntas lo que te detiene de ser la mujer que naciste para ser.</p>
+        </div>
+
+        <div class="content">
+            <div class="intro-section active">
+                <h2>La Mujer Que Nací Para Ser</h2>
+                <p>Toda mujer tiene barreras invisibles que la detienen de su propósito. No son debilidades; son patrones que se instalaron para protegerte en algún momento, pero hoy solo te limitan.</p>
+                <p>Este test te mostrará cuáles son tus barreras más profundas, para que puedas reconocerlas y comenzar a desmantelarlas.</p>
+                <p style="margin-top: 20px; color: #690303; font-weight: 400;">Responde con brutal honestidad. Nadie verá tus respuestas. Solo tú.</p>
+                <button class="start-btn" onclick="startTest()">Comenzar el Test</button>
+            </div>
+
+            <div class="questions-section">
+                <div class="progress-bar">
+                    <div class="progress-fill"></div>
+                </div>
+
+                <div class="question-block active">
+                    <div class="question-number">Pregunta 1 de 26</div>
+                    <div class="question-text">Cuando tienes que tomar una decisión importante, ¿qué ocurre?</div>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q1" value="decisiones">
+                            <span class="option-text">Me paralizo porque tengo miedo de equivocarme y siempre dejo que otros decidan por mí.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q1" value="miedo">
+                            <span class="option-text">Analizo tanto que pierdo oportunidades, tengo miedo del fracaso.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q1" value="autoestima">
+                            <span class="option-text">No siento que tengo autoridad para decidir, creo que otros saben mejor.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q1" value="control">
+                            <span class="option-text">Necesito saber todo antes, controlar todas las variables.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q1" value="ninguna">
+                            <span class="option-text">Ninguna de estas me representa.</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="question-block">
+                    <div class="question-number">Pregunta 2 de 26</div>
+                    <div class="question-text">¿Cómo te relacionas con el control?</div>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q2" value="control">
+                            <span class="option-text">Necesito controlar todo lo que pasa en mi vida, me genera ansiedad lo impredecible.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q2" value="mentalidad">
+                            <span class="option-text">Creo que el mundo está en mi contra, que no puedo confiar en otros.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q2" value="proximidad">
+                            <span class="option-text">No confío en la guía de Dios, intento manejarlo todo por mi cuenta.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q2" value="inteligencia">
+                            <span class="option-text">No estoy segura de cómo manejar mis emociones, así que las ignoro.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q2" value="ninguna">
+                            <span class="option-text">Ninguna de estas me representa.</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="question-block">
+                    <div class="question-number">Pregunta 3 de 26</div>
+                    <div class="question-text">Cuando miras tu vida, ¿cuál es tu narrativa interna?</div>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q3" value="mentalidad">
+                            <span class="option-text">"Las personas como yo no pueden hacer esto", "No soy lo suficientemente inteligente/bonita/valiosa".</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q3" value="victimismo">
+                            <span class="option-text">"Mi vida es así por lo que otros me hicieron", "No es mi culpa que esté donde estoy".</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q3" value="comparacion">
+                            <span class="option-text">"Ella tiene más que yo, ella es mejor que yo, nunca llegaré a su nivel".</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q3" value="autoestima">
+                            <span class="option-text">"No merezco esto", "No soy suficiente como soy".</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q3" value="ninguna">
+                            <span class="option-text">Ninguna de estas me representa.</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="question-block">
+                    <div class="question-number">Pregunta 4 de 26</div>
+                    <div class="question-text">¿Cómo reaccionas ante el fracaso?</div>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q4" value="miedo">
+                            <span class="option-text">El miedo es tan grande que no intento cosas nuevas, para evitar fallar.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q4" value="autosabotaje">
+                            <span class="option-text">Inconscientemente saboteo mis esfuerzos, como si mereciera fallar.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q4" value="perfeccionismo">
+                            <span class="option-text">Me castigo duramente, nada que hago es lo suficientemente bueno.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q4" value="victimismo">
+                            <span class="option-text">Culpo a otros o a las circunstancias, no me responsabilizo de mi rol.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q4" value="ninguna">
+                            <span class="option-text">Ninguna de estas me representa.</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="question-block">
+                    <div class="question-number">Pregunta 5 de 26</div>
+                    <div class="question-text">Sobre tu autoestima, ¿cuál es la verdad?</div>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q5" value="autoestima">
+                            <span class="option-text">Dependo de lo que otros piensen de mí para sentirme valiosa.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q5" value="aprobacion">
+                            <span class="option-text">Busco constantemente validación externa, muero si alguien me critica.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q5" value="comparacion">
+                            <span class="option-text">Me veo menos valiosa que otras mujeres, especialmente que mis amigas.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q5" value="mentalidad">
+                            <span class="option-text">Creo que hay algo "roto" en mí que no puedo arreglar.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q5" value="ninguna">
+                            <span class="option-text">Ninguna de estas me representa.</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="question-block">
+                    <div class="question-number">Pregunta 6 de 26</div>
+                    <div class="question-text">¿Qué hace que sabotees tu propio crecimiento?</div>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q6" value="autosabotaje">
+                            <span class="option-text">Cuando estoy cerca del éxito, hago cosas que arruinan mis logros.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q6" value="miedo">
+                            <span class="option-text">El miedo al éxito me detiene, no sé si podré mantenerlo.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q6" value="autoestima">
+                            <span class="option-text">Siento que no merezco tener éxito, que no soy digna.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q6" value="inteligencia">
+                            <span class="option-text">No reconozco mis avances porque estoy en negación emocional.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q6" value="ninguna">
+                            <span class="option-text">Ninguna de estas me representa.</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="question-block">
+                    <div class="question-number">Pregunta 7 de 26</div>
+                    <div class="question-text">¿Cómo te relacionas con las redes sociales o el círculo social?</div>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q7" value="comparacion">
+                            <span class="option-text">Constantemente comparo mi vida con la de otras, siempre salgo perdiendo.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q7" value="aprobacion">
+                            <span class="option-text">Publico cosas esperando likes y comentarios que me hagan sentir validada.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q7" value="autoestima">
+                            <span class="option-text">Evito redes sociales porque me hacen sentir fea, fracasada, insuficiente.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q7" value="mentalidad">
+                            <span class="option-text">Creo que todas están contra mí, que me juzgan todo lo que hago.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q7" value="ninguna">
+                            <span class="option-text">Ninguna de estas me representa.</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="question-block">
+                    <div class="question-number">Pregunta 8 de 26</div>
+                    <div class="question-text">¿Cuándo necesitas aprobación?</div>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q8" value="aprobacion">
+                            <span class="option-text">Para cualquier cosa, no puedo actuar sin saber qué otros piensan.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q8" value="autoestima">
+                            <span class="option-text">Para sentirme como si valiera algo, mi valor depende de otros.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q8" value="mentalidad">
+                            <span class="option-text">Porque creo que solos mis juicios están equivocados.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q8" value="inteligencia">
+                            <span class="option-text">Porque no estoy conectada con mis propios sentimientos y necesidades.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q8" value="ninguna">
+                            <span class="option-text">Ninguna de estas me representa.</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="question-block">
+                    <div class="question-number">Pregunta 9 de 26</div>
+                    <div class="question-text">Cuando algo malo te pasa, ¿cuál es tu respuesta?</div>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q9" value="victimismo">
+                            <span class="option-text">"¿Por qué me pasa todo esto a mí?", "La vida es injusta conmigo".</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q9" value="mentalidad">
+                            <span class="option-text">"Sabía que esto pasaría, siempre me pasa lo peor".</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q9" value="proximidad">
+                            <span class="option-text">No puedo verlo como parte de mi crecimiento, solo como castigo.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q9" value="inteligencia">
+                            <span class="option-text">Me abrumo emocionalmente y no puedo procesarlo o aprender de ello.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q9" value="ninguna">
+                            <span class="option-text">Ninguna de estas me representa.</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="question-block">
+                    <div class="question-number">Pregunta 10 de 26</div>
+                    <div class="question-text">¿Cuál es tu relación con la verdad de Dios en tu vida?</div>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q10" value="proximidad">
+                            <span class="option-text">Conozco la verdad pero sigo creyendo mentiras sobre mí misma.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q10" value="proximidad2">
+                            <span class="option-text">No me siento cerca de Dios, siento que está lejos y no me cuida.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q10" value="mentalidad">
+                            <span class="option-text">Dudo de la fe, creo que solo existe lo que veo y controlo.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q10" value="control">
+                            <span class="option-text">Intento hacer todo perfectamente para que Dios me ame, no confío en su amor.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q10" value="ninguna">
+                            <span class="option-text">Ninguna de estas me representa.</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="question-block">
+                    <div class="question-number">Pregunta 11 de 26</div>
+                    <div class="question-text">¿Cómo manejas tus emociones?</div>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q11" value="inteligencia">
+                            <span class="option-text">No sé qué siento o por qué siento, solo estallo o me cierro.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q11" value="inteligencia2">
+                            <span class="option-text">Oculto mis sentimientos, no es seguro mostrar lo que siento.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q11" value="autoestima">
+                            <span class="option-text">Me siento culpable por mis emociones, como si fuera mala por sentir.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q11" value="mentalidad">
+                            <span class="option-text">Mis emociones me controlan, no puedo pensar claramente cuando siento.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q11" value="ninguna">
+                            <span class="option-text">Ninguna de estas me representa.</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="question-block">
+                    <div class="question-number">Pregunta 12 de 26</div>
+                    <div class="question-text">¿Cuál es tu estándar cuando haces algo?</div>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q12" value="perfeccionismo">
+                            <span class="option-text">Tiene que ser perfecto o no lo hago, me paraliza la búsqueda de perfección.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q12" value="perfeccionismo2">
+                            <span class="option-text">Reviso una y otra vez, nunca está "listo", siempre hay algo que mejorar.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q12" value="miedo">
+                            <span class="option-text">Tengo miedo de que juzguen mi trabajo, así que no publico o comparto.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q12" value="autoestima">
+                            <span class="option-text">Creo que lo que hago nunca será lo suficientemente bueno de todos modos.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q12" value="ninguna">
+                            <span class="option-text">Ninguna de estas me representa.</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="question-block">
+                    <div class="question-number">Pregunta 13 de 26</div>
+                    <div class="question-text">Sobre la disciplina y rutina:</div>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q13" value="disciplina">
+                            <span class="option-text">Me cuesta mantener disciplina, empiezo cosas pero no las termino.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q13" value="disciplina2">
+                            <span class="option-text">Saboteo mis rutinas cuando estoy cerca de ver resultados.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q13" value="motivacion">
+                            <span class="option-text">Necesito motivación externa para hacer las cosas, no tengo impulso propio.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q13" value="perfeccionismo">
+                            <span class="option-text">Mi disciplina es tan rígida que es insostenible, luego abandono todo.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q13" value="ninguna">
+                            <span class="option-text">Ninguna de estas me representa.</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="question-block">
+                    <div class="question-number">Pregunta 14 de 26</div>
+                    <div class="question-text">¿Cómo te relacionas con la perseverancia?</div>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q14" value="motivacion">
+                            <span class="option-text">Cuando algo se pone difícil, abandono porque pierdo la motivación.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q14" value="miedo">
+                            <span class="option-text">Me rindo cuando surgen obstáculos, el miedo al fracaso es muy grande.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q14" value="mentalidad">
+                            <span class="option-text">"No está hecho para mí", "Otros pueden pero yo no" es mi narrativa.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q14" value="victimismo">
+                            <span class="option-text">Veo los obstáculos como prueba de que el cielo está en mi contra.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q14" value="ninguna">
+                            <span class="option-text">Ninguna de estas me representa.</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="question-block">
+                    <div class="question-number">Pregunta 15 de 26</div>
+                    <div class="question-text">¿Qué narrativa domina cuando piensas en tu futuro?</div>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q15" value="mentalidad">
+                            <span class="option-text">"Mi futuro será como mi pasado, nada cambia para mí".</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q15" value="miedo">
+                            <span class="option-text">"¿Y si fracaso? ¿Y si no puedo? ¿Y si es demasiado para mí?"</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q15" value="autoestima">
+                            <span class="option-text">"No merezco algo hermoso, a mí nunca me pasan cosas buenas".</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q15" value="proximidad">
+                            <span class="option-text">"No veo a Dios en mi futuro, no sé si puedo confiar en Él".</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q15" value="ninguna">
+                            <span class="option-text">Ninguna de estas me representa.</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="question-block">
+                    <div class="question-number">Pregunta 16 de 26</div>
+                    <div class="question-text">¿Cómo reaccionas cuando alguien te da feedback o crítica?</div>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q16" value="aprobacion">
+                            <span class="option-text">Me duele profundamente, me paraliza durante días.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q16" value="autoestima">
+                            <span class="option-text">Me siento confirmada en que soy mala, que no sirvo.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q16" value="inteligencia">
+                            <span class="option-text">No puedo procesarlo racionalmente, solo siento dolor emocional.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q16" value="mentalidad">
+                            <span class="option-text">Creo que están siendo injustos conmigo, que me atacan.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q16" value="ninguna">
+                            <span class="option-text">Ninguna de estas me representa.</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="question-block">
+                    <div class="question-number">Pregunta 17 de 26</div>
+                    <div class="question-text">¿Qué sientes cuando ves a una amiga triunfar?</div>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q17" value="comparacion">
+                            <span class="option-text">Celos, dolor, resentimiento porque quiero eso y ella lo tiene.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q17" value="autoestima">
+                            <span class="option-text">Me siento menos valiosa, como si ella fuera mejor que yo.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q17" value="mentalidad">
+                            <span class="option-text">"Para ella es fácil, para mí es imposible", veo su éxito como inalcanzable.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q17" value="aprobacion">
+                            <span class="option-text">Dudo si ella realmente está bien o si solo lo aparenta por aprobación.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q17" value="ninguna">
+                            <span class="option-text">Ninguna de estas me representa.</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="question-block">
+                    <div class="question-number">Pregunta 18 de 26</div>
+                    <div class="question-text">¿Cómo afecta tu pasado a tu presente?</div>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q18" value="victimismo">
+                            <span class="option-text">Mis circunstancias pasadas me definen, soy víctima de lo que me pasó.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q18" value="autosabotaje">
+                            <span class="option-text">Repito patrones dañinos aunque sé que no quiero eso.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q18" value="mentalidad">
+                            <span class="option-text">Si antes fracasé, entonces siempre fracasaré, no hay esperanza.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q18" value="proximidad">
+                            <span class="option-text">No confío en que Dios pueda sanarme de mi pasado.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q18" value="ninguna">
+                            <span class="option-text">Ninguna de estas me representa.</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="question-block">
+                    <div class="question-number">Pregunta 19 de 26</div>
+                    <div class="question-text">¿Qué pasa cuando alguien te pide ayuda o espacio?</div>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q19" value="control">
+                            <span class="option-text">Siento que pierdo el control, que no puedo confiar en que lo hagan bien.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q19" value="aprobacion">
+                            <span class="option-text">Hago cualquier cosa para complacerlos, aunque sea a costa de mí.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q19" value="inteligencia">
+                            <span class="option-text">No sé cómo establecer límites sanos, me abruman emocionalmente.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q19" value="autoestima">
+                            <span class="option-text">Creo que si digo que no, no me querrán, que soy egoísta.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q19" value="ninguna">
+                            <span class="option-text">Ninguna de estas me representa.</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="question-block">
+                    <div class="question-number">Pregunta 20 de 26</div>
+                    <div class="question-text">¿Cuándo te saboteas, qué razón profunda hay?</div>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q20" value="autosabotaje">
+                            <span class="option-text">Algo dentro mío cree que no merezco ser feliz o exitosa.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q20" value="miedo">
+                            <span class="option-text">El éxito me atemoriza, no sé manejar ser visible o exitosa.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q20" value="mentalidad">
+                            <span class="option-text">Creo que si tengo éxito, otros me resentirán o abandonarán.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q20" value="proximidad">
+                            <span class="option-text">No sé si puedo confiar en que Dios me cuide si brillo demasiado.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q20" value="ninguna">
+                            <span class="option-text">Ninguna de estas me representa.</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="question-block">
+                    <div class="question-number">Pregunta 21 de 26</div>
+                    <div class="question-text">¿Cómo es tu relación con el dinero o los recursos?</div>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q21" value="mentalidad">
+                            <span class="option-text">"No hay suficiente para mí", "Nunca tendré lo que necesito".</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q21" value="proximidad">
+                            <span class="option-text">No confío en que Dios provea, intento manipular las circunstancias.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q21" value="control">
+                            <span class="option-text">Necesito controlarlo todo, vivir en constante vigilancia financiera.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q21" value="autosabotaje">
+                            <span class="option-text">Cuando gano dinero, inconscientemente lo pierdo o lo gasto.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q21" value="ninguna">
+                            <span class="option-text">Ninguna de estas me representa.</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="question-block">
+                    <div class="question-number">Pregunta 22 de 26</div>
+                    <div class="question-text">¿Cuál es tu relación con el cambio?</div>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q22" value="motivacion">
+                            <span class="option-text">Tengo buenas intenciones pero no puedo mantener nuevos hábitos.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q22" value="mentalidad">
+                            <span class="option-text">"Las personas no cambian", "Yo soy así y no puedo ser diferente".</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q22" value="miedo">
+                            <span class="option-text">El cambio me atemoriza, prefiero lo conocido aunque me duela.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q22" value="proximidad">
+                            <span class="option-text">No veo a Dios en el cambio, tengo miedo de que no me cuide si cambio.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q22" value="ninguna">
+                            <span class="option-text">Ninguna de estas me representa.</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="question-block">
+                    <div class="question-number">Pregunta 23 de 26</div>
+                    <div class="question-text">¿Cuándo estableces metas, qué sucede?</div>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q23" value="disciplina">
+                            <span class="option-text">Las establezco pero no las alcanzo, abandono en el camino.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q23" value="perfeccionismo">
+                            <span class="option-text">Las hago tan altas que es imposible alcanzarlas, luego me siento fracasada.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q23" value="autoestima">
+                            <span class="option-text">No creo que pueda lograrlo, así que ni las intento.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q23" value="aprobacion">
+                            <span class="option-text">Establezco metas que otros quieren para mí, no las mías.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q23" value="ninguna">
+                            <span class="option-text">Ninguna de estas me representa.</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="question-block">
+                    <div class="question-number">Pregunta 24 de 26</div>
+                    <div class="question-text">¿Qué barrera es la más silenciosa en tu vida?</div>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q24" value="inteligencia">
+                            <span class="option-text">No reconozco lo que siento en el momento, solo después es obvio.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q24" value="comparacion">
+                            <span class="option-text">Comparo cada aspecto mío con otros, es constante y agotador.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q24" value="proximidad">
+                            <span class="option-text">Me desconecto de Dios sin darme cuenta, es un alejamiento silencioso.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q24" value="autosabotaje">
+                            <span class="option-text">Me saboteo tan sutilmente que casi no lo veo hasta que todo se desmorona.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q24" value="ninguna">
+                            <span class="option-text">Ninguna de estas me representa.</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="question-block">
+                    <div class="question-number">Pregunta 25 de 26</div>
+                    <div class="question-text">¿Cómo te describes cuando estás bajo presión?</div>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q25" value="control">
+                            <span class="option-text">Intento controlarlo todo, me pongo rígida, paralizada.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q25" value="inteligencia">
+                            <span class="option-text">Pierdo la claridad, me abruma emocionalmente y me congelo.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q25" value="miedo">
+                            <span class="option-text">Entro en pánico, siento que no puedo manejar la situación.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q25" value="mentalidad">
+                            <span class="option-text">"Sabía que esto pasaría", actúo como si el desastre era inevitable.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q25" value="ninguna">
+                            <span class="option-text">Ninguna de estas me representa.</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="question-block">
+                    <div class="question-number">Pregunta 26 de 26</div>
+                    <div class="question-text">¿Cuál es el costo más alto de tus barreras?</div>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q26" value="decisiones">
+                            <span class="option-text">Pierdo oportunidades, vivo una vida pequeña por miedo a decidir.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q26" value="disciplina">
+                            <span class="option-text">Nunca logro lo que quiero porque no puedo mantener el esfuerzo.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q26" value="relaciones">
+                            <span class="option-text">Mis relaciones sufren, distancio a las personas que me aman.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q26" value="paz">
+                            <span class="option-text">Vivo sin paz, en constante ansiedad, validación o análisis.</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q26" value="ninguna">
+                            <span class="option-text">Ninguna de estas me representa.</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="navigation">
+                    <button class="btn btn-secondary" onclick="previousQuestion()" disabled id="prevBtn">Anterior</button>
+                    <button class="btn btn-primary" onclick="nextQuestion()">Siguiente</button>
+                </div>
+            </div>
+
+            <div class="results-section">
+                <div class="results-header">
+                    <h2>Tus Barreras Más Profundas</h2>
+                    <p>Esto es lo que te detiene de tu propósito</p>
+                </div>
+                <div id="resultsContent"></div>
+                <div class="button-group">
+                    <button class="btn-restart" onclick="restartTest()">Hacer el Test Nuevamente</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            { name: 'q1' }, { name: 'q2' }, { name: 'q3' }, { name: 'q4' }, { name: 'q5' },
+            { name: 'q6' }, { name: 'q7' }, { name: 'q8' }, { name: 'q9' }, { name: 'q10' },
+            { name: 'q11' }, { name: 'q12' }, { name: 'q13' }, { name: 'q14' }, { name: 'q15' },
+            { name: 'q16' }, { name: 'q17' }, { name: 'q18' }, { name: 'q19' }, { name: 'q20' },
+            { name: 'q21' }, { name: 'q22' }, { name: 'q23' }, { name: 'q24' }, { name: 'q25' }, { name: 'q26' }
+        ];
+
+        const callingAreas = {
+            decisiones: {
+                name: 'Parálisis en Decisiones',
+                description: 'Te paralizas cuando tienes que decidir porque temes equivocarte. Dejas que otros decidan por ti. Tu miedo a fallar es tan grande que prefieres vivir sin dirección propia.',
+                signs: ['Paralización ante opciones', 'Dejar que otros decidan', 'Análisis paralizante', 'Vivir según expectativas ajenas', 'Arrepentimiento constante']
+            },
+            control: {
+                name: 'Necesidad Obsesiva de Control',
+                description: 'Necesitas controlar todo lo que sucede a tu alrededor porque confiar genera ansiedad. Crees que si sueltas el control, todo se desmorona.',
+                signs: ['Ansiedad ante lo impredecible', 'Necesidad de saber todo', 'Dificultad para delegar', 'Micromanejo de situaciones', 'Agotamiento emocional']
+            },
+            mentalidad: {
+                name: 'Mentalidad Limitante',
+                description: 'Tu narrativa interna está llena de "no puedo", "no soy", "las personas como yo no". Crees que hay limitaciones inmutables en tu vida.',
+                signs: ['Creencias limitantes', '"Las personas como yo"', 'Visión fija del futuro', 'Justificaciones para no intentar', 'Narrativa de insuficiencia']
+            },
+            miedo: {
+                name: 'Miedo al Fracaso',
+                description: 'El miedo al fracaso te mantiene pequeña y congelada. No intentas cosas nuevas porque la posibilidad de fracasar es insoportable.',
+                signs: ['Evitar riesgos', 'Pensamiento catastrófico', 'Parálisis ante lo nuevo', 'Baja tolerancia a incertidumbre', 'Perfeccionismo como protección']
+            },
+            autoestima: {
+                name: 'Baja Autoestima',
+                description: 'Tu valor está condicionado a factores externos. No crees inherentemente en tu valía. Esta barrera afecta cada decisión.',
+                signs: ['Dependencia de validación', 'Sentimiento de insuficiencia', 'Autodepreciación', 'No reconocer logros', 'Creer que otros son mejores']
+            },
+            autosabotaje: {
+                name: 'Autosabotaje',
+                description: 'Inconscientemente arruinas tus esfuerzos justo cuando estás a punto de triunfar. Algo en ti cree que no mereces éxito.',
+                signs: ['Arruinar logros cercanos', 'Repetir patrones destructivos', 'No mantener cambios positivos', 'Sabotaje antes del éxito', 'Creencia de no merecimiento']
+            },
+            comparacion: {
+                name: 'Comparación Constante',
+                description: 'Constantemente compares tu vida, tu cuerpo, tus logros con otros y siempre sales perdiendo. La comparación es el ladrón de la alegría.',
+                signs: ['Validación a través comparación', 'Envidia de logros ajenos', 'Mentalidad de escasez', 'Imposibilidad de celebrar a otros', 'Sentimiento de inferioridad']
+            },
+            aprobacion: {
+                name: 'Búsqueda de Aprobación Externa',
+                description: 'Tu valor está vinculado a la aprobación de otros. Haces cosas no porque las quieras, sino para obtener validación.',
+                signs: ['Decisiones basadas en opinión ajena', 'Miedo a desaprobación', 'Cambio de personalidad', 'Búsqueda de validación en redes', 'Dificultad para decir no']
+            },
+            victimismo: {
+                name: 'Victimismo',
+                description: 'Ves tu vida como resultado de lo que otros te hicieron, no de tus decisiones. Eres la víctima de tu historia, no la autora.',
+                signs: ['"¿Por qué me pasa esto?"', 'Culpar a otros', 'No asumir responsabilidad', 'Narrativa de injusticia', 'Impotencia ante la vida']
+            },
+            proximidad: {
+                name: 'Falta de Proximidad a Dios',
+                description: 'Conoces la verdad de Dios pero no la vives. Hay distancia entre lo que sabes y lo que crees sobre ti.',
+                signs: ['Distancia emocional', 'Conocimiento teórico sin experiencia', 'Dificultad para confiar', 'Vivir bajo temor', 'Creencias incongruentes']
+            },
+            inteligencia: {
+                name: 'Baja Inteligencia Emocional',
+                description: 'No entiendes tus emociones. Explotas sin razón, te cierras sin explicación. Sin inteligencia emocional, estás a merced de tus sentimientos.',
+                signs: ['No reconocer lo que sientes', 'Explosiones emocionales', 'Incapacidad de límites', 'Reactividad no respuesta', 'No entender tus acciones']
+            },
+            perfeccionismo: {
+                name: 'Perfeccionismo',
+                description: 'Nada es suficientemente bueno. El perfeccionismo te paraliza porque es inalcanzable. O no haces nada o pasas más tiempo mejorando.',
+                signs: ['Parálisis por perfección', 'Estándares imposibles', 'Revisión constante', 'Autocrítica severa', 'Imposibilidad de terminar']
+            },
+            disciplina: {
+                name: 'Falta de Disciplina',
+                description: 'Tienes buenas intenciones pero no puedes mantener la disciplina. Empiezas entusiasmada pero abandonas cuando se pone difícil.',
+                signs: ['Inicios entusiastas', 'Falta de consistencia', 'Motivación externa dependiente', 'Dificultad con rutinas', 'No lograr metas']
+            },
+            motivacion: {
+                name: 'Falta de Motivación Sostenida',
+                description: 'Dependes de la motivación para actuar, pero es volátil. Tu falta de motivación es síntoma de desconexión de tu propósito.',
+                signs: ['Dependencia de inspiración', 'Falta de impulso propio', 'Postergación crónica', 'Necesidad de presión', 'Desmotivación ante obstáculos']
+            }
+        };
+
+        let currentQuestion = 0;
+        let answers = {};
+
+        function startTest() {
+            document.querySelector('.intro-section').classList.remove('active');
+            document.querySelector('.questions-section').classList.add('active');
+            showQuestion(0);
+        }
+
+        function showQuestion(index) {
+            currentQuestion = index;
+            const blocks = document.querySelectorAll('.question-block');
+            blocks.forEach((block, i) => {
+                block.classList.toggle('active', i === index);
+            });
+
+            const progress = ((index + 1) / questions.length) * 100;
+            document.querySelector('.progress-fill').style.width = progress + '%';
+
+            const prevBtn = document.getElementById('prevBtn');
+            prevBtn.disabled = index === 0;
+
+            const nextBtn = document.querySelector('.btn-primary');
+            nextBtn.textContent = index === questions.length - 1 ? 'Ver Resultados' : 'Siguiente';
+        }
+
+        function nextQuestion() {
+            const questionName = questions[currentQuestion].name;
+            const selected = document.querySelector(`input[name="${questionName}"]:checked`);
+            
+            if (!selected) {
+                alert('Por favor selecciona una respuesta antes de continuar.');
+                return;
+            }
+
+            answers[questionName] = selected.value;
+
+            if (currentQuestion < questions.length - 1) {
+                showQuestion(currentQuestion + 1);
+            } else {
+                showResults();
+            }
+        }
+
+        function previousQuestion() {
+            if (currentQuestion > 0) {
+                const questionName = questions[currentQuestion].name;
+                const selected = document.querySelector(`input[name="${questionName}"]:checked`);
+                if (selected) {
+                    answers[questionName] = selected.value;
+                }
+                showQuestion(currentQuestion - 1);
+            }
+        }
+
+        function showResults() {
+            document.querySelector('.questions-section').classList.remove('active');
+            document.querySelector('.results-section').classList.add('active');
+
+            const scores = {};
+            Object.keys(callingAreas).forEach(key => {
+                scores[key] = 0;
+            });
+
+            Object.entries(answers).forEach(([question, value]) => {
+                if (value !== 'ninguna' && value !== 'proximidad2' && value !== 'inteligencia2' && value !== 'disciplina2' && value !== 'perfeccionismo2') {
+                    scores[value] = (scores[value] || 0) + 1;
+                } else if (value === 'proximidad2' || value === 'inteligencia2') {
+                    scores['proximidad'] = (scores['proximidad'] || 0) + 1;
+                    scores['inteligencia'] = (scores['inteligencia'] || 0) + 1;
+                } else if (value === 'disciplina2' || value === 'perfeccionismo2') {
+                    scores['disciplina'] = (scores['disciplina'] || 0) + 1;
+                    scores['perfeccionismo'] = (scores['perfeccionismo'] || 0) + 1;
+                }
+            });
+
+            const sorted = Object.entries(callingAreas)
+                .map(([key, value]) => ({
+                    key: key,
+                    ...value,
+                    score: scores[key] || 0,
+                    percentage: Math.round(((scores[key] || 0) / 26) * 100)
+                }))
+                .sort((a, b) => b.score - a.score);
+
+            let html = '';
+            sorted.forEach((barrier, index) => {
+                const isTop = index === 0;
+                const isSecond = index === 1;
+                let classAdd = '';
+                if (isTop) classAdd = 'top-barrier';
+                if (isSecond) classAdd = 'second-barrier';
+                
+                html += `
+                    <div class="barrier-area ${classAdd}">
+                        <h3>${barrier.name}</h3>
+                        <div class="barrier-percentage">${barrier.percentage}%</div>
+                        <div class="strength-bar">
+                            <div class="strength-fill" style="width: ${barrier.percentage}%;"></div>
+                        </div>
+                        <p class="barrier-description">${barrier.description}</p>
+                        <div class="barrier-signs">
+                            <h4>Cómo se manifiesta en ti:</h4>
+                            <ul>
+                                ${barrier.signs.map(sign => `<li>${sign}</li>`).join('')}
+                            </ul>
+                        </div>
+                    </div>
+                `;
+            });
+
+            html += `
+                <div class="message">
+                    <strong>Para ti, hermana:</strong> Estas barreras no son finales. Cada una fue creada para protegerte, pero ahora te limitan. Reconocerlas es el primer paso para desmantelarlas con amor.<br><br>
+                    "Porque no nos ha dado Dios espíritu de cobardía, sino de poder, de amor y de dominio propio." — 2 Timoteo 1:7
+                </div>
+            `;
+
+            document.getElementById('resultsContent').innerHTML = html;
+        }
+
+        function restartTest() {
+            currentQuestion = 0;
+            answers = {};
+            document.querySelector('.intro-section').classList.add('active');
+            document.querySelector('.results-section').classList.remove('active');
+            document.querySelectorAll('input[type="radio"]').forEach(input => {
+                input.checked = false;
+                input.parentElement.classList.remove('selected');
+            });
+        }
+
+        document.addEventListener('change', function(e) {
+            if (e.target.type === 'radio') {
+                document.querySelectorAll(`input[name="${e.target.name}"]`).forEach(input => {
+                    input.parentElement.classList.remove('selected');
+                });
+                e.target.parentElement.classList.add('selected');
+            }
+        });
+    </script>
+</body>
+</html>
