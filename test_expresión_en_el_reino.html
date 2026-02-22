@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Descubre Tu Expresión en el Reino - La Mujer que Nací para Ser</title>
+    <title>Tu Expresión en el Reino</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Cormorant+Garamond:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -15,479 +18,436 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
             background: #690303;
             min-height: 100vh;
-            padding: 20px;
-            color: #333;
+            padding: 0;
+            color: #1d1d1f;
+            line-height: 1.6;
         }
 
         .container {
-            max-width: 700px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 6px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            max-width: 100%;
+            margin: 0;
+            background: #ffffff;
+            border-radius: 0;
+            box-shadow: none;
             overflow: hidden;
         }
 
         .header {
             background: #690303;
             color: white;
-            padding: 30px 30px;
-            text-align: center;
+            padding: 60px 60px;
+            border-bottom: 1px solid #690303;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 30px;
+        }
+
+        .program-badge {
+            font-size: 1.1em;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #d4a574;
+            font-weight: 600;
+            font-family: 'Cormorant Garamond', serif;
         }
 
         .header h1 {
-            font-size: 1.05em;
-            margin-bottom: 6px;
-            font-weight: 600;
-            letter-spacing: 0.2px;
-            line-height: 1.2;
-            word-break: break-word;
+            font-size: 2.8em;
+            margin-bottom: 20px;
+            font-weight: 700;
+            letter-spacing: -1.5px;
+            line-height: 1.1;
+            color: white;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
         }
 
         .header p {
-            font-size: 0.75em;
-            opacity: 0.85;
-            font-weight: 300;
-            letter-spacing: 0.1px;
-            line-height: 1.3;
-            word-break: break-word;
+            font-size: 1.05em;
+            line-height: 1.7;
+            font-weight: 400;
+            max-width: 700px;
+            color: white;
+            margin-bottom: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+        }
+
+        .header .subtitle {
+            font-size: 0.9em;
+            margin-top: 18px;
+            color: white;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
         }
 
         .content {
-            padding: 40px 30px;
-        }
-
-        .intro-section {
-            text-align: center;
-            margin-bottom: 40px;
-            display: none;
-        }
-
-        .intro-section.active {
-            display: block;
-        }
-
-        .intro-section h2 {
-            color: #690303;
-            margin-bottom: 20px;
-            font-size: 1em;
-            font-weight: 600;
-            letter-spacing: 0.2px;
-            line-height: 1.2;
-            word-break: break-word;
-        }
-
-        .intro-section p {
-            line-height: 1.6;
-            margin-bottom: 12px;
-            font-size: 0.8em;
-            color: #666;
-            font-weight: 300;
-        }
-
-        .start-btn {
+            padding: 60px 60px;
+            max-width: 900px;
+            margin: 0 auto;
             background: #690303;
-            color: white;
-            border: none;
-            padding: 14px 48px;
-            font-size: 1em;
-            border-radius: 4px;
-            cursor: pointer;
-            margin-top: 30px;
-            transition: all 0.2s;
-            font-weight: 500;
-            letter-spacing: 0.3px;
         }
 
-        .start-btn:hover {
-            background: #4a0505;
-            box-shadow: 0 3px 10px rgba(105, 3, 3, 0.15);
-        }
-
-        .questions-section {
+        .question {
+            margin-bottom: -35px;
+            padding: 0;
             display: none;
         }
 
-        .questions-section.active {
+        .question.active {
             display: block;
-        }
-
-        .progress-bar {
-            width: 100%;
-            height: 2px;
-            background: #e5e5e5;
-            border-radius: 1px;
-            margin-bottom: 35px;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: #690303;
-            width: 0%;
-            transition: width 0.3s ease;
-        }
-
-        .question-block {
-            display: none;
-            animation: fadeIn 0.35s ease;
-        }
-
-        .question-block.active {
-            display: block;
+            animation: fadeIn 0.6s ease-in;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        .question-text {
-            font-size: 1.1em;
-            color: #333;
-            margin-bottom: 24px;
-            font-weight: 500;
+        .question h3 {
+            color: white;
+            margin-bottom: 32px;
+            font-size: 1.35em;
             line-height: 1.6;
-            letter-spacing: 0.2px;
+            font-weight: 600;
+            letter-spacing: -0.4px;
         }
 
         .question-number {
-            color: #999;
+            display: inline-block;
+            background: #8d0000;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 32px;
+            margin-right: 14px;
+            font-weight: 600;
+            font-size: 0.9em;
+        }
+
+        .archetype-tag {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 16px;
             font-size: 0.75em;
-            margin-bottom: 10px;
-            font-weight: 500;
+            font-weight: 600;
+            margin-left: 12px;
             text-transform: uppercase;
-            letter-spacing: 0.4px;
+            letter-spacing: 0.5px;
         }
 
         .options {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 16px;
         }
 
         .option {
-            display: flex;
-            align-items: flex-start;
-            padding: 13px 14px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+            padding: 18px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1.5px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
             cursor: pointer;
-            transition: all 0.2s;
-            background: white;
+            transition: all 0.25s ease;
+            display: flex;
+            align-items: center;
+            font-weight: 400;
+            font-size: 0.98em;
+            color: white;
         }
 
         .option:hover {
-            border-color: #690303;
-            background: #fef9f9;
-        }
-
-        .option input[type="radio"] {
-            margin-right: 11px;
-            margin-top: 2px;
-            cursor: pointer;
-            accent-color: #690303;
-            width: 16px;
-            height: 16px;
-            flex-shrink: 0;
-        }
-
-        .option-text {
-            flex: 1;
-            font-size: 0.92em;
-            line-height: 1.5;
-            color: #555;
-            font-weight: 300;
+            border-color: #8d0000;
+            background: rgba(141, 0, 0, 0.1);
         }
 
         .option.selected {
-            border-color: #690303;
-            background: #fcf3f3;
+            background: #8d0000;
+            color: white;
+            border-color: #8d0000;
+            font-weight: 500;
+        }
+
+        .option input[type="radio"] {
+            margin-right: 14px;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: #8d0000;
         }
 
         .navigation {
             display: flex;
-            gap: 10px;
-            margin-top: 35px;
-            justify-content: space-between;
+            justify-content: center;
+            gap: 16px;
+            padding: 8px 60px;
+            max-width: 900px;
+            margin: 0 auto;
+            background: #690303;
         }
 
         .btn {
-            padding: 9px 20px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 0.85em;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-weight: 500;
-            letter-spacing: 0.2px;
-        }
-
-        .btn-secondary {
+            padding: 14px 32px;
             background: white;
             color: #690303;
-            border-color: #ddd;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 500;
+            transition: all 0.25s ease;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            letter-spacing: -0.2px;
         }
 
-        .btn-secondary:hover {
-            border-color: #690303;
-            background: #f9f9f9;
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.9);
+            transform: none;
         }
 
-        .btn-secondary:disabled {
-            opacity: 0.45;
+        .btn:disabled {
+            opacity: 0.3;
             cursor: not-allowed;
         }
 
-        .btn-primary {
+        .progress-bar {
+            height: auto;
             background: #690303;
-            color: white;
-            border: none;
-            margin-left: auto;
-        }
-
-        .btn-primary:hover {
-            background: #4a0505;
-            box-shadow: 0 2px 6px rgba(105, 3, 3, 0.12);
-        }
-
-        .results-section {
-            display: none;
-        }
-
-        .results-section.active {
-            display: block;
-        }
-
-        .results-header {
-            text-align: center;
-            margin-bottom: 32px;
-        }
-
-        .results-header h2 {
-            color: #690303;
-            font-size: 1.5em;
-            margin-bottom: 10px;
-            font-weight: 600;
-            letter-spacing: 0.3px;
-        }
-
-        .results-header p {
-            color: #888;
-            font-size: 0.85em;
-            font-weight: 300;
-            letter-spacing: 0.2px;
-        }
-
-        .archetype-area {
-            background: #fcf3f3;
-            padding: 22px;
-            border-radius: 4px;
-            margin-bottom: 18px;
-            border-left: 3px solid #690303;
-        }
-
-        .archetype-area.top-archetype {
-            border-left-color: #d4526e;
-        }
-
-        .archetype-area.second-archetype {
-            border-left-color: #f59f5e;
-        }
-
-        .archetype-area h3 {
-            color: #690303;
-            font-size: 1.1em;
-            margin-bottom: 10px;
-            font-weight: 600;
-            letter-spacing: 0.2px;
-        }
-
-        .archetype-area.top-archetype h3 {
-            color: #d4526e;
-        }
-
-        .archetype-area.second-archetype h3 {
-            color: #f59f5e;
-        }
-
-        .archetype-percentage {
-            font-size: 2em;
-            color: #690303;
-            font-weight: 600;
-            margin-bottom: 8px;
-        }
-
-        .archetype-area.top-archetype .archetype-percentage {
-            color: #d4526e;
-        }
-
-        .archetype-area.second-archetype .archetype-percentage {
-            color: #f59f5e;
-        }
-
-        .archetype-description {
-            color: #666;
-            line-height: 1.65;
-            font-size: 0.88em;
-            margin-bottom: 16px;
-            font-weight: 300;
-        }
-
-        .archetype-expression {
-            background: white;
-            padding: 12px;
-            border-radius: 3px;
-            margin-top: 12px;
-        }
-
-        .archetype-expression h4 {
-            color: #690303;
-            margin-bottom: 8px;
-            font-size: 0.8em;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.35px;
-        }
-
-        .archetype-area.top-archetype .archetype-expression h4 {
-            color: #d4526e;
-        }
-
-        .archetype-area.second-archetype .archetype-expression h4 {
-            color: #f59f5e;
-        }
-
-        .archetype-expression ul {
-            list-style: none;
-            padding-left: 0;
-        }
-
-        .archetype-expression li {
-            padding: 5px 0;
-            color: #666;
-            padding-left: 16px;
-            position: relative;
-            font-size: 0.85em;
-            font-weight: 300;
-            line-height: 1.5;
-        }
-
-        .archetype-expression li:before {
-            content: "✦";
-            position: absolute;
-            left: 3px;
-            color: #690303;
-            font-weight: 700;
-        }
-
-        .archetype-examples {
-            background: white;
-            padding: 12px;
-            border-radius: 3px;
-            margin-top: 12px;
-        }
-
-        .archetype-examples h4 {
-            color: #690303;
-            margin-bottom: 8px;
-            font-size: 0.8em;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.35px;
-        }
-
-        .archetype-area.top-archetype .archetype-examples h4 {
-            color: #d4526e;
-        }
-
-        .archetype-area.second-archetype .archetype-examples h4 {
-            color: #f59f5e;
-        }
-
-        .archetype-examples p {
-            color: #666;
-            font-size: 0.85em;
-            line-height: 1.6;
-            font-weight: 300;
-        }
-
-        .strength-bar {
-            background: #e8e8e8;
-            height: 4px;
-            border-radius: 2px;
-            margin-top: 9px;
-            overflow: hidden;
-        }
-
-        .strength-fill {
-            height: 100%;
-            background: #690303;
-            width: 0%;
-            transition: width 0.4s ease;
-        }
-
-        .archetype-area.top-archetype .strength-fill {
-            background: #d4526e;
-        }
-
-        .archetype-area.second-archetype .strength-fill {
-            background: #f59f5e;
-        }
-
-        .message {
-            background: white;
-            border-left: 3px solid #690303;
-            padding: 16px;
-            border-radius: 4px;
-            margin-top: 30px;
-            color: #666;
-            line-height: 1.7;
-            font-size: 0.85em;
-            font-weight: 300;
-        }
-
-        .button-group {
+            margin: 0;
+            padding: 16px 60px;
             display: flex;
-            gap: 10px;
-            margin-top: 30px;
             justify-content: center;
+            align-items: center;
+            gap: 3px;
+            max-width: 100%;
         }
 
-        .btn-restart {
-            background: #690303;
+        .progress-dot {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.65em;
+            font-weight: 600;
             color: white;
-            border: none;
-            padding: 10px 32px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 0.85em;
-            transition: all 0.2s;
-            font-weight: 500;
-            letter-spacing: 0.2px;
+            transition: all 0.25s ease;
         }
 
-        .btn-restart:hover {
-            background: #4a0505;
-            box-shadow: 0 2px 6px rgba(105, 3, 3, 0.12);
+        .progress-dot.active {
+            background: #8d0000;
+            border-color: #8d0000;
+            color: white;
+            transform: scale(1.08);
         }
 
-        @media (max-width: 600px) {
-            .header h1 {
-                font-size: 1.3em;
+        .progress-dot.completed {
+            background: #8d0000;
+            border-color: #8d0000;
+            color: white;
+        }
+
+        .result {
+            display: none;
+            padding: 60px 60px;
+            max-width: 900px;
+            margin: 0 auto;
+            background: #690303;
+        }
+
+        .result.active {
+            display: block;
+            animation: fadeIn 0.6s ease-in;
+        }
+
+        .result-card {
+            background: transparent;
+            border-radius: 0;
+            padding: 0;
+            margin-top: 0;
+        }
+
+        .result-title {
+            color: white;
+            font-size: 2.8em;
+            margin-bottom: 32px;
+            font-weight: 700;
+            letter-spacing: -1px;
+            line-height: 1.2;
+        }
+
+        .result-description {
+            line-height: 1.8;
+            margin-bottom: 40px;
+            font-size: 1.05em;
+            font-weight: 400;
+            color: rgba(255, 255, 255, 0.95);
+        }
+
+        .result-description p {
+            margin-bottom: 20px;
+        }
+
+        .archetypes-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin: 50px 0;
+        }
+
+        .archetype-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 28px;
+            border-radius: 12px;
+            border-left: 3px solid #2a0000;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-left: 3px solid #2a0000;
+        }
+
+        .archetype-card h4 {
+            color: white;
+            margin-bottom: 14px;
+            font-size: 1.1em;
+            font-weight: 600;
+        }
+
+        .archetype-card p {
+            font-size: 0.95em;
+            line-height: 1.7;
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        .result-recommendations {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 40px;
+            border-radius: 12px;
+            margin-top: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .result-recommendations h4 {
+            color: white;
+            margin-bottom: 28px;
+            font-size: 1.35em;
+            font-weight: 600;
+            letter-spacing: -0.3px;
+        }
+
+        .result-recommendations ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .result-recommendations li {
+            padding: 16px 0;
+            padding-left: 32px;
+            position: relative;
+            line-height: 1.8;
+            font-weight: 400;
+            color: rgba(255, 255, 255, 0.95);
+            font-size: 0.98em;
+        }
+
+        .result-recommendations li:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: white;
+            font-weight: 700;
+            font-size: 1.1em;
+        }
+
+        .restart-btn {
+            margin-top: 40px;
+            background: white;
+            color: #690303;
+            border: 1.5px solid white;
+        }
+
+        .restart-btn:hover {
+            background: rgba(255, 255, 255, 0.9);
+            color: #690303;
+        }
+
+        .final-message {
+            margin-top: 40px;
+            padding: 32px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            border-left: 3px solid #2a0000;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-left: 3px solid #2a0000;
+        }
+
+        .final-message p {
+            font-size: 1.05em;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.95);
+            margin-bottom: 20px;
+        }
+
+        .final-message p:last-child {
+            font-style: italic;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 0;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 50px 30px;
             }
 
-            .question-text {
-                font-size: 1em;
+            .header h1 {
+                font-size: 2.5em;
+            }
+
+            .header-top {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .content {
+                padding: 40px 30px;
             }
 
             .navigation {
                 flex-direction: column;
+                padding: 30px;
+                gap: 12px;
             }
 
-            .btn-primary {
-                margin-left: 0;
+            .btn {
                 width: 100%;
+            }
+
+            .result {
+                padding: 40px 30px;
+            }
+
+            .result-card {
+                padding: 0;
+            }
+
+            .archetypes-summary {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 2.2em;
+            }
+
+            .result-title {
+                font-size: 2em;
             }
         }
     </style>
@@ -495,807 +455,344 @@
 <body>
     <div class="container">
         <div class="header">
+            <div class="header-top">
+                <div>
+                    <div class="program-badge">La Mujer Que Nací Para Ser</div>
+                </div>
+            </div>
             <h1>Tu Expresión en el Reino</h1>
-            <p>Descubre Cómo Brillas en el Reino</p>
+            <p>Descubre cómo brillas de forma única a través de tus 7 arquetipos naturales de expresión</p>
+            <div class="subtitle">7 Arquetipos: La Constructora • La Guía • La Voz • La Nutrida • La Estratega • La Intercesora • La Creadora</div>
         </div>
 
-        <div class="content">
-            <div class="intro-section active">
-                <h2>La Mujer Que Nací Para Ser</h2>
-                <p>Dios no solo te da un propósito, te da una forma única de expresarlo. Este test no define tu llamado —solo Dios puede hacer eso— pero sí revela cómo expresas naturalmente ese llamado basándote en tus talentos, inclinaciones y pasiones.</p>
-                <p>Los 7 arquetipos que descubrirás son formas diferentes en que Dios se manifiesta a través de mujeres como tú. No se trata de ser "mejor" en una categoría; se trata de entender cómo el Reino se expresa a través de ti.</p>
-                <p style="margin-top: 20px; color: #690303; font-weight: 400;">Responde honestamente basándote en lo que naturalmente eres, no en lo que crees que deberías ser.</p>
-                <button class="start-btn" onclick="startTest()">Comenzar el Test</button>
-            </div>
+        <div class="progress-bar" id="progressBar">
+            <div class="progress-dot active" data-question="0">1</div>
+            <div class="progress-dot" data-question="1">2</div>
+            <div class="progress-dot" data-question="2">3</div>
+            <div class="progress-dot" data-question="3">4</div>
+            <div class="progress-dot" data-question="4">5</div>
+            <div class="progress-dot" data-question="5">6</div>
+            <div class="progress-dot" data-question="6">7</div>
+            <div class="progress-dot" data-question="7">8</div>
+            <div class="progress-dot" data-question="8">9</div>
+            <div class="progress-dot" data-question="9">10</div>
+            <div class="progress-dot" data-question="10">11</div>
+            <div class="progress-dot" data-question="11">12</div>
+            <div class="progress-dot" data-question="12">13</div>
+            <div class="progress-dot" data-question="13">14</div>
+            <div class="progress-dot" data-question="14">15</div>
+            <div class="progress-dot" data-question="15">16</div>
+            <div class="progress-dot" data-question="16">17</div>
+            <div class="progress-dot" data-question="17">18</div>
+            <div class="progress-dot" data-question="18">19</div>
+            <div class="progress-dot" data-question="19">20</div>
+            <div class="progress-dot" data-question="20">21</div>
+            <div class="progress-dot" data-question="21">22</div>
+            <div class="progress-dot" data-question="22">23</div>
+            <div class="progress-dot" data-question="23">24</div>
+            <div class="progress-dot" data-question="24">25</div>
+            <div class="progress-dot" data-question="25">26</div>
+            <div class="progress-dot" data-question="26">27</div>
+            <div class="progress-dot" data-question="27">28</div>
+        </div>
 
-            <div class="questions-section">
-                <div class="progress-bar">
-                    <div class="progress-fill"></div>
-                </div>
+        <div class="content" id="questionsContainer">
+            <!-- Questions will be generated here -->
+        </div>
 
-                <div class="question-block active">
-                    <div class="question-number">Pregunta 1 de 28</div>
-                    <div class="question-text">Cuando algo no funciona en tu vida o en tu comunidad, ¿cuál es tu instinto?</div>
-                    <div class="options">
-                        <label class="option">
-                            <input type="radio" name="q1" value="builder">
-                            <span class="option-text">Identifico el problema y creo un sistema o estructura para resolverlo.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q1" value="guide">
-                            <span class="option-text">Busco acompañar a la persona involucrada para que encuentre su propio camino.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q1" value="voice">
-                            <span class="option-text">Quiero comunicar sobre esto, compartir la verdad de una forma clara.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q1" value="nurturer">
-                            <span class="option-text">Quiero cuidar emocionalmente a quien está sufriendo por ello.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q1" value="ninguna">
-                            <span class="option-text">Ninguna de estas me representa.</span>
-                        </label>
-                    </div>
-                </div>
+        <div class="navigation">
+            <button class="btn" id="nextBtn" onclick="nextQuestion()">Siguiente</button>
+            <button class="btn" id="submitBtn" onclick="calculateResult()" style="display: none;">Ver Resultado</button>
+            <button class="btn" id="prevBtn" onclick="previousQuestion()" style="display: none;">Anterior</button>
+        </div>
 
-                <div class="question-block">
-                    <div class="question-number">Pregunta 2 de 28</div>
-                    <div class="question-text">¿En qué tipo de actividades pierdes la noción del tiempo?</div>
-                    <div class="options">
-                        <label class="option">
-                            <input type="radio" name="q2" value="builder">
-                            <span class="option-text">Construyendo algo nuevo, desarrollando un negocio o proyecto tangible.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q2" value="guide">
-                            <span class="option-text">Teniendo conversaciones profundas que transforman a las personas.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q2" value="strategist">
-                            <span class="option-text">Planificando, analizando la visión a largo plazo y estrategias.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q2" value="creator">
-                            <span class="option-text">Creando arte, música, historias, diseños o expresiones visuales.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q2" value="ninguna">
-                            <span class="option-text">Ninguna de estas me representa.</span>
-                        </label>
-                    </div>
-                </div>
-
-                <div class="question-block">
-                    <div class="question-number">Pregunta 3 de 28</div>
-                    <div class="question-text">¿Cuál es el legado que quieres dejar?</div>
-                    <div class="options">
-                        <label class="option">
-                            <input type="radio" name="q3" value="builder">
-                            <span class="option-text">Sistemas y estructuras que seguirán beneficiando a otros después de mí.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q3" value="guide">
-                            <span class="option-text">Personas que he transformado y que ahora transforman a otros.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q3" value="voice">
-                            <span class="option-text">Palabras, enseñanzas y verdades que seguirán impactando vidas.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q3" value="intercessor">
-                            <span class="option-text">Una generación cubierta espiritualmente por las oraciones que hoy hago.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q3" value="ninguna">
-                            <span class="option-text">Ninguna de estas me representa.</span>
-                        </label>
-                    </div>
-                </div>
-
-                <div class="question-block">
-                    <div class="question-number">Pregunta 4 de 28</div>
-                    <div class="question-text">¿Qué te hace sentir más realizada y viva?</div>
-                    <div class="options">
-                        <label class="option">
-                            <input type="radio" name="q4" value="builder">
-                            <span class="option-text">Ver algo funcionar después de construirlo o desarrollarlo.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q4" value="nurturer">
-                            <span class="option-text">Ver a alguien sentirse seguro, amado y cuidado por mí.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q4" value="strategist">
-                            <span class="option-text">Lograr un objetivo importante que requería planificación.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q4" value="creator">
-                            <span class="option-text">Crear algo hermoso que expresa lo que siento profundamente.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q4" value="ninguna">
-                            <span class="option-text">Ninguna de estas me representa.</span>
-                        </label>
-                    </div>
-                </div>
-
-                <div class="question-block">
-                    <div class="question-number">Pregunta 5 de 28</div>
-                    <div class="question-text">¿Cuándo ves que hay una necesidad en tu círculo, qué observan otros que haces?</div>
-                    <div class="options">
-                        <label class="option">
-                            <input type="radio" name="q5" value="builder">
-                            <span class="option-text">Que propongo soluciones prácticas y ejecutables rápidamente.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q5" value="guide">
-                            <span class="option-text">Que hago preguntas inteligentes que llevan a la persona a su respuesta.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q5" value="nurturer">
-                            <span class="option-text">Que me acerco con empatía y estoy presente para la persona.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q5" value="intercessor">
-                            <span class="option-text">Que levanto eso en oración e intercedo por la persona/situación.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q5" value="ninguna">
-                            <span class="option-text">Ninguna de estas me representa.</span>
-                        </label>
-                    </div>
-                </div>
-
-                <div class="question-block">
-                    <div class="question-number">Pregunta 6 de 28</div>
-                    <div class="question-text">¿Cuál es el ambiente donde te sientes más inspirada?</div>
-                    <div class="options">
-                        <label class="option">
-                            <input type="radio" name="q6" value="builder">
-                            <span class="option-text">En proyectos activos donde hay ejecución y progreso visible.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q6" value="voice">
-                            <span class="option-text">Frente a un micrófono, una clase o escribiendo para otros.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q6" value="nurturer">
-                            <span class="option-text">En ambientes cercanos donde puedo cuidar personalmente.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q6" value="creator">
-                            <span class="option-text">En ambientes creativos donde puedo expresar y crear libremente.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q6" value="ninguna">
-                            <span class="option-text">Ninguna de estas me representa.</span>
-                        </label>
-                    </div>
-                </div>
-
-                <div class="question-block">
-                    <div class="question-number">Pregunta 7 de 28</div>
-                    <div class="question-text">¿Cuándo eras niña, qué soñabas hacer?</div>
-                    <div class="options">
-                        <label class="option">
-                            <input type="radio" name="q7" value="builder">
-                            <span class="option-text">Algo relacionado con crear, emprender, construir o desarrollar.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q7" value="guide">
-                            <span class="option-text">Algo que involucrara ayudar a otros a crecer o descubrirse.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q7" value="voice">
-                            <span class="option-text">Algo relacionado con enseñar, hablar, escribir o comunicar.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q7" value="nurturer">
-                            <span class="option-text">Algo que involucrara cuidar, sanar o amar a otros.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q7" value="ninguna">
-                            <span class="option-text">Ninguna de estas me representa.</span>
-                        </label>
-                    </div>
-                </div>
-
-                <div class="question-block">
-                    <div class="question-number">Pregunta 8 de 28</div>
-                    <div class="question-text">¿Cómo respondes ante la vulnerabilidad?</div>
-                    <div class="options">
-                        <label class="option">
-                            <input type="radio" name="q8" value="builder">
-                            <span class="option-text">Me enfoco en resolver el problema de forma práctica.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q8" value="guide">
-                            <span class="option-text">La honro y la sostengo con presencia y comprensión profunda.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q8" value="voice">
-                            <span class="option-text">La comparto para que otros sepan que no están solos.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q8" value="nurturer">
-                            <span class="option-text">Encuentro mi propósito en cuidar a quien está vulnerable.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q8" value="ninguna">
-                            <span class="option-text">Ninguna de estas me representa.</span>
-                        </label>
-                    </div>
-                </div>
-
-                <div class="question-block">
-                    <div class="question-number">Pregunta 9 de 28</div>
-                    <div class="question-text">¿Cuál es el feedback que más recibes sobre ti?</div>
-                    <div class="options">
-                        <label class="option">
-                            <input type="radio" name="q9" value="builder">
-                            <span class="option-text">"Eres práctica y logras hacer las cosas"</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q9" value="guide">
-                            <span class="option-text">"Gracias por ayudarme a entenderme a mí misma"</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q9" value="voice">
-                            <span class="option-text">"Tus palabras me inspiraron a cambiar mi perspectiva"</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q9" value="nurturer">
-                            <span class="option-text">"Me haces sentir cuidada, amada, apoyada"</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q9" value="ninguna">
-                            <span class="option-text">Ninguna de estas me representa.</span>
-                        </label>
-                    </div>
-                </div>
-
-                <div class="question-block">
-                    <div class="question-number">Pregunta 10 de 28</div>
-                    <div class="question-text">Cuando enfrentas un conflicto, ¿cuál es tu instinto natural?</div>
-                    <div class="options">
-                        <label class="option">
-                            <input type="radio" name="q10" value="builder">
-                            <span class="option-text">Identificar la solución y trabajar en implementarla.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q10" value="guide">
-                            <span class="option-text">Facilitar que ambas partes se entiendan realmente.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q10" value="voice">
-                            <span class="option-text">Expresar la verdad de forma que todos la escuchen.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q10" value="nurturer">
-                            <span class="option-text">Cuidar emocionalmente a quien está más afectado.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q10" value="ninguna">
-                            <span class="option-text">Ninguna de estas me representa.</span>
-                        </label>
-                    </div>
-                </div>
-
-                <div class="question-block">
-                    <div class="question-number">Pregunta 11 de 28</div>
-                    <div class="question-text">¿Qué rol típicamente asumes en un grupo o equipo?</div>
-                    <div class="options">
-                        <label class="option">
-                            <input type="radio" name="q11" value="builder">
-                            <span class="option-text">La que hace que las cosas avancen y se ejecuten.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q11" value="strategist">
-                            <span class="option-text">La que ve la visión y guía hacia donde vamos.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q11" value="intercessor">
-                            <span class="option-text">La que cubre el grupo espiritualmente con oración.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q11" value="creator">
-                            <span class="option-text">La que trae belleza, creatividad y expresión al grupo.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q11" value="ninguna">
-                            <span class="option-text">Ninguna de estas me representa.</span>
-                        </label>
-                    </div>
-                </div>
-
-                <div class="question-block">
-                    <div class="question-number">Pregunta 12 de 28</div>
-                    <div class="question-text">¿Cómo afecta tu fe tu vida cotidiana?</div>
-                    <div class="options">
-                        <label class="option">
-                            <input type="radio" name="q12" value="guide">
-                            <span class="option-text">Trato de vivir el ejemplo para que otros crean a través de mí.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q12" value="voice">
-                            <span class="option-text">Hablo abiertamente sobre mi fe y lo que Dios hace en mí.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q12" value="intercessor">
-                            <span class="option-text">Oro constantemente por las personas y situaciones a mi alrededor.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q12" value="nurturer">
-                            <span class="option-text">Muestro el amor de Dios a través del cuidado que doy.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q12" value="ninguna">
-                            <span class="option-text">Ninguna de estas me representa.</span>
-                        </label>
-                    </div>
-                </div>
-
-                <div class="question-block">
-                    <div class="question-number">Pregunta 13 de 28</div>
-                    <div class="question-text">¿Qué tipo de impacto quieres tener en el mundo?</div>
-                    <div class="options">
-                        <label class="option">
-                            <input type="radio" name="q13" value="builder">
-                            <span class="option-text">Crear infraestructura que permita que otros prosperen.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q13" value="voice">
-                            <span class="option-text">Cambiar mentes y corazones a través de lo que comunico.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q13" value="strategist">
-                            <span class="option-text">Ejecutar una visión grande que transforma realidades.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q13" value="creator">
-                            <span class="option-text">Crear belleza que inspira el alma de las personas.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q13" value="ninguna">
-                            <span class="option-text">Ninguna de estas me representa.</span>
-                        </label>
-                    </div>
-                </div>
-
-                <div class="question-block">
-                    <div class="question-number">Pregunta 14 de 28</div>
-                    <div class="question-text">¿Enseñanza, mentoring o liderazgo?</div>
-                    <div class="options">
-                        <label class="option">
-                            <input type="radio" name="q14" value="guide">
-                            <span class="option-text">Mentoring: acompañar a alguien en su viaje personal.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q14" value="voice">
-                            <span class="option-text">Enseñanza: compartir conocimiento y verdad.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q14" value="strategist">
-                            <span class="option-text">Liderazgo: guiar hacia una visión clara.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q14" value="nurturer">
-                            <span class="option-text">Apoyo: estar presente y cuidar el bienestar emocional.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q14" value="ninguna">
-                            <span class="option-text">Ninguna de estas me representa.</span>
-                        </label>
-                    </div>
-                </div>
-
-                <div class="question-block">
-                    <div class="question-number">Pregunta 15 de 28</div>
-                    <div class="question-text">¿Cuándo algo está "roto", tu reacción es?</div>
-                    <div class="options">
-                        <label class="option">
-                            <input type="radio" name="q15" value="builder">
-                            <span class="option-text">Repararlo o reconstruirlo de forma mejor.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q15" value="strategist">
-                            <span class="option-text">Analizar por qué se rompió y prevenir que vuelva a ocurrir.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q15" value="voice">
-                            <span class="option-text">Comunicar el problema para que otros lo entiendan.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q15" value="creator">
-                            <span class="option-text">Transformarlo en algo nuevo y hermoso.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q15" value="ninguna">
-                            <span class="option-text">Ninguna de estas me representa.</span>
-                        </label>
-                    </div>
-                </div>
-
-                <div class="question-block">
-                    <div class="question-number">Pregunta 16 de 28</div>
-                    <div class="question-text">¿Cuándo algo te apasiona, qué haces?</div>
-                    <div class="options">
-                        <label class="option">
-                            <input type="radio" name="q16" value="builder">
-                            <span class="option-text">Creo un proyecto o empresa alrededor de ello.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q16" value="guide">
-                            <span class="option-text">Busco que otros también lo descubran en sí mismos.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q16" value="voice">
-                            <span class="option-text">Hablo sobre ello, comparto mi entusiasmo.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q16" value="creator">
-                            <span class="option-text">Lo expreso a través del arte o forma creativa.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q16" value="ninguna">
-                            <span class="option-text">Ninguna de estas me representa.</span>
-                        </label>
-                    </div>
-                </div>
-
-                <div class="question-block">
-                    <div class="question-number">Pregunta 17 de 28</div>
-                    <div class="question-text">¿Cómo manejas el estrés o la presión?</div>
-                    <div class="options">
-                        <label class="option">
-                            <input type="radio" name="q17" value="builder">
-                            <span class="option-text">Enfocándome en las acciones concretas que puedo tomar.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q17" value="strategist">
-                            <span class="option-text">Analizando el problema para entender el panorama completo.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q17" value="intercessor">
-                            <span class="option-text">Llevándolo en oración a Dios.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q17" value="nurturer">
-                            <span class="option-text">Buscando apoyo emocional en personas cercanas.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q17" value="ninguna">
-                            <span class="option-text">Ninguna de estas me representa.</span>
-                        </label>
-                    </div>
-                </div>
-
-                <div class="question-block">
-                    <div class="question-number">Pregunta 18 de 28</div>
-                    <div class="question-text">¿Cuándo alguien comparte un problema contigo?</div>
-                    <div class="options">
-                        <label class="option">
-                            <input type="radio" name="q18" value="guide">
-                            <span class="option-text">Hago preguntas para que descubra su propia solución.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q18" value="builder">
-                            <span class="option-text">Ofrezco soluciones prácticas inmediatas.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q18" value="nurturer">
-                            <span class="option-text">Escucho profundamente y estoy emocionalmente presente.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q18" value="voice">
-                            <span class="option-text">Comparto verdades que pueden cambiar su perspectiva.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q18" value="ninguna">
-                            <span class="option-text">Ninguna de estas me representa.</span>
-                        </label>
-                    </div>
-                </div>
-
-                <div class="question-block">
-                    <div class="question-number">Pregunta 19 de 28</div>
-                    <div class="question-text">¿Qué tipo de satisfacción es la más profunda para ti?</div>
-                    <div class="options">
-                        <label class="option">
-                            <input type="radio" name="q19" value="builder">
-                            <span class="option-text">Ver un proyecto completado y funcionando bien.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q19" value="guide">
-                            <span class="option-text">Ver a alguien transformarse y crecer personalmente.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q19" value="voice">
-                            <span class="option-text">Saber que mis palabras marcaron una diferencia.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q19" value="intercessor">
-                            <span class="option-text">Ver respuesta de Dios a mis oraciones intercesoras.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q19" value="ninguna">
-                            <span class="option-text">Ninguna de estas me representa.</span>
-                        </label>
-                    </div>
-                </div>
-
-                <div class="question-block">
-                    <div class="question-number">Pregunta 20 de 28</div>
-                    <div class="question-text">¿Trabajar solo o en equipo?</div>
-                    <div class="options">
-                        <label class="option">
-                            <input type="radio" name="q20" value="creator">
-                            <span class="option-text">Prefiero trabajar sola para poder crear libremente.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q20" value="builder">
-                            <span class="option-text">Prefiero un equipo que ejecute mis ideas de forma eficiente.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q20" value="guide">
-                            <span class="option-text">Prefiero un equipo pequeño y cercano donde conozco a todos.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q20" value="strategist">
-                            <span class="option-text">Prefiero un equipo donde pueda alinear la visión.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q20" value="ninguna">
-                            <span class="option-text">Ninguna de estas me representa.</span>
-                        </label>
-                    </div>
-                </div>
-
-                <div class="question-block">
-                    <div class="question-number">Pregunta 21 de 28</div>
-                    <div class="question-text">¿Cómo prefieres ayudar a otros?</div>
-                    <div class="options">
-                        <label class="option">
-                            <input type="radio" name="q21" value="guide">
-                            <span class="option-text">Enseñándoles a pescar en lugar de darles el pez.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q21" value="nurturer">
-                            <span class="option-text">Mostrándoles que están cuidados y apoyados.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q21" value="builder">
-                            <span class="option-text">Creando oportunidades concretas para que prosperen.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q21" value="voice">
-                            <span class="option-text">Compartiendo conocimiento y verdad que los empodera.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q21" value="ninguna">
-                            <span class="option-text">Ninguna de estas me representa.</span>
-                        </label>
-                    </div>
-                </div>
-
-                <div class="question-block">
-                    <div class="question-number">Pregunta 22 de 28</div>
-                    <div class="question-text">¿Tu zona de mayor comodidad?</div>
-                    <div class="options">
-                        <label class="option">
-                            <input type="radio" name="q22" value="builder">
-                            <span class="option-text">Haciendo, ejecutando, creando soluciones tangibles.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q22" value="strategist">
-                            <span class="option-text">Pensando, planificando, viendo hacia el futuro.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q22" value="guide">
-                            <span class="option-text">Escuchando, comprendiendo, facilitando crecimiento.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q22" value="voice">
-                            <span class="option-text">Comunicando, expresando, compartiendo perspectivas.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q22" value="ninguna">
-                            <span class="option-text">Ninguna de estas me representa.</span>
-                        </label>
-                    </div>
-                </div>
-
-                <div class="question-block">
-                    <div class="question-number">Pregunta 23 de 28</div>
-                    <div class="question-text">¿Cuándo sientes que no tienes propósito?</div>
-                    <div class="options">
-                        <label class="option">
-                            <input type="radio" name="q23" value="builder">
-                            <span class="option-text">Cuando no estoy construyendo o creando algo nuevo.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q23" value="guide">
-                            <span class="option-text">Cuando no estoy acompañando a nadie en su crecimiento.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q23" value="voice">
-                            <span class="option-text">Cuando no puedo compartir lo que sé o siento.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q23" value="intercessor">
-                            <span class="option-text">Cuando no estoy orando o sirviendo espiritualmente.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q23" value="ninguna">
-                            <span class="option-text">Ninguna de estas me representa.</span>
-                        </label>
-                    </div>
-                </div>
-
-                <div class="question-block">
-                    <div class="question-number">Pregunta 24 de 28</div>
-                    <div class="question-text">¿Tu relación con la belleza y lo estético?</div>
-                    <div class="options">
-                        <label class="option">
-                            <input type="radio" name="q24" value="creator">
-                            <span class="option-text">Necesito crear o rodecarme de belleza para estar bien.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q24" value="builder">
-                            <span class="option-text">La belleza debe tener también propósito funcional.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q24" value="guide">
-                            <span class="option-text">La belleza es el espacio donde otras personas se abren.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q24" value="voice">
-                            <span class="option-text">La belleza comunica verdades que las palabras solas no pueden.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q24" value="ninguna">
-                            <span class="option-text">Ninguna de estas me representa.</span>
-                        </label>
-                    </div>
-                </div>
-
-                <div class="question-block">
-                    <div class="question-number">Pregunta 25 de 28</div>
-                    <div class="question-text">¿Cuándo algo es injusto, ¿qué haces?</div>
-                    <div class="options">
-                        <label class="option">
-                            <input type="radio" name="q25" value="voice">
-                            <span class="option-text">Hablo sobre ello para que otros lo vean y se muevan.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q25" value="builder">
-                            <span class="option-text">Creo sistemas o estructuras que corrijan la injusticia.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q25" value="strategist">
-                            <span class="option-text">Planeo una estrategia para cambiar la situación.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q25" value="intercessor">
-                            <span class="option-text">Llevo eso a Dios en oración e intercesión.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q25" value="ninguna">
-                            <span class="option-text">Ninguna de estas me representa.</span>
-                        </label>
-                    </div>
-                </div>
-
-                <div class="question-block">
-                    <div class="question-number">Pregunta 26 de 28</div>
-                    <div class="question-text">¿Tu mayor fortaleza en relaciones?</div>
-                    <div class="options">
-                        <label class="option">
-                            <input type="radio" name="q26" value="guide">
-                            <span class="option-text">Veo el potencial en otros y los ayudo a crecer.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q26" value="nurturer">
-                            <span class="option-text">Cuido profundamente y hago que otros se sientan amados.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q26" value="voice">
-                            <span class="option-text">Comunico con honestidad y autenticidad.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q26" value="builder">
-                            <span class="option-text">Soy leal y construyo relaciones sólidas y duraderas.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q26" value="ninguna">
-                            <span class="option-text">Ninguna de estas me representa.</span>
-                        </label>
-                    </div>
-                </div>
-
-                <div class="question-block">
-                    <div class="question-number">Pregunta 27 de 28</div>
-                    <div class="question-text">¿Tu mayor debilidad o área de crecimiento?</div>
-                    <div class="options">
-                        <label class="option">
-                            <input type="radio" name="q27" value="builder">
-                            <span class="option-text">A veces me enfoco tanto en hacer que olvido el ser.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q27" value="voice">
-                            <span class="option-text">A veces hablo sin escuchar lo que otros necesitan.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q27" value="nurturer">
-                            <span class="option-text">A veces olvido cuidarme a mí misma por cuidar otros.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q27" value="strategist">
-                            <span class="option-text">A veces planeo tanto que pierdo la oportunidad de actuar.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q27" value="ninguna">
-                            <span class="option-text">Ninguna de estas me representa.</span>
-                        </label>
-                    </div>
-                </div>
-
-                <div class="question-block">
-                    <div class="question-number">Pregunta 28 de 28</div>
-                    <div class="question-text">¿Cuál de estos valores resuena más contigo?</div>
-                    <div class="options">
-                        <label class="option">
-                            <input type="radio" name="q28" value="builder">
-                            <span class="option-text">Ejecución: hacer realidad lo que se puede ser.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q28" value="voice">
-                            <span class="option-text">Verdad: revelar lo que es real y transformador.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q28" value="nurturer">
-                            <span class="option-text">Compasión: amar sin condiciones.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q28" value="creator">
-                            <span class="option-text">Belleza: expresar el alma a través de lo creativo.</span>
-                        </label>
-                        <label class="option">
-                            <input type="radio" name="q28" value="ninguna">
-                            <span class="option-text">Ninguna de estas me representa.</span>
-                        </label>
-                    </div>
-                </div>
-
-                <div class="navigation">
-                    <button class="btn btn-secondary" onclick="previousQuestion()" disabled id="prevBtn">Anterior</button>
-                    <button class="btn btn-primary" onclick="nextQuestion()">Siguiente</button>
-                </div>
-            </div>
-
-            <div class="results-section">
-                <div class="results-header">
-                    <h2>Tus Arquetipos de Expresión en el Reino</h2>
-                    <p>Cómo naturalmente expresas tu propósito en el Reino</p>
-                </div>
-                <div id="resultsContent"></div>
-                <div class="button-group">
-                    <button class="btn-restart" onclick="restartTest()">Hacer el Test Nuevamente</button>
-                </div>
-            </div>
+        <div class="result" id="resultContainer">
+            <!-- Result will be shown here -->
         </div>
     </div>
 
     <script>
         const questions = [
-            { name: 'q1' }, { name: 'q2' }, { name: 'q3' }, { name: 'q4' }, { name: 'q5' },
-            { name: 'q6' }, { name: 'q7' }, { name: 'q8' }, { name: 'q9' }, { name: 'q10' },
-            { name: 'q11' }, { name: 'q12' }, { name: 'q13' }, { name: 'q14' }, { name: 'q15' },
-            { name: 'q16' }, { name: 'q17' }, { name: 'q18' }, { name: 'q19' }, { name: 'q20' },
-            { name: 'q21' }, { name: 'q22' }, { name: 'q23' }, { name: 'q24' }, { name: 'q25' },
-            { name: 'q26' }, { name: 'q27' }, { name: 'q28' }
+            {
+                archetype: "La Constructora",
+                q: "Cuando algo no funciona en tu vida o en tu comunidad, ¿cuál es tu instinto?",
+                options: [
+                    { text: "Identifico el problema y creo un sistema o estructura para resolverlo.", value: "builder" },
+                    { text: "Busco acompañar a la persona involucrada para que encuentre su propio camino.", value: "guide" },
+                    { text: "Quiero comunicar sobre esto, compartir la verdad de una forma clara.", value: "voice" },
+                    { text: "Quiero cuidar emocionalmente a quien está sufriendo por ello.", value: "nurturer" }
+                ]
+            },
+            {
+                archetype: "La Constructora",
+                q: "¿En qué tipo de actividades pierdes la noción del tiempo?",
+                options: [
+                    { text: "Construyendo algo nuevo, desarrollando un negocio o proyecto tangible.", value: "builder" },
+                    { text: "Teniendo conversaciones profundas que transforman a las personas.", value: "guide" },
+                    { text: "Planificando, analizando la visión a largo plazo y estrategias.", value: "strategist" },
+                    { text: "Creando arte, música, historias, diseños o expresiones visuales.", value: "creator" }
+                ]
+            },
+            {
+                archetype: "La Guía",
+                q: "¿Cuál es el legado que quieres dejar?",
+                options: [
+                    { text: "Sistemas y estructuras que seguirán beneficiando a otros después de mí.", value: "builder" },
+                    { text: "Personas que he transformado y que ahora transforman a otros.", value: "guide" },
+                    { text: "Palabras, enseñanzas y verdades que seguirán impactando vidas.", value: "voice" },
+                    { text: "Una generación cubierta espiritualmente por las oraciones que hoy hago.", value: "intercessor" }
+                ]
+            },
+            {
+                archetype: "La Nutrida",
+                q: "¿Qué te hace sentir más realizada y viva?",
+                options: [
+                    { text: "Ver algo funcionar después de construirlo o desarrollarlo.", value: "builder" },
+                    { text: "Ver a alguien sentirse seguro, amado y cuidado por mí.", value: "nurturer" },
+                    { text: "Lograr un objetivo importante que requería planificación.", value: "strategist" },
+                    { text: "Crear algo hermoso que expresa lo que siento profundamente.", value: "creator" }
+                ]
+            },
+            {
+                archetype: "La Voz",
+                q: "¿Cuándo ves que hay una necesidad en tu círculo, qué observan otros que haces?",
+                options: [
+                    { text: "Que propongo soluciones prácticas y ejecutables rápidamente.", value: "builder" },
+                    { text: "Que hago preguntas inteligentes que llevan a la persona a su respuesta.", value: "guide" },
+                    { text: "Que me acerco con empatía y estoy presente para la persona.", value: "nurturer" },
+                    { text: "Que levanto eso en oración e intercedo por la persona/situación.", value: "intercessor" }
+                ]
+            },
+            {
+                archetype: "La Estratega",
+                q: "¿Cuál es el ambiente donde te sientes más inspirada?",
+                options: [
+                    { text: "En proyectos activos donde hay ejecución y progreso visible.", value: "builder" },
+                    { text: "Frente a un micrófono, una clase o escribiendo para otros.", value: "voice" },
+                    { text: "En ambientes cercanos donde puedo cuidar personalmente.", value: "nurturer" },
+                    { text: "En ambientes creativos donde puedo expresar y crear libremente.", value: "creator" }
+                ]
+            },
+            {
+                archetype: "La Intercesora",
+                q: "¿Cuándo eras niña, qué soñabas hacer?",
+                options: [
+                    { text: "Algo relacionado con crear, emprender, construir o desarrollar.", value: "builder" },
+                    { text: "Algo que involucrara ayudar a otros a crecer o descubrirse.", value: "guide" },
+                    { text: "Algo relacionado con enseñar, hablar, escribir o comunicar.", value: "voice" },
+                    { text: "Algo que involucrara cuidar, sanar o amar a otros.", value: "nurturer" }
+                ]
+            },
+            {
+                archetype: "La Creadora",
+                q: "¿Cómo respondes ante la vulnerabilidad?",
+                options: [
+                    { text: "Me enfoco en resolver el problema de forma práctica.", value: "builder" },
+                    { text: "La honro y la sostengo con presencia y comprensión profunda.", value: "guide" },
+                    { text: "La comparto para que otros sepan que no están solos.", value: "voice" },
+                    { text: "Encuentro mi propósito en cuidar a quien está vulnerable.", value: "nurturer" }
+                ]
+            },
+            {
+                archetype: "General",
+                q: "¿Cuál es el feedback que más recibes sobre ti?",
+                options: [
+                    { text: "\"Eres práctica y logras hacer las cosas\"", value: "builder" },
+                    { text: "\"Gracias por ayudarme a entenderme a mí misma\"", value: "guide" },
+                    { text: "\"Tus palabras me inspiraron a cambiar mi perspectiva\"", value: "voice" },
+                    { text: "\"Me haces sentir cuidada, amada, apoyada\"", value: "nurturer" }
+                ]
+            },
+            {
+                archetype: "General",
+                q: "Cuando enfrentas un conflicto, ¿cuál es tu instinto natural?",
+                options: [
+                    { text: "Identificar la solución y trabajar en implementarla.", value: "builder" },
+                    { text: "Facilitar que ambas partes se entiendan realmente.", value: "guide" },
+                    { text: "Expresar la verdad de forma que todos la escuchen.", value: "voice" },
+                    { text: "Cuidar emocionalmente a quien está más afectado.", value: "nurturer" }
+                ]
+            },
+            {
+                archetype: "General",
+                q: "¿Qué rol típicamente asumes en un grupo o equipo?",
+                options: [
+                    { text: "La que hace que las cosas avancen y se ejecuten.", value: "builder" },
+                    { text: "La que ve la visión y guía hacia donde vamos.", value: "strategist" },
+                    { text: "La que cubre el grupo espiritualmente con oración.", value: "intercessor" },
+                    { text: "La que trae belleza, creatividad y expresión al grupo.", value: "creator" }
+                ]
+            },
+            {
+                archetype: "General",
+                q: "¿Cómo afecta tu fe tu vida cotidiana?",
+                options: [
+                    { text: "Trato de vivir el ejemplo para que otros crean a través de mí.", value: "guide" },
+                    { text: "Hablo abiertamente sobre mi fe y lo que Dios hace en mí.", value: "voice" },
+                    { text: "Oro constantemente por las personas y situaciones a mi alrededor.", value: "intercessor" },
+                    { text: "Muestro el amor de Dios a través del cuidado que doy.", value: "nurturer" }
+                ]
+            },
+            {
+                archetype: "General",
+                q: "¿Qué tipo de impacto quieres tener en el mundo?",
+                options: [
+                    { text: "Crear infraestructura que permita que otros prosperen.", value: "builder" },
+                    { text: "Cambiar mentes y corazones a través de lo que comunico.", value: "voice" },
+                    { text: "Ejecutar una visión grande que transforma realidades.", value: "strategist" },
+                    { text: "Crear belleza que inspira el alma de las personas.", value: "creator" }
+                ]
+            },
+            {
+                archetype: "General",
+                q: "¿Enseñanza, mentoring o liderazgo?",
+                options: [
+                    { text: "Mentoring: acompañar a alguien en su viaje personal.", value: "guide" },
+                    { text: "Enseñanza: compartir conocimiento y verdad.", value: "voice" },
+                    { text: "Liderazgo: guiar hacia una visión clara.", value: "strategist" },
+                    { text: "Apoyo: estar presente y cuidar el bienestar emocional.", value: "nurturer" }
+                ]
+            },
+            {
+                archetype: "General",
+                q: "¿Cuándo algo está \"roto\", tu reacción es?",
+                options: [
+                    { text: "Repararlo o reconstruirlo de forma mejor.", value: "builder" },
+                    { text: "Analizar por qué se rompió y prevenir que vuelva a ocurrir.", value: "strategist" },
+                    { text: "Comunicar el problema para que otros lo entiendan.", value: "voice" },
+                    { text: "Transformarlo en algo nuevo y hermoso.", value: "creator" }
+                ]
+            },
+            {
+                archetype: "General",
+                q: "¿Cuándo algo te apasiona, qué haces?",
+                options: [
+                    { text: "Creo un proyecto o empresa alrededor de ello.", value: "builder" },
+                    { text: "Busco que otros también lo descubran en sí mismos.", value: "guide" },
+                    { text: "Hablo sobre ello, comparto mi entusiasmo.", value: "voice" },
+                    { text: "Lo expreso a través del arte o forma creativa.", value: "creator" }
+                ]
+            },
+            {
+                archetype: "General",
+                q: "¿Cómo manejas el estrés o la presión?",
+                options: [
+                    { text: "Enfocándome en las acciones concretas que puedo tomar.", value: "builder" },
+                    { text: "Analizando el problema para entender el panorama completo.", value: "strategist" },
+                    { text: "Llevándolo en oración a Dios.", value: "intercessor" },
+                    { text: "Buscando apoyo emocional en personas cercanas.", value: "nurturer" }
+                ]
+            },
+            {
+                archetype: "General",
+                q: "¿Cuándo alguien comparte un problema contigo?",
+                options: [
+                    { text: "Hago preguntas para que descubra su propia solución.", value: "guide" },
+                    { text: "Ofrezco soluciones prácticas inmediatas.", value: "builder" },
+                    { text: "Escucho profundamente y estoy emocionalmente presente.", value: "nurturer" },
+                    { text: "Comparto verdades que pueden cambiar su perspectiva.", value: "voice" }
+                ]
+            },
+            {
+                archetype: "General",
+                q: "¿Qué tipo de satisfacción es la más profunda para ti?",
+                options: [
+                    { text: "Ver un proyecto completado y funcionando bien.", value: "builder" },
+                    { text: "Ver a alguien transformarse y crecer personalmente.", value: "guide" },
+                    { text: "Saber que mis palabras marcaron una diferencia.", value: "voice" },
+                    { text: "Ver respuesta de Dios a mis oraciones intercesoras.", value: "intercessor" }
+                ]
+            },
+            {
+                archetype: "General",
+                q: "¿Trabajar solo o en equipo?",
+                options: [
+                    { text: "Prefiero trabajar sola para poder crear libremente.", value: "creator" },
+                    { text: "Prefiero un equipo que ejecute mis ideas de forma eficiente.", value: "builder" },
+                    { text: "Prefiero un equipo pequeño y cercano donde conozco a todos.", value: "guide" },
+                    { text: "Prefiero un equipo donde pueda alinear la visión.", value: "strategist" }
+                ]
+            },
+            {
+                archetype: "General",
+                q: "¿Cómo prefieres ayudar a otros?",
+                options: [
+                    { text: "Enseñándoles a pescar en lugar de darles el pez.", value: "guide" },
+                    { text: "Mostrándoles que están cuidados y apoyados.", value: "nurturer" },
+                    { text: "Creando oportunidades concretas para que prosperen.", value: "builder" },
+                    { text: "Compartiendo conocimiento y verdad que los empodera.", value: "voice" }
+                ]
+            },
+            {
+                archetype: "General",
+                q: "¿Tu zona de mayor comodidad?",
+                options: [
+                    { text: "Haciendo, ejecutando, creando soluciones tangibles.", value: "builder" },
+                    { text: "Pensando, planificando, viendo hacia el futuro.", value: "strategist" },
+                    { text: "Escuchando, comprendiendo, facilitando crecimiento.", value: "guide" },
+                    { text: "Comunicando, expresando, compartiendo perspectivas.", value: "voice" }
+                ]
+            },
+            {
+                archetype: "General",
+                q: "¿Cuándo sientes que no tienes propósito?",
+                options: [
+                    { text: "Cuando no estoy construyendo o creando algo nuevo.", value: "builder" },
+                    { text: "Cuando no estoy acompañando a nadie en su crecimiento.", value: "guide" },
+                    { text: "Cuando no puedo compartir lo que sé o siento.", value: "voice" },
+                    { text: "Cuando no estoy orando o sirviendo espiritualmente.", value: "intercessor" }
+                ]
+            },
+            {
+                archetype: "General",
+                q: "¿Tu relación con la belleza y lo estético?",
+                options: [
+                    { text: "Necesito crear o rodearme de belleza para estar bien.", value: "creator" },
+                    { text: "La belleza debe tener también propósito funcional.", value: "builder" },
+                    { text: "La belleza es el espacio donde otras personas se abren.", value: "guide" },
+                    { text: "La belleza comunica verdades que las palabras solas no pueden.", value: "voice" }
+                ]
+            },
+            {
+                archetype: "General",
+                q: "¿Cuándo algo es injusto, qué haces?",
+                options: [
+                    { text: "Hablo sobre ello para que otros lo vean y se muevan.", value: "voice" },
+                    { text: "Creo sistemas o estructuras que corrijan la injusticia.", value: "builder" },
+                    { text: "Planeo una estrategia para cambiar la situación.", value: "strategist" },
+                    { text: "Llevo eso a Dios en oración e intercesión.", value: "intercessor" }
+                ]
+            },
+            {
+                archetype: "General",
+                q: "¿Tu mayor fortaleza en relaciones?",
+                options: [
+                    { text: "Veo el potencial en otros y los ayudo a crecer.", value: "guide" },
+                    { text: "Cuido profundamente y hago que otros se sientan amados.", value: "nurturer" },
+                    { text: "Comunico con honestidad y autenticidad.", value: "voice" },
+                    { text: "Soy leal y construyo relaciones sólidas y duraderas.", value: "builder" }
+                ]
+            },
+            {
+                archetype: "General",
+                q: "¿Tu mayor debilidad o área de crecimiento?",
+                options: [
+                    { text: "A veces me enfoco tanto en hacer que olvido el ser.", value: "builder" },
+                    { text: "A veces hablo sin escuchar lo que otros necesitan.", value: "voice" },
+                    { text: "A veces olvido cuidarme a mí misma por cuidar otros.", value: "nurturer" },
+                    { text: "A veces planeo tanto que pierdo la oportunidad de actuar.", value: "strategist" }
+                ]
+            },
+            {
+                archetype: "General",
+                q: "¿Cuál de estos valores resuena más contigo?",
+                options: [
+                    { text: "Ejecución: hacer realidad lo que se puede ser.", value: "builder" },
+                    { text: "Verdad: revelar lo que es real y transformador.", value: "voice" },
+                    { text: "Compasión: amar sin condiciones.", value: "nurturer" },
+                    { text: "Belleza: expresar el alma a través de lo creativo.", value: "creator" }
+                ]
+            }
         ];
 
         const archetypes = {
@@ -1309,7 +806,19 @@
                     'Resolver problemas prácticos con soluciones ejecutables',
                     'Edificar legados que permanecen después de ti'
                 ],
-                examples: 'Emprendedoras, directoras de organizaciones sin fines de lucro, líderes de ministerios, productoras, gerentes de proyectos, arquitectas, ingenieras, fundadoras de empresas, coordinadoras de eventos, desarrolladoras de comunidades.'
+                examples: 'Emprendedoras, directoras de organizaciones sin fines de lucro, líderes de ministerios, productoras, gerentes de proyectos, arquitectas, ingenieras, fundadoras de empresas, coordinadoras de eventos, desarrolladoras de comunidades.',
+                recommendations: `
+                    <li><strong>Reconoce tu poder:</strong> Tu capacidad de construir es un regalo del Reino</li>
+                    <li>No esperes a que todo esté perfecto para comenzar - comienza HOY con lo que tienes</li>
+                    <li>Delega construcción mental: no necesitas construir TODO, construye lo que SÓ LO TÚ PUEDES</li>
+                    <li>Rodéate de otros arquetipos que alimenten tu visión - no hagas todo sola</li>
+                    <li>Celebra cada estructura que creas, sin importar lo pequeña que parezca</li>
+                    <li>Enseña a otros a construir - multiplica tu impacto a través del conocimiento</li>
+                    <li>Recuerda: el Reino no necesita perfección, necesita acción</li>
+                    <li>Conecta tu construcción con el propósito de Dios - no solo por éxito, sino por impacto</li>
+                    <li>Mantén viva la visión original - no dejes que los detalles la nublen</li>
+                    <li>Tu legado será el fruto de lo que construiste hoy</li>
+                `
             },
             guide: {
                 name: 'La Guía',
@@ -1321,7 +830,19 @@
                     'Facilitar el descubrimiento de potencial en otros',
                     'Ser brújula en los momentos de confusión de otros'
                 ],
-                examples: 'Mentoras, coachas de vida, consejeras, facilitadoras de grupos de discusión, directoras espirituales, terapeutas, psicólogas, líderes de grupos pequeños, asesoras académicas, mentoras profesionales.'
+                examples: 'Mentoras, coachas de vida, consejeras, facilitadoras de grupos de discusión, directoras espirituales, terapeutas, psicólogas, líderes de grupos pequeños, asesoras académicas, mentoras profesionales.',
+                recommendations: `
+                    <li><strong>Tu don es escuchar:</strong> En un mundo que grita, tu escucha es revolucionaria</li>
+                    <li>No resuelvas por otros - acompaña su descubrimiento de soluciones</li>
+                    <li>Mantén límites claros - el crecimiento de otros no es tu responsabilidad, es su viaje</li>
+                    <li>Rodéate de otras guías - no cargues sola el peso emocional del acompañamiento</li>
+                    <li>Celebra cada "click" de autoconocimiento que facilites</li>
+                    <li>Documenta transformaciones - reconoce el impacto profundo que tienes</li>
+                    <li>El Reino necesita guías que crean en el potencial de otros</li>
+                    <li>Sé auténtica en tu acompañamiento - tu vulnerabilidad es tu fortaleza</li>
+                    <li>Recuerda: no estás aquí para ser perfecta, estás aquí para ser presente</li>
+                    <li>Tu impacto está en quién se convierte el otro gracias a tu acompañamiento</li>
+                `
             },
             voice: {
                 name: 'La Voz',
@@ -1333,7 +854,19 @@
                     'Comunicar verdad espiritual de forma accesible',
                     'Influir a través de palabras y mensajes poderosos'
                 ],
-                examples: 'Predicadoras, maestras, conferencistas, autoras, podcasters, periodistas, comunicólogas, editoras, oradores públicos, facilitadores de talleres, influenciadores digitales con mensaje.'
+                examples: 'Predicadoras, maestras, conferencistas, autoras, podcasters, periodistas, comunicólogas, editoras, oradores públicos, facilitadores de talleres, influenciadores digitales con mensaje.',
+                recommendations: `
+                    <li><strong>Tus palabras importan:</strong> No subestimes el poder de lo que comunicas</li>
+                    <li>Habla con autenticidad - la perfección no es creíble, la verdad sí</li>
+                    <li>Amplifica tu voz - no te quedes callada por miedo a lo que dirán</li>
+                    <li>Rodéate de otros comunicadores que compartan tu visión</li>
+                    <li>Celebra cada persona cuya vida cambió por tus palabras</li>
+                    <li>Documenta testimonios - el impacto de tu voz es mayor de lo que crees</li>
+                    <li>El Reino grita por voces que hablen verdad en medio del caos</li>
+                    <li>Sé responsable con tus palabras - tienen poder de vida y muerte</li>
+                    <li>Recuerda: no hablas para ser escuchada, hablas porque hay verdad que compartir</li>
+                    <li>Tu legado será las palabras que transformaron corazones</li>
+                `
             },
             nurturer: {
                 name: 'La Nutrida',
@@ -1345,7 +878,19 @@
                     'Crear comunidad donde todos se sienten amados',
                     'Servir con compasión sin esperar nada a cambio'
                 ],
-                examples: 'Enfermeras, doctoras, consejeras emocionales, trabajadoras sociales, hospiciadoras, madres de crianza, voluntarias comunitarias, líderes de grupos de apoyo, cuidadoras, asistentes de salud mental.'
+                examples: 'Enfermeras, doctoras, consejeras emocionales, trabajadoras sociales, hospiciadoras, madres de crianza, voluntarias comunitarias, líderes de grupos de apoyo, cuidadoras, asistentes de salud mental.',
+                recommendations: `
+                    <li><strong>Tu cuidado es un ministerio:</strong> No lo veas como algo ordinario</li>
+                    <li>Cuídate a ti misma como cuidas a otros - no puedes dar de un vaso vacío</li>
+                    <li>Establece límites sanos - tu compasión no es responsabilidad de sanar a todos</li>
+                    <li>Rodéate de otros nutrientes que entienden el costo emocional</li>
+                    <li>Celebra cada corazón que has ayudado a sanar</li>
+                    <li>Documenta sanaciones - reconoce el poder transformador de tu presencia</li>
+                    <li>El Reino necesita mujeres que amen sin condiciones</li>
+                    <li>Sé compasiva contigo misma - estás haciendo la obra más importante</li>
+                    <li>Recuerda: no eres responsable de sanar, eres responsable de amar</li>
+                    <li>Tu impacto está en los corazones que aprendieron que son dignos de amor</li>
+                `
             },
             strategist: {
                 name: 'La Estratega',
@@ -1357,7 +902,19 @@
                     'Liderar equipos hacia una visión clara',
                     'Lograr impacto significativo a través de planificación'
                 ],
-                examples: 'CEOs, directoras ejecutivas, estrategas de negocios, analistas, planificadores urbanos, líderes nacionales, consultoras empresariales, diseñadoras de políticas, directoras de visión, ejecutivas de alto nivel.'
+                examples: 'CEOs, directoras ejecutivas, estrategas de negocios, analistas, planificadores urbanos, líderes nacionales, consultoras empresariales, diseñadoras de políticas, directoras de visión, ejecutivas de alto nivel.',
+                recommendations: `
+                    <li><strong>Tu visión es necesaria:</strong> El Reino requiere estrategas que ven lejos</li>
+                    <li>Comunica tu visión claramente - no todos ven como tú ves</li>
+                    <li>Sé flexible en el camino - la estrategia es el marco, no la cárcel</li>
+                    <li>Rodéate de ejecutores que traigan tu visión a la realidad</li>
+                    <li>Celebra hitos de progreso - no solo el destino final</li>
+                    <li>Documenta estrategias exitosas - multiplica tu impacto enseñando</li>
+                    <li>El Reino necesita visionarias que planifiquen para generaciones</li>
+                    <li>Sé empática en tu liderazgo - no todos pueden ver como tú</li>
+                    <li>Recuerda: la mejor estrategia sin corazón es solo manipulación</li>
+                    <li>Tu legado será la visión que transformó realidades durante décadas</li>
+                `
             },
             intercessor: {
                 name: 'La Intercesora',
@@ -1369,7 +926,19 @@
                     'Moverse en fe a través de la oración',
                     'Traer cambio invisible a través de intercesión consistente'
                 ],
-                examples: 'Mujeres de oración, intercessoras de ministerios, líderes de grupos de intercesión, pastoras de oración, evangelistas, misioneras de oración, líderes de cadenas de oración, capellanas, consejeras espirituales.'
+                examples: 'Mujeres de oración, intercessoras de ministerios, líderes de grupos de intercesión, pastoras de oración, evangelistas, misioneras de oración, líderes de cadenas de oración, capellanas, consejeras espirituales.',
+                recommendations: `
+                    <li><strong>Tu intercesión cambia realidades:</strong> No es un trabajo secundario</li>
+                    <li>Ora con fe, no con duda - tu confianza activa la respuesta de Dios</li>
+                    <li>Documenta respuestas de oración - reconoce el poder de tu intercesión</li>
+                    <li>Rodéate de otros intercesores que entienden el llamado</li>
+                    <li>Celebra cada intervención divina que tu oración facilitó</li>
+                    <li>Enseña a otros a orar con poder - multiplica intercessoras</li>
+                    <li>El Reino clamea por mujeres que se paren en la brecha</li>
+                    <li>Mantén tu vida de oración privada sagrada - ése es tu fortaleza</li>
+                    <li>Recuerda: eres el arma más poderosa del Reino cuando oras</li>
+                    <li>Tu impacto está en lo que cambió espiritualmente gracias a tus oraciones</li>
+                `
             },
             creator: {
                 name: 'La Creadora',
@@ -1381,80 +950,134 @@
                     'Conmover corazones a través de obra artística',
                     'Revelar la cara de Dios a través de la belleza'
                 ],
-                examples: 'Artistas visuales, músicas, diseñadoras gráficas, actrices, directoras de cine, coreógrafas, poetisas, ilustradoras, decoradoras, cineastas, productoras de contenido visual, artesanas, videastas.'
+                examples: 'Artistas visuales, músicas, diseñadoras gráficas, actrices, directoras de cine, coreógrafas, poetisas, ilustradoras, decoradoras, cineastas, productoras de contenido visual, artesanas, videastas.',
+                recommendations: `
+                    <li><strong>Tu creatividad es un espejo del Creador:</strong> Nunca minimices esto</li>
+                    <li>Crea desde tu verdad, no desde lo que crees que otros quieren</li>
+                    <li>No esperes permiso - el mundo necesita tu belleza YA</li>
+                    <li>Rodéate de otros creadores que entienden la vulnerabilidad de crear</li>
+                    <li>Celebra cada pieza que creas - es un acto profundo de fe</li>
+                    <li>Documenta tu proceso - tu camino creativo inspira a otros a crear</li>
+                    <li>El Reino grita por belleza en medio de la fealdad</li>
+                    <li>Sé vulnerable en tu arte - tu dolor transformado es poder</li>
+                    <li>Recuerda: no creas para ser aplaudida, creas porque es lo que eres</li>
+                    <li>Tu legado será la belleza que transformó almas</li>
+                `
             }
         };
 
         let currentQuestion = 0;
         let answers = {};
 
-        function startTest() {
-            document.querySelector('.intro-section').classList.remove('active');
-            document.querySelector('.questions-section').classList.add('active');
-            showQuestion(0);
+        function initQuiz() {
+            const container = document.getElementById('questionsContainer');
+            questions.forEach((question, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = `question ${index === 0 ? 'active' : ''}`;
+                questionDiv.id = `question-${index}`;
+                
+                let optionsHTML = '<div class="options">';
+                question.options.forEach((option, optIndex) => {
+                    optionsHTML += `
+                        <label class="option" onclick="selectOption(${index}, '${option.value}', this)">
+                            <input type="radio" name="q${index}" value="${option.value}">
+                            <span>${option.text}</span>
+                        </label>
+                    `;
+                });
+                optionsHTML += '</div>';
+                
+                questionDiv.innerHTML = `
+                    <h3><span class="question-number">${index + 1}</span>${question.q}<span class="archetype-tag">${question.archetype}</span></h3>
+                    ${optionsHTML}
+                `;
+                
+                container.appendChild(questionDiv);
+            });
+            updateProgress();
         }
 
-        function showQuestion(index) {
-            currentQuestion = index;
-            const blocks = document.querySelectorAll('.question-block');
-            blocks.forEach((block, i) => {
-                block.classList.toggle('active', i === index);
-            });
-
-            const progress = ((index + 1) / questions.length) * 100;
-            document.querySelector('.progress-fill').style.width = progress + '%';
-
-            const prevBtn = document.getElementById('prevBtn');
-            prevBtn.disabled = index === 0;
-
-            const nextBtn = document.querySelector('.btn-primary');
-            nextBtn.textContent = index === questions.length - 1 ? 'Ver Resultados' : 'Siguiente';
+        function selectOption(questionIndex, value, element) {
+            answers[questionIndex] = value;
+            
+            const options = element.parentElement.querySelectorAll('.option');
+            options.forEach(opt => opt.classList.remove('selected'));
+            element.classList.add('selected');
+            
+            document.getElementById('nextBtn').disabled = false;
+            if (currentQuestion === questions.length - 1) {
+                document.getElementById('submitBtn').disabled = false;
+            }
         }
 
         function nextQuestion() {
-            const questionName = questions[currentQuestion].name;
-            const selected = document.querySelector(`input[name="${questionName}"]:checked`);
-            
-            if (!selected) {
-                alert('Por favor selecciona una respuesta antes de continuar.');
+            if (!answers.hasOwnProperty(currentQuestion)) {
+                alert('Por favor selecciona una respuesta antes de continuar');
                 return;
             }
-
-            answers[questionName] = selected.value;
-
-            if (currentQuestion < questions.length - 1) {
-                showQuestion(currentQuestion + 1);
-            } else {
-                showResults();
-            }
+            
+            document.getElementById(`question-${currentQuestion}`).classList.remove('active');
+            currentQuestion++;
+            document.getElementById(`question-${currentQuestion}`).classList.add('active');
+            
+            updateButtons();
+            updateProgress();
         }
 
         function previousQuestion() {
-            if (currentQuestion > 0) {
-                const questionName = questions[currentQuestion].name;
-                const selected = document.querySelector(`input[name="${questionName}"]:checked`);
-                if (selected) {
-                    answers[questionName] = selected.value;
-                }
-                showQuestion(currentQuestion - 1);
+            document.getElementById(`question-${currentQuestion}`).classList.remove('active');
+            currentQuestion--;
+            document.getElementById(`question-${currentQuestion}`).classList.add('active');
+            
+            updateButtons();
+            updateProgress();
+        }
+
+        function updateButtons() {
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const submitBtn = document.getElementById('submitBtn');
+            
+            prevBtn.style.display = currentQuestion > 0 ? 'block' : 'none';
+            
+            if (currentQuestion === questions.length - 1) {
+                nextBtn.style.display = 'none';
+                submitBtn.style.display = 'block';
+                submitBtn.disabled = !answers.hasOwnProperty(currentQuestion);
+            } else {
+                nextBtn.style.display = 'block';
+                submitBtn.style.display = 'none';
+                nextBtn.disabled = !answers.hasOwnProperty(currentQuestion);
             }
         }
 
-        function showResults() {
-            document.querySelector('.questions-section').classList.remove('active');
-            document.querySelector('.results-section').classList.add('active');
+        function updateProgress() {
+            const dots = document.querySelectorAll('.progress-dot');
+            dots.forEach((dot, index) => {
+                dot.classList.remove('active', 'completed');
+                if (index === currentQuestion) {
+                    dot.classList.add('active');
+                } else if (index < currentQuestion) {
+                    dot.classList.add('completed');
+                }
+            });
+        }
 
+        function calculateResult() {
+            if (Object.keys(answers).length !== questions.length) {
+                alert('Por favor responde todas las preguntas');
+                return;
+            }
+            
             const scores = {};
             Object.keys(archetypes).forEach(key => {
                 scores[key] = 0;
             });
-
-            Object.entries(answers).forEach(([question, value]) => {
-                if (value !== 'ninguna') {
-                    scores[value] = (scores[value] || 0) + 1;
-                }
+            
+            Object.values(answers).forEach(value => {
+                scores[value] = (scores[value] || 0) + 1;
             });
-
+            
             const sorted = Object.entries(archetypes)
                 .map(([key, value]) => ({
                     key: key,
@@ -1463,66 +1086,51 @@
                     percentage: Math.round(((scores[key] || 0) / 28) * 100)
                 }))
                 .sort((a, b) => b.score - a.score);
-
-            let html = '';
-            sorted.forEach((archetype, index) => {
-                const isTop = index === 0;
-                const isSecond = index === 1;
-                let classAdd = '';
-                if (isTop) classAdd = 'top-archetype';
-                if (isSecond) classAdd = 'second-archetype';
-                
-                html += `
-                    <div class="archetype-area ${classAdd}">
-                        <h3>${archetype.name}</h3>
-                        <div class="archetype-percentage">${archetype.percentage}%</div>
-                        <div class="strength-bar">
-                            <div class="strength-fill" style="width: ${archetype.percentage}%;"></div>
-                        </div>
-                        <p class="archetype-description">${archetype.description}</p>
-                        <div class="archetype-expression">
-                            <h4>Tu expresión natural en el Reino:</h4>
-                            <ul>
-                                ${archetype.expressions.map(expr => `<li>${expr}</li>`).join('')}
-                            </ul>
-                        </div>
-                        <div class="archetype-examples">
-                            <h4>Roles y vocaciones donde brillas:</h4>
-                            <p>${archetype.examples}</p>
-                        </div>
+            
+            let resultHTML = '<div class="result-card">';
+            resultHTML += `<div class="result-title">Tus Arquetipos de Expresión en el Reino</div>`;
+            resultHTML += `<div class="result-description"><p><strong>Hermana,</strong> estos son los arquetipos que más resuena en ti. No tienes un solo arquetipo - todos estos existen en ti en diferentes medidas. Los que aparecen arriba son tu expresión más natural, pero tu fuerza está en la sinergia de todos ellos.</p></div>`;
+            
+            resultHTML += '<div class="archetypes-summary">';
+            sorted.slice(0, 3).forEach((archetype, index) => {
+                const percentageText = archetype.percentage > 0 ? `${archetype.percentage}%` : 'Presente';
+                resultHTML += `
+                    <div class="archetype-card">
+                        <h4>${archetype.name}</h4>
+                        <p style="font-weight: 700; color: white; margin-bottom: 10px;">${percentageText}</p>
+                        <p>${archetype.description}</p>
                     </div>
                 `;
             });
-
-            html += `
-                <div class="message">
-                    <strong>Para ti, hermana:</strong> No tienes un solo arquetipo. Todos estos existen en ti en diferentes medidas. Los que aparecen arriba son tu expresión más natural, pero tu fuerza está en la sinergia de todos ellos. El Reino se expresa a través tuyo de forma única e irrepetible.<br><br>
-                    "Porque a cada uno le es dada la manifestación del Espíritu para el bien común." — 1 Corintios 12:7
+            resultHTML += '</div>';
+            
+            resultHTML += '<div class="result-recommendations">';
+            resultHTML += '<h4>Tu Camino Específico Hacia tu Expresión Plena en el Reino:</h4>';
+            resultHTML += '<ul>';
+            resultHTML += sorted[0].recommendations;
+            resultHTML += '</ul>';
+            resultHTML += '</div>';
+            
+            resultHTML += `
+                <div class="final-message">
+                    <p><strong>Verdad Final:</strong> El Reino se expresa a través tuyo de forma única e irrepetible. No hay competencia entre arquetipos - todos somos necesarios. Tu rol es brillar desde quién ERES, no intentar ser algo que no eres.</p>
+                    <p>"Porque a cada uno le es dada la manifestación del Espíritu para el bien común." — 1 Corintios 12:7</p>
                 </div>
             `;
-
-            document.getElementById('resultsContent').innerHTML = html;
+            
+            resultHTML += '<button class="btn restart-btn" onclick="location.reload()">Hacer el Test Nuevamente</button>';
+            resultHTML += '</div>';
+            
+            document.getElementById('questionsContainer').style.display = 'none';
+            document.querySelector('.navigation').style.display = 'none';
+            document.querySelector('.progress-bar').style.display = 'none';
+            
+            const resultContainer = document.getElementById('resultContainer');
+            resultContainer.innerHTML = resultHTML;
+            resultContainer.classList.add('active');
         }
 
-        function restartTest() {
-            currentQuestion = 0;
-            answers = {};
-            document.querySelector('.intro-section').classList.add('active');
-            document.querySelector('.results-section').classList.remove('active');
-            document.querySelectorAll('input[type="radio"]').forEach(input => {
-                input.checked = false;
-                input.parentElement.classList.remove('selected');
-            });
-        }
-
-        document.addEventListener('change', function(e) {
-            if (e.target.type === 'radio') {
-                document.querySelectorAll(`input[name="${e.target.name}"]`).forEach(input => {
-                    input.parentElement.classList.remove('selected');
-                });
-                e.target.parentElement.classList.add('selected');
-            }
-        });
+        initQuiz();
     </script>
 </body>
 </html>
