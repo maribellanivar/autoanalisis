@@ -6,64 +6,89 @@
     <title>Autoanálisis: Aprobación Externa</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Cormorant+Garamond:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: #fafafa;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+            background: #520101;
             min-height: 100vh;
-            padding: 40px 20px;
-            color: #1d1d1f;
             line-height: 1.6;
         }
 
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            background: #ffffff;
-            border-radius: 24px;
-            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
-            overflow: hidden;
-        }
+        .container { max-width: 100%; background: #520101; overflow: hidden; }
 
         .header {
-            background: linear-gradient(135deg, #806459 0%, #96776c 100%);
+            background: #520101;
             color: white;
-            padding: 60px 40px;
+            padding: 60px 60px 50px;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .program-badge {
+            font-size: 1.1em;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #8d735e;
+            font-weight: 600;
+            font-family: 'Cormorant Garamond', serif;
+            display: block;
+            margin-bottom: 20px;
         }
 
         .header h1 {
-            font-size: 2.5em;
+            font-size: 2.8em;
             margin-bottom: 20px;
             font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: -0.5px;
+            letter-spacing: -1px;
+            line-height: 1.2;
+            color: white;
         }
 
         .header p {
-            font-size: 1.15em;
-            opacity: 0.9;
-            line-height: 1.6;
-            text-align: left;
-            font-weight: 300;
+            font-size: 1.05em;
+            line-height: 1.7;
+            font-weight: 400;
             max-width: 700px;
+            color: rgba(255,255,255,0.85);
         }
+
+        .progress-bar {
+            background: #520101;
+            padding: 16px 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 3px;
+        }
+
+        .progress-dot {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.25);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.65em;
+            font-weight: 600;
+            color: white;
+            transition: all 0.25s ease;
+        }
+
+        .progress-dot.active { background: #6d0000; border-color: #6d0000; transform: scale(1.08); }
+        .progress-dot.completed { background: #6d0000; border-color: #6d0000; }
 
         .content {
-            padding: 50px 40px;
+            padding: 60px 60px;
+            max-width: 900px;
+            margin: 0 auto;
+            background: #520101;
         }
 
-        .question {
-            margin-bottom: 40px;
-            padding: 0;
-            display: none;
-        }
+        .question { display: none; }
 
         .question.active {
             display: block;
@@ -76,563 +101,437 @@
         }
 
         .question h3 {
-            color: #806459;
-            margin-bottom: 30px;
-            font-size: 1.3em;
-            line-height: 1.5;
+            color: white;
+            margin-bottom: 32px;
+            font-size: 1.35em;
+            line-height: 1.6;
             font-weight: 600;
-            letter-spacing: -0.3px;
+            letter-spacing: -0.4px;
         }
 
         .question-number {
             display: inline-block;
-            background: #806459;
+            background: #6d0000;
             color: white;
-            width: 36px;
-            height: 36px;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
             text-align: center;
-            line-height: 36px;
-            margin-right: 12px;
+            line-height: 32px;
+            margin-right: 14px;
             font-weight: 600;
-            font-size: 0.95em;
+            font-size: 0.9em;
         }
 
-        .options {
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-        }
+        .options { display: flex; flex-direction: column; gap: 16px; }
 
         .option {
-            padding: 20px 24px;
-            background: #f5f5f7;
-            border: 2px solid transparent;
+            padding: 18px 20px;
+            background: rgba(255,255,255,0.1);
+            border: 1.5px solid rgba(255,255,255,0.2);
             border-radius: 12px;
             cursor: pointer;
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.25s ease;
             display: flex;
             align-items: center;
             font-weight: 400;
-        }
-
-        .option:hover {
-            background: #e8e8ed;
-            transform: translateX(2px);
-        }
-
-        .option.selected {
-            background: #806459;
+            font-size: 0.98em;
             color: white;
-            border-color: #806459;
-            font-weight: 500;
         }
+
+        .option:hover { border-color: rgba(255,255,255,0.5); background: rgba(255,255,255,0.15); }
+        .option.selected { background: #6d0000; border-color: #6d0000; font-weight: 500; }
 
         .option input[type="radio"] {
-            margin-right: 16px;
-            width: 20px;
-            height: 20px;
+            margin-right: 14px;
+            width: 18px;
+            height: 18px;
             cursor: pointer;
-            accent-color: #806459;
+            accent-color: white;
+            flex-shrink: 0;
         }
 
         .navigation {
             display: flex;
-            justify-content: space-between;
-            margin-top: 40px;
-            padding: 0 40px;
-            gap: 20px;
+            justify-content: center;
+            gap: 16px;
+            padding: 8px 60px 50px;
+            max-width: 900px;
+            margin: 0 auto;
+            background: #520101;
         }
 
         .btn {
-            padding: 16px 40px;
-            background: #806459;
-            color: white;
+            padding: 14px 32px;
+            background: white;
+            color: #6d0000;
             border: none;
-            border-radius: 980px;
+            border-radius: 8px;
             cursor: pointer;
-            font-size: 1.05em;
+            font-size: 1em;
             font-weight: 500;
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-            font-family: 'Montserrat', sans-serif;
-            letter-spacing: -0.2px;
+            transition: all 0.25s ease;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
         }
 
-        .btn:hover {
-            background: #6e5449;
-            transform: scale(1.02);
-        }
-
-        .btn:disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .progress-bar {
-            height: 4px;
-            background: #e8e8ed;
-            margin: 0;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: #806459;
-            width: 0%;
-            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
+        .btn:hover { background: rgba(255,255,255,0.9); }
+        .btn:disabled { opacity: 0.3; cursor: not-allowed; }
 
         .result {
             display: none;
-            padding: 50px 40px;
+            padding: 60px 60px;
+            max-width: 900px;
+            margin: 0 auto;
+            background: #520101;
         }
 
-        .result.active {
-            display: block;
-            animation: fadeIn 0.6s ease-in;
-        }
-
-        .result-card {
-            background: #f5f5f7;
-            border-radius: 20px;
-            padding: 40px;
-            margin-top: 30px;
-        }
+        .result.active { display: block; animation: fadeIn 0.6s ease-in; }
 
         .result-title {
-            color: #806459;
-            font-size: 2.2em;
-            margin-bottom: 24px;
+            color: white;
+            font-size: 2.8em;
+            margin-bottom: 32px;
             font-weight: 700;
-            letter-spacing: -0.5px;
+            letter-spacing: -1px;
+            line-height: 1.2;
         }
 
-        .result-description {
-            line-height: 1.8;
-            margin-bottom: 30px;
-            font-size: 1.05em;
-            font-weight: 400;
-            color: #1d1d1f;
-        }
-
-        .result-description p {
-            margin-bottom: 20px;
-        }
+        .result-description { line-height: 1.8; margin-bottom: 40px; font-size: 1.05em; color: rgba(255,255,255,0.95); }
+        .result-description p { margin-bottom: 20px; }
 
         .result-recommendations {
-            background: white;
-            padding: 30px;
-            border-radius: 16px;
-            margin-top: 30px;
+            background: rgba(255,255,255,0.05);
+            padding: 40px;
+            border-radius: 12px;
+            margin-top: 40px;
+            border: 1px solid rgba(255,255,255,0.1);
         }
 
-        .result-recommendations h4 {
-            color: #806459;
-            margin-bottom: 20px;
-            font-size: 1.4em;
-            font-weight: 600;
-            letter-spacing: -0.3px;
-        }
-
-        .result-recommendations ul {
-            list-style: none;
-            padding: 0;
-        }
+        .result-recommendations h4 { color: white; margin-bottom: 28px; font-size: 1.35em; font-weight: 600; letter-spacing: -0.3px; }
+        .result-recommendations ul { list-style: none; padding: 0; }
 
         .result-recommendations li {
-            padding: 14px 0;
-            padding-left: 35px;
+            padding: 16px 0 16px 32px;
             position: relative;
-            line-height: 1.7;
-            font-weight: 400;
-            color: #1d1d1f;
+            line-height: 1.8;
+            color: rgba(255,255,255,0.95);
+            font-size: 0.98em;
         }
 
-        .result-recommendations li:before {
-            content: "✓";
-            position: absolute;
-            left: 0;
-            color: #806459;
-            font-weight: 600;
-            font-size: 1.2em;
-        }
-
-        .restart-btn {
-            margin-top: 35px;
-            background: transparent;
-            color: #806459;
-            border: 2px solid #806459;
-        }
-
-        .restart-btn:hover {
-            background: #806459;
-            color: white;
-        }
+        .result-recommendations li:before { content: "→"; position: absolute; left: 0; color: white; font-weight: 700; font-size: 1.1em; }
 
         .final-message {
-            margin-top: 35px;
-            padding: 30px;
-            background: white;
-            border-radius: 16px;
-            border-left: 4px solid #806459;
+            margin-top: 40px;
+            padding: 32px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-left: 3px solid rgba(255,255,255,0.3);
         }
 
-        .final-message p {
-            font-size: 1.05em;
-            line-height: 1.8;
-            color: #1d1d1f;
-            margin-bottom: 18px;
-        }
+        .final-message p { font-size: 1.05em; line-height: 1.8; color: rgba(255,255,255,0.95); margin-bottom: 20px; }
+        .final-message p:last-child { font-style: italic; color: rgba(255,255,255,0.75); margin-bottom: 0; }
 
-        .final-message p:last-child {
-            font-style: italic;
-            color: #424245;
-            margin-bottom: 0;
-        }
+        .restart-btn { margin-top: 40px; background: white; color: #6d0000; border: 1.5px solid white; display: inline-block; }
+        .restart-btn:hover { background: rgba(255,255,255,0.9); }
 
         @media (max-width: 768px) {
-            .header {
-                padding: 40px 30px;
-            }
-
-            .header h1 {
-                font-size: 1.8em;
-            }
-            
-            .content {
-                padding: 30px 20px;
-            }
-
-            .navigation {
-                flex-direction: column;
-                padding: 0 20px;
-            }
-
-            .btn {
-                width: 100%;
-            }
-
-            .result {
-                padding: 30px 20px;
-            }
-
-            .result-card {
-                padding: 30px 20px;
-            }
+            .header { padding: 50px 30px; }
+            .header h1 { font-size: 2em; }
+            .content { padding: 40px 30px; }
+            .navigation { flex-direction: column; padding: 20px 30px 40px; gap: 12px; }
+            .btn { width: 100%; }
+            .result { padding: 40px 30px; }
+            .progress-bar { padding: 16px 30px; flex-wrap: wrap; }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>Autoanálisis: Aprobación Externa</h1>
-            <p>Descubre cómo la necesidad de aprobación externa está controlando tus decisiones y bloqueando tu propósito</p>
-        </div>
-
-        <div class="progress-bar">
-            <div class="progress-fill" id="progressFill"></div>
-        </div>
-
-        <div class="content" id="questionsContainer">
-            <!-- Questions will be generated here -->
-        </div>
-
-        <div class="navigation">
-            <button class="btn" id="nextBtn" onclick="nextQuestion()">Siguiente</button>
-            <button class="btn" id="submitBtn" onclick="calculateResult()" style="display: none;">Ver Resultado</button>
-            <button class="btn" id="prevBtn" onclick="previousQuestion()" style="display: none;">Anterior</button>
-        </div>
-
-        <div class="result" id="resultContainer">
-            <!-- Result will be shown here -->
-        </div>
+<div class="container">
+    <div class="header">
+        <span class="program-badge">La Mujer Que Nací Para Ser</span>
+        <h1>Autoanálisis: Aprobación Externa</h1>
+        <p>Descubre cómo la necesidad de aprobación externa está controlando tus decisiones y bloqueando tu propósito</p>
     </div>
 
-    <script>
-        const questions = [
-            {
-                q: "¿Cuántas de tus decisiones importantes están influenciadas por 'qué dirán los demás'?",
-                options: [
-                    { text: "Todas o casi todas - vivo completamente gobernada por las opiniones de otros", value: 1 },
-                    { text: "La mayoría - rara vez tomo decisiones sin considerar primero qué pensarán otros", value: 2 },
-                    { text: "Algunas - todavía me importa más de lo que debería", value: 3 },
-                    { text: "Pocas o ninguna - mis decisiones se basan en Dios y mi convicción, no en opiniones", value: 4 }
-                ]
-            },
-            {
-                q: "¿Cómo te sientes cuando sabes que alguien está molesto contigo o te desaprueba?",
-                options: [
-                    { text: "Devastada - mi paz depende completamente de que todos me aprueben", value: 1 },
-                    { text: "Muy ansiosa - haré cualquier cosa para recuperar su aprobación", value: 2 },
-                    { text: "Incómoda - me afecta pero intento procesarlo saludablemente", value: 3 },
-                    { text: "En paz - entiendo que no puedo complacer a todos y está bien", value: 4 }
-                ]
-            },
-            {
-                q: "¿Con qué frecuencia dices 'sí' cuando realmente quieres decir 'no' solo para complacer a otros?",
-                options: [
-                    { text: "Constantemente - no sé decir 'no', sacrifico todo por la aprobación", value: 1 },
-                    { text: "Frecuentemente - mi necesidad de ser aceptada controla mis límites", value: 2 },
-                    { text: "Ocasionalmente - todavía lucho con establecer límites firmes", value: 3 },
-                    { text: "Rara vez - he aprendido a decir 'no' sin culpa", value: 4 }
-                ]
-            },
-            {
-                q: "¿Cuánto de tu tiempo y energía gastas preocupándote por lo que otros piensan de ti?",
-                options: [
-                    { text: "La mayor parte - es mi preocupación constante y obsesiva", value: 1 },
-                    { text: "Mucho - paso horas analizando interacciones y buscando señales de desaprobación", value: 2 },
-                    { text: "Algo - todavía dedico más tiempo a esto de lo que quisiera", value: 3 },
-                    { text: "Poco - mi paz no depende de las opiniones cambiantes de otros", value: 4 }
-                ]
-            },
-            {
-                q: "Cuando Dios te pide hacer algo que sabes que otros no aprobarán, ¿qué haces?",
-                options: [
-                    { text: "No lo hago - la desaprobación de otros es más fuerte que mi obediencia a Dios", value: 1 },
-                    { text: "Lo postergo indefinidamente esperando que de alguna forma todos estén contentos", value: 2 },
-                    { text: "Lo hago pero con mucha ansiedad y buscando constantemente validación", value: 3 },
-                    { text: "Obedezco a Dios aunque otros no lo entiendan - Su aprobación es suficiente", value: 4 }
-                ]
-            },
-            {
-                q: "¿Cómo cambias tu comportamiento o personalidad según quién esté presente?",
-                options: [
-                    { text: "Completamente - soy un camaleón porque no sé quién soy sin la aprobación de otros", value: 1 },
-                    { text: "Significativamente - modifico mucho de mí para encajar y ser aceptada", value: 2 },
-                    { text: "Algo - todavía ajusto algunos aspectos dependiendo de la audiencia", value: 3 },
-                    { text: "Poco o nada - soy auténtica independiente de quién esté mirando", value: 4 }
-                ]
-            },
-            {
-                q: "¿Qué tan importante es para ti tener 'likes', comentarios positivos o validación en redes sociales?",
-                options: [
-                    { text: "Extremadamente - mi autoestima sube y baja con cada like o falta de él", value: 1 },
-                    { text: "Muy importante - reviso constantemente y me afecta profundamente", value: 2 },
-                    { text: "Moderadamente importante - me gusta pero estoy trabajando en no depender de ello", value: 3 },
-                    { text: "Poco importante - no determina mi valor o decisiones", value: 4 }
-                ]
-            },
-            {
-                q: "¿Cuántas oportunidades o sueños has sacrificado por miedo a la opinión de otros?",
-                options: [
-                    { text: "Incontables - he construido mi vida entera evitando el juicio de otros", value: 1 },
-                    { text: "Muchos - cuando miro atrás, veo un patrón claro de sueños abandonados por complacer", value: 2 },
-                    { text: "Algunos - me arrepiento de momentos donde la aprobación pesó más que mi llamado", value: 3 },
-                    { text: "Pocos o ninguno - he aprendido que mi propósito es más importante que la opinión ajena", value: 4 }
-                ]
-            },
-            {
-                q: "¿Cómo reaccionas ante las críticas o cuando alguien no está de acuerdo contigo?",
-                options: [
-                    { text: "Me derrumbo y cambio inmediatamente mi posición para recuperar su aprobación", value: 1 },
-                    { text: "Me obsesiono con ello por días, cuestionando todo sobre mí", value: 2 },
-                    { text: "Me afecta pero intento evaluar si la crítica tiene validez sin perder mi centro", value: 3 },
-                    { text: "La proceso con sabiduría pero no permito que sacuda mi identidad o convicción", value: 4 }
-                ]
-            },
-            {
-                q: "Si pudieras ser completamente libre de la necesidad de aprobación externa, ¿qué harías diferente?",
-                options: [
-                    { text: "Todo - literalmente toda mi vida sería diferente porque estaría viviendo para mí y para Dios", value: 1 },
-                    { text: "Mucho - tomaría decisiones audaces que he estado evitando por años", value: 2 },
-                    { text: "Algunas cosas - hay áreas específicas donde todavía me frena la opinión ajena", value: 3 },
-                    { text: "Poco o nada - ya vivo en esa libertad la mayor parte del tiempo", value: 4 }
-                ]
-            }
-        ];
+    <div class="progress-bar" id="progressBar">
+        <div class="progress-dot active">1</div>
+        <div class="progress-dot">2</div>
+        <div class="progress-dot">3</div>
+        <div class="progress-dot">4</div>
+        <div class="progress-dot">5</div>
+        <div class="progress-dot">6</div>
+        <div class="progress-dot">7</div>
+        <div class="progress-dot">8</div>
+        <div class="progress-dot">9</div>
+        <div class="progress-dot">10</div>
+    </div>
 
-        let currentQuestion = 0;
-        let answers = {};
+    <div class="content" id="questionsContainer"></div>
 
-        function initQuiz() {
-            const container = document.getElementById('questionsContainer');
-            questions.forEach((question, index) => {
-                const questionDiv = document.createElement('div');
-                questionDiv.className = `question ${index === 0 ? 'active' : ''}`;
-                questionDiv.id = `question-${index}`;
-                
-                let optionsHTML = '<div class="options">';
-                question.options.forEach((option, optIndex) => {
-                    optionsHTML += `
-                        <label class="option" onclick="selectOption(${index}, ${option.value}, this)">
-                            <input type="radio" name="q${index}" value="${option.value}">
-                            <span>${option.text}</span>
-                        </label>
-                    `;
-                });
-                optionsHTML += '</div>';
-                
-                questionDiv.innerHTML = `
-                    <h3><span class="question-number">${index + 1}</span>${question.q}</h3>
-                    ${optionsHTML}
-                `;
-                
-                container.appendChild(questionDiv);
+    <div class="navigation">
+        <button class="btn" id="nextBtn" onclick="nextQuestion()">Siguiente</button>
+        <button class="btn" id="submitBtn" onclick="calculateResult()" style="display:none;">Ver Resultado</button>
+        <button class="btn" id="prevBtn" onclick="previousQuestion()" style="display:none;">Anterior</button>
+    </div>
+
+    <div class="result" id="resultContainer"></div>
+</div>
+
+<script>
+    const questions = [
+        {
+            q: "¿Cuántas de tus decisiones importantes están influenciadas por 'qué dirán los demás'?",
+            options: [
+                { text: "Todas o casi todas - vivo completamente gobernada por las opiniones de otros", value: 1 },
+                { text: "La mayoría - rara vez tomo decisiones sin considerar primero qué pensarán otros", value: 2 },
+                { text: "Algunas - todavía me importa más de lo que debería", value: 3 },
+                { text: "Pocas o ninguna - mis decisiones se basan en Dios y mi convicción, no en opiniones", value: 4 }
+            ]
+        },
+        {
+            q: "¿Cómo te sientes cuando sabes que alguien está molesto contigo o te desaprueba?",
+            options: [
+                { text: "Devastada - mi paz depende completamente de que todos me aprueben", value: 1 },
+                { text: "Muy ansiosa - haré cualquier cosa para recuperar su aprobación", value: 2 },
+                { text: "Incómoda - me afecta pero intento procesarlo saludablemente", value: 3 },
+                { text: "En paz - entiendo que no puedo complacer a todos y está bien", value: 4 }
+            ]
+        },
+        {
+            q: "¿Con qué frecuencia dices 'sí' cuando realmente quieres decir 'no' solo para complacer a otros?",
+            options: [
+                { text: "Constantemente - no sé decir 'no', sacrifico todo por la aprobación", value: 1 },
+                { text: "Frecuentemente - mi necesidad de ser aceptada controla mis límites", value: 2 },
+                { text: "Ocasionalmente - todavía lucho con establecer límites firmes", value: 3 },
+                { text: "Rara vez - he aprendido a decir 'no' sin culpa", value: 4 }
+            ]
+        },
+        {
+            q: "¿Cuánto de tu tiempo y energía gastas preocupándote por lo que otros piensan de ti?",
+            options: [
+                { text: "La mayor parte - es mi preocupación constante y obsesiva", value: 1 },
+                { text: "Mucho - paso horas analizando interacciones y buscando señales de desaprobación", value: 2 },
+                { text: "Algo - todavía dedico más tiempo a esto de lo que quisiera", value: 3 },
+                { text: "Poco - mi paz no depende de las opiniones cambiantes de otros", value: 4 }
+            ]
+        },
+        {
+            q: "Cuando Dios te pide hacer algo que sabes que otros no aprobarán, ¿qué haces?",
+            options: [
+                { text: "No lo hago - la desaprobación de otros es más fuerte que mi obediencia a Dios", value: 1 },
+                { text: "Lo postergo indefinidamente esperando que de alguna forma todos estén contentos", value: 2 },
+                { text: "Lo hago pero con mucha ansiedad y buscando constantemente validación", value: 3 },
+                { text: "Obedezco a Dios aunque otros no lo entiendan - Su aprobación es suficiente", value: 4 }
+            ]
+        },
+        {
+            q: "¿Cómo cambias tu comportamiento o personalidad según quién esté presente?",
+            options: [
+                { text: "Completamente - soy un camaleón porque no sé quién soy sin la aprobación de otros", value: 1 },
+                { text: "Significativamente - modifico mucho de mí para encajar y ser aceptada", value: 2 },
+                { text: "Algo - todavía ajusto algunos aspectos dependiendo de la audiencia", value: 3 },
+                { text: "Poco o nada - soy auténtica independiente de quién esté mirando", value: 4 }
+            ]
+        },
+        {
+            q: "¿Qué tan importante es para ti tener 'likes', comentarios positivos o validación en redes sociales?",
+            options: [
+                { text: "Extremadamente - mi autoestima sube y baja con cada like o falta de él", value: 1 },
+                { text: "Muy importante - reviso constantemente y me afecta profundamente", value: 2 },
+                { text: "Moderadamente importante - me gusta pero estoy trabajando en no depender de ello", value: 3 },
+                { text: "Poco importante - no determina mi valor o decisiones", value: 4 }
+            ]
+        },
+        {
+            q: "¿Cuántas oportunidades o sueños has sacrificado por miedo a la opinión de otros?",
+            options: [
+                { text: "Incontables - he construido mi vida entera evitando el juicio de otros", value: 1 },
+                { text: "Muchos - cuando miro atrás, veo un patrón claro de sueños abandonados por complacer", value: 2 },
+                { text: "Algunos - me arrepiento de momentos donde la aprobación pesó más que mi llamado", value: 3 },
+                { text: "Pocos o ninguno - he aprendido que mi propósito es más importante que la opinión ajena", value: 4 }
+            ]
+        },
+        {
+            q: "¿Cómo reaccionas ante las críticas o cuando alguien no está de acuerdo contigo?",
+            options: [
+                { text: "Me derrumbo y cambio inmediatamente mi posición para recuperar su aprobación", value: 1 },
+                { text: "Me obsesiono con ello por días, cuestionando todo sobre mí", value: 2 },
+                { text: "Me afecta pero intento evaluar si la crítica tiene validez sin perder mi centro", value: 3 },
+                { text: "La proceso con sabiduría pero no permito que sacuda mi identidad o convicción", value: 4 }
+            ]
+        },
+        {
+            q: "Si pudieras ser completamente libre de la necesidad de aprobación externa, ¿qué harías diferente?",
+            options: [
+                { text: "Todo - literalmente toda mi vida sería diferente porque estaría viviendo para mí y para Dios", value: 1 },
+                { text: "Mucho - tomaría decisiones audaces que he estado evitando por años", value: 2 },
+                { text: "Algunas cosas - hay áreas específicas donde todavía me frena la opinión ajena", value: 3 },
+                { text: "Poco o nada - ya vivo en esa libertad la mayor parte del tiempo", value: 4 }
+            ]
+        }
+    ];
+
+    let currentQuestion = 0;
+    let answers = {};
+
+    function initQuiz() {
+        const container = document.getElementById('questionsContainer');
+        questions.forEach((question, index) => {
+            const div = document.createElement('div');
+            div.className = 'question' + (index === 0 ? ' active' : '');
+            div.id = 'question-' + index;
+
+            let opts = '<div class="options">';
+            question.options.forEach(opt => {
+                opts += `<label class="option" onclick="selectOption(${index}, ${opt.value}, this)">
+                    <input type="radio" name="q${index}" value="${opt.value}">
+                    <span>${opt.text}</span>
+                </label>`;
             });
-            updateProgress();
+            opts += '</div>';
+
+            div.innerHTML = `<h3><span class="question-number">${index + 1}</span>${question.q}</h3>${opts}`;
+            container.appendChild(div);
+        });
+        updateProgress();
+    }
+
+    function selectOption(qIndex, value, el) {
+        answers[qIndex] = value;
+        el.parentElement.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+        el.classList.add('selected');
+        document.getElementById('nextBtn').disabled = false;
+        if (currentQuestion === questions.length - 1) document.getElementById('submitBtn').disabled = false;
+    }
+
+    function nextQuestion() {
+        if (!answers.hasOwnProperty(currentQuestion)) { alert('Por favor selecciona una respuesta antes de continuar'); return; }
+        document.getElementById('question-' + currentQuestion).classList.remove('active');
+        currentQuestion++;
+        document.getElementById('question-' + currentQuestion).classList.add('active');
+        updateButtons();
+        updateProgress();
+    }
+
+    function previousQuestion() {
+        document.getElementById('question-' + currentQuestion).classList.remove('active');
+        currentQuestion--;
+        document.getElementById('question-' + currentQuestion).classList.add('active');
+        updateButtons();
+        updateProgress();
+    }
+
+    function updateButtons() {
+        document.getElementById('prevBtn').style.display = currentQuestion > 0 ? 'block' : 'none';
+        if (currentQuestion === questions.length - 1) {
+            document.getElementById('nextBtn').style.display = 'none';
+            document.getElementById('submitBtn').style.display = 'block';
+            document.getElementById('submitBtn').disabled = !answers.hasOwnProperty(currentQuestion);
+        } else {
+            document.getElementById('nextBtn').style.display = 'block';
+            document.getElementById('submitBtn').style.display = 'none';
+            document.getElementById('nextBtn').disabled = !answers.hasOwnProperty(currentQuestion);
+        }
+    }
+
+    function updateProgress() {
+        document.querySelectorAll('.progress-dot').forEach((dot, i) => {
+            dot.classList.remove('active', 'completed');
+            if (i === currentQuestion) dot.classList.add('active');
+            else if (i < currentQuestion) dot.classList.add('completed');
+        });
+    }
+
+    function calculateResult() {
+        if (Object.keys(answers).length !== questions.length) { alert('Por favor responde todas las preguntas'); return; }
+
+        const total = Object.values(answers).reduce((s, v) => s + v, 0);
+        const pct = (total / (questions.length * 4)) * 100;
+
+        let title, desc, recs;
+
+        if (pct <= 40) {
+            title = "Nivel: Adicción a la Aprobación — Prisionera de Opiniones";
+            desc = `<p><strong>Mujer,</strong> este autoanálisis revela una verdad difícil: eres prisionera de las opiniones de otros. La adicción a la aprobación externa está controlando cada área de tu vida — tus decisiones, tu identidad, tus sueños y tu obediencia a Dios. Vives en una cárcel invisible donde las llaves están en las manos de cualquiera que te mire.</p>
+            <p><strong>Tu realidad actual:</strong> No sabes quién eres sin la aprobación de otros. Cambias tu personalidad como ropa según quién esté presente. Dices 'sí' cuando quieres decir 'no'. Sacrificas tu paz, tus sueños y tu propósito para complacer. Tu autoestima sube y baja con cada opinión. Has pospuesto tu llamado esperando que todos te aplaudan. Vives exhausta tratando de ser todo para todos.</p>
+            <p><strong>La verdad liberadora:</strong> No puedes cumplir tu propósito en Dios y complacer a todos al mismo tiempo. Es imposible. La aprobación de Dios y la aprobación del hombre frecuentemente van en direcciones opuestas. Mientras sigas buscando aprobación externa, seguirás rechazando tu destino.</p>`;
+            recs = `
+                <li>Reconoce la adicción - admite que tienes una dependencia destructiva de la aprobación externa</li>
+                <li>Identifica las voces específicas que más controlan tus decisiones - padres, pareja, amigos, redes sociales</li>
+                <li>Haz un ayuno de redes sociales por 30 días - rompe el ciclo de validación constante</li>
+                <li>Practica decir 'no' sin explicación ni disculpa - empieza con cosas pequeñas</li>
+                <li>Busca terapia para trabajar las heridas que crearon esta necesidad de aprobación</li>
+                <li>Escribe una lista de 'A quién realmente le rindo cuentas' - solo Dios debe estar en esa lista</li>
+                <li>Memoriza Gálatas 1:10 - no puedes complacer a Dios y a los hombres</li>
+                <li>Cada día, toma UNA decisión basada solo en lo que tú y Dios saben que es correcto</li>`;
+        } else if (pct <= 60) {
+            title = "Nivel: Búsqueda Activa — Controlada por Opiniones";
+            desc = `<p><strong>Mujer,</strong> la aprobación externa todavía tiene un control significativo sobre tu vida. Aunque tienes momentos de autonomía, la necesidad de ser aceptada y aprobada sigue dirigiendo muchas de tus decisiones importantes. Vives en un tira y afloja entre lo que sabes que debes hacer y lo que otros esperan que hagas.</p>
+            <p><strong>Tu realidad actual:</strong> Reconoces tu necesidad de aprobación pero sigues cayendo en los mismos patrones. Gastas energía mental considerable preocupándote por opiniones ajenas. Todavía modificas tu comportamiento para encajar. Las críticas te afectan más de lo que admites. Has sacrificado oportunidades por miedo al juicio. Sabes que esto te limita pero romper el patrón se siente aterrador.</p>
+            <p><strong>El punto de quiebre:</strong> Estás lo suficientemente consciente como para ver la prisión, pero todavía no has tomado las llaves para salir. Este es el momento de decidir: ¿seguirás viviendo para la audiencia o vivirás para la Audiencia de Uno?</p>`;
+            recs = `
+                <li>Lleva un 'diario de aprobación' - documenta cada vez que busques validación externa y por qué</li>
+                <li>Identifica tu 'público principal' - ¿de quién más buscas aprobación y por qué tienen ese poder?</li>
+                <li>Practica 'decepcionando' a otros con decisiones saludables - aprende que sobrevivirás</li>
+                <li>Establece límites firmes en una relación donde históricamente has complacido excesivamente</li>
+                <li>Reduce tiempo en redes sociales a 30 minutos diarios máximo</li>
+                <li>Encuentra una mentora que viva libre de la necesidad de aprobación</li>
+                <li>Haz algo que sabes que es correcto aunque sepas que otros lo criticarán</li>
+                <li>Desarrolla una práctica diaria de preguntarte: '¿Qué piensa Dios sobre esto?' antes de '¿Qué pensarán ellos?'</li>`;
+        } else if (pct <= 80) {
+            title = "Nivel: Libertad Creciente — Rompiendo Cadenas";
+            desc = `<p><strong>Mujer,</strong> has hecho un progreso hermoso hacia la libertad. La aprobación externa ya no gobierna tu vida como antes. Has aprendido a tomar decisiones basadas en tu convicción y en Dios, aunque todavía hay momentos donde la opinión de otros tiene más peso del que debería.</p>
+            <p><strong>Tu realidad actual:</strong> La mayoría del tiempo, vives auténticamente sin necesidad de constante validación. Puedes decir 'no' sin culpa excesiva. Las críticas te informan pero no te destruyen. Has tomado decisiones audaces a pesar de la desaprobación de otros. Sin embargo, con ciertas personas o en ciertos contextos, la vieja necesidad de aprobación todavía aparece.</p>
+            <p><strong>Tu próximo nivel:</strong> Eliminar los últimos vestigios de dependencia de aprobación externa. Vivir tan libre que tu único público sea Dios, y desde ese lugar, bendecir a otros sin necesitar nada de ellos a cambio.</p>`;
+            recs = `
+                <li>Identifica tus últimas 'zonas de vulnerabilidad' - ¿dónde todavía buscas aprobación?</li>
+                <li>Practica ser malentendida sin necesidad de explicarte o defenderte</li>
+                <li>Comparte tu testimonio de cómo rompiste la adicción a la aprobación</li>
+                <li>Toma una decisión grande basada únicamente en tu convicción y la dirección de Dios</li>
+                <li>Mentorea a alguien que está atrapada en buscar aprobación externa</li>
+                <li>Celebra cada vez que elijas obediencia a Dios sobre aprobación humana</li>
+                <li>Desarrolla una teología sólida de 'Audiencia de Uno' - profundiza en lo que significa vivir solo para Dios</li>
+                <li>Practica soltar la necesidad de que todos entiendan o apoyen tu llamado</li>`;
+        } else {
+            title = "Nivel: Libertad Radical — Audiencia de Uno";
+            desc = `<p><strong>Mujer,</strong> has alcanzado algo extraordinario: libertad radical de la necesidad de aprobación externa. Vives tu vida para una Audiencia de Uno — Dios. Las opiniones de otros te informan pero no te controlan. Eres auténtica, valiente y libre. Esta libertad no es egoísmo, es salud espiritual.</p>
+            <p><strong>Tu realidad actual:</strong> Tomas decisiones basadas en Dios y tu convicción sin necesitar la aprobación de la multitud. Puedes ser malentendida sin ansiedad. Dices 'no' con gracia pero firmeza. Las críticas te enseñan pero no te definen. No modificas tu identidad según quién esté presente. Obedeces a Dios aunque nadie más lo entienda. Eres libre.</p>
+            <p><strong>Tu llamado ahora:</strong> Usar tu libertad para liberar a otras mujeres. Tu vida sin cadenas de aprobación externa es un testimonio poderoso. Dios te liberó no solo para tu beneficio, sino para que seas instrumento de liberación para una generación de mujeres prisioneras de opiniones ajenas.</p>`;
+            recs = `
+                <li>Mantén tu libertad vigilante - la tentación de buscar aprobación puede regresar sutilmente</li>
+                <li>Desarrolla contenido o ministerio sobre vivir libre de la necesidad de aprobación</li>
+                <li>Comparte públicamente tu jornada de prisión a libertad</li>
+                <li>Mentorea intencionalmente a mujeres atrapadas en complacer a otros</li>
+                <li>Sé modelo visible de tomar decisiones audaces sin necesidad de consenso</li>
+                <li>Enseña a otras sobre el concepto de 'Audiencia de Uno'</li>
+                <li>Usa tu plataforma para normalizar la obediencia a Dios sobre la aprobación humana</li>
+                <li>Intercede por mujeres que están sacrificando su destino por complacer</li>`;
         }
 
-        function selectOption(questionIndex, value, element) {
-            answers[questionIndex] = value;
-            
-            const options = element.parentElement.querySelectorAll('.option');
-            options.forEach(opt => opt.classList.remove('selected'));
-            element.classList.add('selected');
-            
-            document.getElementById('nextBtn').disabled = false;
-            if (currentQuestion === questions.length - 1) {
-                document.getElementById('submitBtn').disabled = false;
-            }
-        }
+        document.getElementById('questionsContainer').style.display = 'none';
+        document.querySelector('.navigation').style.display = 'none';
+        document.querySelector('.progress-bar').style.display = 'none';
 
-        function nextQuestion() {
-            if (!answers.hasOwnProperty(currentQuestion)) {
-                alert('Por favor selecciona una respuesta antes de continuar');
-                return;
-            }
-            
-            document.getElementById(`question-${currentQuestion}`).classList.remove('active');
-            currentQuestion++;
-            document.getElementById(`question-${currentQuestion}`).classList.add('active');
-            
-            updateButtons();
-            updateProgress();
-        }
-
-        function previousQuestion() {
-            document.getElementById(`question-${currentQuestion}`).classList.remove('active');
-            currentQuestion--;
-            document.getElementById(`question-${currentQuestion}`).classList.add('active');
-            
-            updateButtons();
-            updateProgress();
-        }
-
-        function updateButtons() {
-            const prevBtn = document.getElementById('prevBtn');
-            const nextBtn = document.getElementById('nextBtn');
-            const submitBtn = document.getElementById('submitBtn');
-            
-            prevBtn.style.display = currentQuestion > 0 ? 'block' : 'none';
-            
-            if (currentQuestion === questions.length - 1) {
-                nextBtn.style.display = 'none';
-                submitBtn.style.display = 'block';
-                submitBtn.disabled = !answers.hasOwnProperty(currentQuestion);
-            } else {
-                nextBtn.style.display = 'block';
-                submitBtn.style.display = 'none';
-                nextBtn.disabled = !answers.hasOwnProperty(currentQuestion);
-            }
-        }
-
-        function updateProgress() {
-            const progress = ((currentQuestion + 1) / questions.length) * 100;
-            document.getElementById('progressFill').style.width = progress + '%';
-        }
-
-        function calculateResult() {
-            if (Object.keys(answers).length !== questions.length) {
-                alert('Por favor responde todas las preguntas');
-                return;
-            }
-            
-            const totalScore = Object.values(answers).reduce((sum, val) => sum + val, 0);
-            const maxScore = questions.length * 4;
-            const percentage = (totalScore / maxScore) * 100;
-            
-            let resultTitle, resultDescription, recommendations;
-            
-            if (percentage <= 40) {
-                resultTitle = "Nivel: Adicción a la Aprobación - Prisionera de Opiniones";
-                resultDescription = `<p><strong>Mujer,</strong> este autoanálisis revela una verdad difícil: eres prisionera de las opiniones de otros. La adicción a la aprobación externa está controlando cada área de tu vida - tus decisiones, tu identidad, tus sueños y tu obediencia a Dios. Vives en una cárcel invisible donde las llaves están en las manos de cualquiera que te mire.</p>
-                <p><strong>Tu realidad actual:</strong> No sabes quién eres sin la aprobación de otros. Cambias tu personalidad como ropa según quién esté presente. Dices 'sí' cuando quieres decir 'no'. Sacrificas tu paz, tus sueños y tu propósito para complacer. Tu autoestima sube y baja con cada opinión. Has pospuesto tu llamado esperando que todos te aplaudan. Vives exhausta tratando de ser todo para todos.</p>
-                <p><strong>La verdad liberadora:</strong> No puedes cumplir tu propósito en Dios y complacer a todos al mismo tiempo. Es imposible. La aprobación de Dios y la aprobación del hombre frecuentemente van en direcciones opuestas. Mientras sigas buscando aprobación externa, seguirás rechazando tu destino.</p>`;
-                recommendations = `
-                    <li>Reconoce la adicción - admite que tienes una dependencia destructiva de la aprobación externa</li>
-                    <li>Identifica las voces específicas que más controlan tus decisiones - padres, pareja, amigos, redes sociales</li>
-                    <li>Haz un ayuno de redes sociales por 30 días - rompe el ciclo de validación constante</li>
-                    <li>Practica decir 'no' sin explicación ni disculpa - empieza con cosas pequeñas</li>
-                    <li>Busca terapia para trabajar las heridas que crearon esta necesidad de aprobación</li>
-                    <li>Escribe una lista de 'A quién realmente le rindo cuentas' - solo Dios debe estar en esa lista</li>
-                    <li>Memoriza Gálatas 1:10 - no puedes complacer a Dios y a los hombres</li>
-                    <li>Cada día, toma UNA decisión basada solo en lo que tú y Dios saben que es correcto</li>
-                `;
-            } else if (percentage <= 60) {
-                resultTitle = "Nivel: Búsqueda Activa - Controlada por Opiniones";
-                resultDescription = `<p><strong>Mujer,</strong> la aprobación externa todavía tiene un control significativo sobre tu vida. Aunque tienes momentos de autonomía, la necesidad de ser aceptada y aprobada sigue dirigiendo muchas de tus decisiones importantes. Vives en un tira y afloja entre lo que sabes que debes hacer y lo que otros esperan que hagas.</p>
-                <p><strong>Tu realidad actual:</strong> Reconoces tu necesidad de aprobación pero sigues cayendo en los mismos patrones. Gastas energía mental considerable preocupándote por opiniones ajenas. Todavía modificas tu comportamiento para encajar. Las críticas te afectan más de lo que admites. Has sacrificado oportunidades por miedo al juicio. Sabes que esto te limita pero romper el patrón se siente aterrador.</p>
-                <p><strong>El punto de quiebre:</strong> Estás lo suficientemente consciente como para ver la prisión, pero todavía no has tomado las llaves para salir. Este es el momento de decidir: ¿seguirás viviendo para la audiencia o vivirás para la Audiencia de Uno?</p>`;
-                recommendations = `
-                    <li>Lleva un 'diario de aprobación' - documenta cada vez que busques validación externa y por qué</li>
-                    <li>Identifica tu 'público principal' - ¿de quién más buscas aprobación y por qué tienen ese poder?</li>
-                    <li>Practica 'decepcionando' a otros con decisiones saludables - aprende que sobrevivirás</li>
-                    <li>Establece límites firmes en una relación donde históricamente has complacido excesivamente</li>
-                    <li>Reduce tiempo en redes sociales a 30 minutos diarios máximo</li>
-                    <li>Encuentra una mentora que viva libre de la necesidad de aprobación</li>
-                    <li>Haz algo que sabes que es correcto aunque sepas que otros lo criticarán</li>
-                    <li>Desarrolla una práctica diaria de preguntarte: '¿Qué piensa Dios sobre esto?' antes de '¿Qué pensarán ellos?'</li>
-                `;
-            } else if (percentage <= 80) {
-                resultTitle = "Nivel: Libertad Creciente - Rompiendo Cadenas";
-                resultDescription = `<p><strong>Mujer,</strong> has hecho un progreso hermoso hacia la libertad. La aprobación externa ya no gobierna tu vida como antes. Has aprendido a tomar decisiones basadas en tu convicción y en Dios, aunque todavía hay momentos donde la opinión de otros tiene más peso del que debería.</p>
-                <p><strong>Tu realidad actual:</strong> La mayoría del tiempo, vives auténticamente sin necesidad de constante validación. Puedes decir 'no' sin culpa excesiva. Las críticas te informan pero no te destruyen. Has tomado decisiones audaces a pesar de la desaprobación de otros. Sin embargo, con ciertas personas o en ciertos contextos, la vieja necesidad de aprobación todavía aparece.</p>
-                <p><strong>Tu próximo nivel:</strong> Eliminar los últimos vestigios de dependencia de aprobación externa. Vivir tan libre que tu único público sea Dios, y desde ese lugar, bendecir a otros sin necesitar nada de ellos a cambio.</p>`;
-                recommendations = `
-                    <li>Identifica tus últimas 'zonas de vulnerabilidad' - ¿dónde todavía buscas aprobación?</li>
-                    <li>Practica ser malentendida sin necesidad de explicarte o defenderte</li>
-                    <li>Comparte tu testimonio de cómo rompiste la adicción a la aprobación</li>
-                    <li>Toma una decisión grande basada únicamente en tu convicción y la dirección de Dios</li>
-                    <li>Mentorea a alguien que está atrapada en buscar aprobación externa</li>
-                    <li>Celebra cada vez que elijas obediencia a Dios sobre aprobación humana</li>
-                    <li>Desarrolla una teología sólida de 'Audiencia de Uno' - profundiza en lo que significa vivir solo para Dios</li>
-                    <li>Practica soltar la necesidad de que todos entiendan o apoyen tu llamado</li>
-                `;
-            } else {
-                resultTitle = "Nivel: Libertad Radical - Audiencia de Uno";
-                resultDescription = `<p><strong>Mujer,</strong> has alcanzado algo extraordinario: libertad radical de la necesidad de aprobación externa. Vives tu vida para una Audiencia de Uno - Dios. Las opiniones de otros te informan pero no te controlan. Eres auténtica, valiente y libre. Esta libertad no es egoísmo, es salud espiritual.</p>
-                <p><strong>Tu realidad actual:</strong> Tomas decisiones basadas en Dios y tu convicción sin necesitar la aprobación de la multitud. Puedes ser malentendida sin ansiedad. Dices 'no' con gracia pero firmeza. Las críticas te enseñan pero no te definen. No modificas tu identidad según quién esté presente. Obedeces a Dios aunque nadie más lo entienda. Eres libre.</p>
-                <p><strong>Tu llamado ahora:</strong> Usar tu libertad para liberar a otras mujeres. Tu vida sin cadenas de aprobación externa es un testimonio poderoso. Dios te liberó no solo para tu beneficio, sino para que seas instrumento de liberación para una generación de mujeres prisioneras de opiniones ajenas.</p>`;
-                recommendations = `
-                    <li>Mantén tu libertad vigilante - la tentación de buscar aprobación puede regresar sutilmente</li>
-                    <li>Desarrolla contenido o ministerio sobre vivir libre de la necesidad de aprobación</li>
-                    <li>Comparte públicamente tu jornada de prisión a libertad</li>
-                    <li>Mentorea intencionalmente a mujeres atrapadas en complacer a otros</li>
-                    <li>Sé modelo visible de tomar decisiones audaces sin necesidad de consenso</li>
-                    <li>Enseña a otras sobre el concepto de 'Audiencia de Uno'</li>
-                    <li>Usa tu plataforma para normalizar la obediencia a Dios sobre la aprobación humana</li>
-                    <li>Intercede por mujeres que están sacrificando su destino por complacer</li>
-                `;
-            }
-            
-            const resultHTML = `
-                <div class="result-card">
-                    <div class="result-title">${resultTitle}</div>
-                    <div class="result-description">${resultDescription}</div>
-                    <div class="result-recommendations">
-                        <h4>Pasos Para Romper la Adicción a la Aprobación Externa:</h4>
-                        <ul>${recommendations}</ul>
-                    </div>
-                    <div class="final-message">
-                        <p><strong>Recuerda:</strong> La aprobación de Dios ya la tienes - no tienes que ganárla. La aprobación de otros es temporal, cambiante e inalcanzable - siempre habrá alguien que no esté de acuerdo contigo. No puedes cumplir tu propósito y complacer a todos simultáneamente. Tendrás que elegir. La pregunta no es si alguien te aprobará, sino: ¿A quién le rendirás cuentas? Que tu respuesta sea siempre: solo a Dios.</p>
-                        <p>"Pues, ¿busco ahora el favor de los hombres, o el de Dios? ¿O trato de agradar a los hombres? Pues si todavía agradara a los hombres, no sería siervo de Cristo." - Gálatas 1:10</p>
-                    </div>
-                    <button class="btn restart-btn" onclick="location.reload()">Realizar Autoanálisis Nuevamente</button>
+        const rc = document.getElementById('resultContainer');
+        rc.innerHTML = `
+            <div>
+                <div class="result-title">${title}</div>
+                <div class="result-description">${desc}</div>
+                <div class="result-recommendations">
+                    <h4>Pasos Para Romper la Adicción a la Aprobación Externa:</h4>
+                    <ul>${recs}</ul>
                 </div>
-            `;
-            
-            document.getElementById('questionsContainer').style.display = 'none';
-            document.querySelector('.navigation').style.display = 'none';
-            document.querySelector('.progress-bar').style.display = 'none';
-            
-            const resultContainer = document.getElementById('resultContainer');
-            resultContainer.innerHTML = resultHTML;
-            resultContainer.classList.add('active');
-        }
+                <div class="final-message">
+                    <p><strong>Recuerda:</strong> La aprobación de Dios ya la tienes — no tienes que ganarla. La aprobación de otros es temporal, cambiante e inalcanzable — siempre habrá alguien que no esté de acuerdo contigo. No puedes cumplir tu propósito y complacer a todos simultáneamente. Tendrás que elegir. La pregunta no es si alguien te aprobará, sino: ¿A quién le rendirás cuentas? Que tu respuesta sea siempre: solo a Dios.</p>
+                    <p>"Pues, ¿busco ahora el favor de los hombres, o el de Dios? ¿O trato de agradar a los hombres? Pues si todavía agradara a los hombres, no sería siervo de Cristo." — Gálatas 1:10</p>
+                </div>
+                <button class="btn restart-btn" onclick="location.reload()">Realizar Autoanálisis Nuevamente</button>
+            </div>`;
+        rc.classList.add('active');
+    }
 
-        // Initialize the quiz when page loads
-        initQuiz();
-    </script>
+    initQuiz();
+</script>
 </body>
 </html>
