@@ -9,23 +9,23 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Cormorant+Garamond:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-
+ 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
             background: #520101;
             min-height: 100vh;
             line-height: 1.6;
         }
-
+ 
         .container { max-width: 100%; background: #520101; overflow: hidden; }
-
+ 
         .header {
             background: #520101;
             color: white;
             padding: 60px 60px 50px;
             border-bottom: 1px solid rgba(255,255,255,0.08);
         }
-
+ 
         .program-badge {
             font-size: 1.1em;
             letter-spacing: 2px;
@@ -36,7 +36,7 @@
             display: block;
             margin-bottom: 20px;
         }
-
+ 
         .header h1 {
             font-size: 2.8em;
             margin-bottom: 20px;
@@ -45,7 +45,7 @@
             line-height: 1.2;
             color: white;
         }
-
+ 
         .header p {
             font-size: 1.05em;
             line-height: 1.7;
@@ -53,7 +53,7 @@
             max-width: 700px;
             color: rgba(255,255,255,0.85);
         }
-
+ 
         .progress-bar {
             background: #520101;
             padding: 16px 60px;
@@ -62,7 +62,7 @@
             align-items: center;
             gap: 3px;
         }
-
+ 
         .progress-dot {
             width: 28px;
             height: 28px;
@@ -77,29 +77,29 @@
             color: white;
             transition: all 0.25s ease;
         }
-
+ 
         .progress-dot.active { background: #6d0000; border-color: #6d0000; transform: scale(1.08); }
         .progress-dot.completed { background: #6d0000; border-color: #6d0000; }
-
+ 
         .content {
             padding: 60px 60px;
             max-width: 900px;
             margin: 0 auto;
             background: #520101;
         }
-
+ 
         .question { display: none; }
-
+ 
         .question.active {
             display: block;
             animation: fadeIn 0.6s ease-in;
         }
-
+ 
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
+ 
         .question h3 {
             color: white;
             margin-bottom: 32px;
@@ -108,7 +108,7 @@
             font-weight: 600;
             letter-spacing: -0.4px;
         }
-
+ 
         .question-number {
             display: inline-block;
             background: #6d0000;
@@ -122,9 +122,9 @@
             font-weight: 600;
             font-size: 0.9em;
         }
-
+ 
         .options { display: flex; flex-direction: column; gap: 16px; }
-
+ 
         .option {
             padding: 18px 20px;
             background: rgba(255,255,255,0.1);
@@ -138,10 +138,10 @@
             font-size: 0.98em;
             color: white;
         }
-
+ 
         .option:hover { border-color: rgba(255,255,255,0.5); background: rgba(255,255,255,0.15); }
         .option.selected { background: #6d0000; border-color: #6d0000; font-weight: 500; }
-
+ 
         .option input[type="radio"] {
             margin-right: 14px;
             width: 18px;
@@ -150,7 +150,7 @@
             accent-color: white;
             flex-shrink: 0;
         }
-
+ 
         .navigation {
             display: flex;
             justify-content: center;
@@ -160,7 +160,7 @@
             margin: 0 auto;
             background: #520101;
         }
-
+ 
         .btn {
             padding: 14px 32px;
             background: white;
@@ -173,10 +173,10 @@
             transition: all 0.25s ease;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
         }
-
+ 
         .btn:hover { background: rgba(255,255,255,0.9); }
         .btn:disabled { opacity: 0.3; cursor: not-allowed; }
-
+ 
         .result {
             display: none;
             padding: 60px 60px;
@@ -184,9 +184,9 @@
             margin: 0 auto;
             background: #520101;
         }
-
+ 
         .result.active { display: block; animation: fadeIn 0.6s ease-in; }
-
+ 
         .result-title {
             color: white;
             font-size: 2.8em;
@@ -195,10 +195,10 @@
             letter-spacing: -1px;
             line-height: 1.2;
         }
-
+ 
         .result-description { line-height: 1.8; margin-bottom: 40px; font-size: 1.05em; color: rgba(255,255,255,0.95); }
         .result-description p { margin-bottom: 20px; }
-
+ 
         .result-recommendations {
             background: rgba(255,255,255,0.05);
             padding: 40px;
@@ -206,10 +206,10 @@
             margin-top: 40px;
             border: 1px solid rgba(255,255,255,0.1);
         }
-
+ 
         .result-recommendations h4 { color: white; margin-bottom: 28px; font-size: 1.35em; font-weight: 600; letter-spacing: -0.3px; }
         .result-recommendations ul { list-style: none; padding: 0; }
-
+ 
         .result-recommendations li {
             padding: 16px 0 16px 32px;
             position: relative;
@@ -217,9 +217,9 @@
             color: rgba(255,255,255,0.95);
             font-size: 0.98em;
         }
-
+ 
         .result-recommendations li:before { content: "→"; position: absolute; left: 0; color: white; font-weight: 700; font-size: 1.1em; }
-
+ 
         .final-message {
             margin-top: 40px;
             padding: 32px;
@@ -228,13 +228,13 @@
             border: 1px solid rgba(255,255,255,0.1);
             border-left: 3px solid rgba(255,255,255,0.3);
         }
-
+ 
         .final-message p { font-size: 1.05em; line-height: 1.8; color: rgba(255,255,255,0.95); margin-bottom: 20px; }
         .final-message p:last-child { font-style: italic; color: rgba(255,255,255,0.75); margin-bottom: 0; }
-
+ 
         .restart-btn { margin-top: 40px; background: white; color: #6d0000; border: 1.5px solid white; display: inline-block; }
         .restart-btn:hover { background: rgba(255,255,255,0.9); }
-
+ 
         @media (max-width: 768px) {
             .header { padding: 50px 30px; }
             .header h1 { font-size: 2em; }
@@ -253,7 +253,7 @@
         <h1>Autoanálisis: La Trampa de la Comparación</h1>
         <p>Descubre cómo la comparación está robando tu gozo, tu propósito y tus sueños únicos en Dios</p>
     </div>
-
+ 
     <div class="progress-bar" id="progressBar">
         <div class="progress-dot active">1</div>
         <div class="progress-dot">2</div>
@@ -266,18 +266,18 @@
         <div class="progress-dot">9</div>
         <div class="progress-dot">10</div>
     </div>
-
+ 
     <div class="content" id="questionsContainer"></div>
-
+ 
     <div class="navigation">
         <button class="btn" id="nextBtn" onclick="nextQuestion()">Siguiente</button>
         <button class="btn" id="submitBtn" onclick="calculateResult()" style="display:none;">Ver Resultado</button>
         <button class="btn" id="prevBtn" onclick="previousQuestion()" style="display:none;">Anterior</button>
     </div>
-
+ 
     <div class="result" id="resultContainer"></div>
 </div>
-
+ 
 <script>
     const questions = [
         {
@@ -371,17 +371,17 @@
             ]
         }
     ];
-
+ 
     let currentQuestion = 0;
     let answers = {};
-
+ 
     function initQuiz() {
         const container = document.getElementById('questionsContainer');
         questions.forEach((question, index) => {
             const div = document.createElement('div');
             div.className = 'question' + (index === 0 ? ' active' : '');
             div.id = 'question-' + index;
-
+ 
             let opts = '<div class="options">';
             question.options.forEach(opt => {
                 opts += `<label class="option" onclick="selectOption(${index}, ${opt.value}, this)">
@@ -390,13 +390,13 @@
                 </label>`;
             });
             opts += '</div>';
-
+ 
             div.innerHTML = `<h3><span class="question-number">${index + 1}</span>${question.q}</h3>${opts}`;
             container.appendChild(div);
         });
         updateProgress();
     }
-
+ 
     function selectOption(qIndex, value, el) {
         answers[qIndex] = value;
         el.parentElement.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
@@ -404,7 +404,7 @@
         document.getElementById('nextBtn').disabled = false;
         if (currentQuestion === questions.length - 1) document.getElementById('submitBtn').disabled = false;
     }
-
+ 
     function nextQuestion() {
         if (!answers.hasOwnProperty(currentQuestion)) { alert('Por favor selecciona una respuesta antes de continuar'); return; }
         document.getElementById('question-' + currentQuestion).classList.remove('active');
@@ -413,7 +413,7 @@
         updateButtons();
         updateProgress();
     }
-
+ 
     function previousQuestion() {
         document.getElementById('question-' + currentQuestion).classList.remove('active');
         currentQuestion--;
@@ -421,7 +421,7 @@
         updateButtons();
         updateProgress();
     }
-
+ 
     function updateButtons() {
         document.getElementById('prevBtn').style.display = currentQuestion > 0 ? 'block' : 'none';
         if (currentQuestion === questions.length - 1) {
@@ -434,7 +434,7 @@
             document.getElementById('nextBtn').disabled = !answers.hasOwnProperty(currentQuestion);
         }
     }
-
+ 
     function updateProgress() {
         document.querySelectorAll('.progress-dot').forEach((dot, i) => {
             dot.classList.remove('active', 'completed');
@@ -442,15 +442,15 @@
             else if (i < currentQuestion) dot.classList.add('completed');
         });
     }
-
+ 
     function calculateResult() {
         if (Object.keys(answers).length !== questions.length) { alert('Por favor responde todas las preguntas'); return; }
-
+ 
         const total = Object.values(answers).reduce((s, v) => s + v, 0);
         const pct = (total / (questions.length * 4)) * 100;
-
+ 
         let title, desc, recs;
-
+ 
         if (pct <= 40) {
             title = "Nivel: Comparación Destructiva — Ladrona de Destino";
             desc = `<p><strong>Mujer,</strong> este autoanálisis revela una verdad dolorosa: la comparación se ha convertido en la ladrona de tu gozo, tu propósito y tus sueños. Vives atrapada en un ciclo interminable de medirte contra otras mujeres, y siempre, siempre sales perdiendo. La comparación no es solo un hábito — es una prisión que te está robando tu destino único.</p>
@@ -508,11 +508,11 @@
                 <li>Crea espacios donde mujeres puedan descubrir su singularidad sin comparación</li>
                 <li>Intercede por mujeres que están perdiendo su propósito por compararse</li>`;
         }
-
+ 
         document.getElementById('questionsContainer').style.display = 'none';
         document.querySelector('.navigation').style.display = 'none';
         document.querySelector('.progress-bar').style.display = 'none';
-
+ 
         const rc = document.getElementById('resultContainer');
         rc.innerHTML = `
             <div>
@@ -530,7 +530,7 @@
             </div>`;
         rc.classList.add('active');
     }
-
+ 
     initQuiz();
 </script>
 </body>
