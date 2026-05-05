@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Evaluación de Mentalidad</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500&family=Great+Vibes&family=Barlow+Condensed:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --bur:#7B2D3E;--bur-d:#5C1F2C;--bur-l:#A64D62;--bur-p:#F5E8EC;
+  --ear-l:#C4A882;--ear-p:#F5EDE3;
+  --cream:#FAF7F2;--white:#FFFFFF;
+  --td:#2C1810;--tm:#5C4033;--ts:#9B8070;
+  --brd:#E8D5C4;
+}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Jost',sans-serif;
+  background:var(--cream);
+  min-height:100vh;
+  color:var(--td);
+  line-height:1.6;
+  font-size:16px;
+}
+.header{
+  background:var(--bur);
+  padding:56px 48px 48px;
+  position:relative;
+  overflow:hidden;
+}
+.header::after{
+  content:'';
+  position:absolute;
+  bottom:0;left:0;right:0;
+  height:1px;
+  background:rgba(255,255,255,0.08);
+}
+.program-badge{
+  font-family:'Cormorant Garamond',serif;
+  font-size:11px;
+  letter-spacing:3px;
+  text-transform:uppercase;
+  color:var(--ear-l);
+  font-weight:500;
+  display:block;
+  margin-bottom:1.25rem;
+}
+.header h1{
+  font-family:'Jost',sans-serif;
+  font-size:2.5rem;
+  margin-bottom:1rem;
+  font-weight:300;
+  line-height:1.15;
+  color:white;
+  letter-spacing:2px;
+}
+.header p{
+  font-size:16px;
+  line-height:1.75;
+  font-weight:400;
+  max-width:560px;
+  color:rgba(255,255,255,0.75);
+}
+.divider{width:40px;height:1px;background:var(--ear-l);margin:1.5rem 0;opacity:0.6;}
+.progress-wrap{
+  background:var(--bur);
+  padding:20px 48px 24px;
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+.prog-track{flex:1;height:2px;background:rgba(255,255,255,0.15);border-radius:2px;overflow:hidden;}
+.prog-fill{height:100%;background:var(--ear-l);border-radius:2px;transition:width 0.4s ease;width:0%;}
+.prog-label{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.5);font-weight:500;min-width:64px;text-align:right;}
+.content{max-width:680px;margin:0 auto;padding:2.5rem 1.5rem 1rem;}
+.screen{display:none}
+.screen.active{display:block;animation:fadeUp 0.45s ease;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.q-meta{font-size:13px;letter-spacing:2.5px;text-transform:uppercase;color:var(--ts);font-weight:500;margin-bottom:14px;}
+.q-text{font-family:'Jost',sans-serif;font-size:1.2rem;font-weight:400;color:var(--td);line-height:1.65;margin-bottom:1.75rem;}
+.options{display:flex;flex-direction:column;gap:10px}
+.option{
+  padding:14px 16px;
+  background:var(--white);
+  border:1.5px solid var(--brd);
+  border-radius:12px;
+  cursor:pointer;
+  transition:border-color 0.15s,background 0.15s;
+  display:flex;
+  align-items:flex-start;
+  gap:12px;
+  font-size:16px;
+  color:var(--tm);
+  line-height:1.5;
+  text-align:left;
+  width:100%;
+  font-family:'Jost',sans-serif;
+}
+.option:hover{border-color:var(--ear-l);background:var(--ear-p);}
+.option.selected{border-color:var(--bur);background:var(--bur-p);color:var(--td);}
+.option input[type="radio"]{display:none}
+.opt-dot{
+  width:18px;height:18px;min-width:18px;
+  border-radius:50%;
+  border:1.5px solid var(--brd);
+  margin-top:1px;
+  transition:all 0.15s;
+  background:var(--cream);
+  display:flex;align-items:center;justify-content:center;
+}
+.option.selected .opt-dot{background:var(--bur);border-color:var(--bur);}
+.option.selected .opt-dot::after{content:'';width:6px;height:6px;border-radius:50%;background:white;}
+.opt-text{flex:1}
+/* Group selection cards */
+.group-cards{display:flex;flex-direction:column;gap:10px}
+.group-card{
+  padding:14px 16px;
+  background:var(--white);
+  border:1.5px solid var(--brd);
+  border-radius:12px;
+  cursor:pointer;
+  transition:border-color 0.15s,background 0.15s;
+  display:flex;
+  align-items:flex-start;
+  gap:12px;
+  text-align:left;
+  width:100%;
+  font-family:'Jost',sans-serif;
+}
+.group-card:hover{border-color:var(--ear-l);background:var(--ear-p);}
+.group-card.selected{border-color:var(--bur);background:var(--bur-p);}
+.gc-dot{
+  width:18px;height:18px;min-width:18px;
+  border-radius:50%;
+  border:1.5px solid var(--brd);
+  margin-top:2px;
+  transition:all 0.15s;
+  background:var(--cream);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.group-card.selected .gc-dot{background:var(--bur);border-color:var(--bur);}
+.group-card.selected .gc-dot::after{content:'';width:6px;height:6px;border-radius:50%;background:white;}
+.gc-body{flex:1}
+.gc-name{font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-weight:600;color:var(--td);margin-bottom:4px;}
+.group-thoughts{list-style:none;margin-top:4px;}
+.group-thoughts li{font-size:13.5px;color:var(--ts);padding:1px 0;line-height:1.4;}
+.group-thoughts li::before{content:'· ';color:var(--ear-l);}
+.group-card.selected .gc-name{color:var(--bur);}
+.group-card.selected .group-thoughts li{color:var(--bur-l);}
+
+/* Group selection cards */
+.nav{max-width:680px;margin:0 auto;padding:1.25rem 1.5rem 3rem;display:flex;gap:10px;}
+.btn-main{flex:1;padding:15px;background:var(--bur);color:white;border:none;border-radius:12px;font-family:'Jost',sans-serif;font-size:14px;font-weight:500;letter-spacing:.5px;cursor:pointer;transition:background 0.2s;min-height:50px;}
+.btn-main:hover{background:var(--bur-l)}
+.btn-main:disabled{opacity:0.35;cursor:not-allowed}
+.btn-back{padding:15px 20px;background:transparent;color:var(--tm);border:1.5px solid var(--brd);border-radius:12px;font-family:'Jost',sans-serif;font-size:14px;cursor:pointer;transition:border-color 0.15s,background 0.15s;min-height:50px;}
+.btn-back:hover{border-color:var(--ear-l);background:var(--ear-p);}
+/* Results */
+.result-badge{display:inline-block;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--bur);font-weight:500;background:var(--bur-p);border:1px solid #DDB0BF;border-radius:20px;padding:5px 14px;margin-bottom:1.25rem;}
+.result-title{font-family:'Cormorant Garamond',serif;color:var(--td);font-size:2rem;margin-bottom:0.75rem;font-weight:600;line-height:1.2;letter-spacing:-0.3px;}
+.divider-sm{width:36px;height:1px;background:var(--ear-l);margin:1.25rem 0;}
+.result-desc{font-size:14.5px;line-height:1.8;color:var(--tm);margin-bottom:1.5rem;}
+.result-desc p{margin-bottom:1rem}
+.recs-card{background:var(--white);border:1px solid var(--brd);border-radius:14px;padding:1.5rem 1.25rem;margin:1.5rem 0;}
+.recs-card h4{font-family:'Cormorant Garamond',serif;color:var(--bur);font-size:1.1rem;font-weight:600;margin-bottom:1rem;}
+.recs-card ul{list-style:none}
+.recs-card li{padding:10px 0 10px 20px;position:relative;font-size:14px;line-height:1.7;color:var(--tm);border-bottom:1px solid var(--brd);}
+.recs-card li:last-child{border-bottom:none;padding-bottom:0}
+.recs-card li::before{content:'→';position:absolute;left:0;color:var(--bur);font-weight:500;font-size:12px;top:12px;}
+.recs-card li strong{color:var(--td);font-weight:500;}
+.verse-box{background:var(--ear-p);border-left:3px solid var(--ear-l);border-radius:0 10px 10px 0;padding:1rem 1.25rem;margin:1.5rem 0;}
+.verse-box p{font-family:'Cormorant Garamond',serif;font-size:1rem;font-style:italic;color:var(--td);line-height:1.65;margin-bottom:4px;}
+.verse-box span{font-size:11px;color:var(--ts);letter-spacing:1px;font-weight:500;text-transform:uppercase;}
+.btn-restart{display:block;width:100%;padding:15px;background:transparent;color:var(--bur);border:1.5px solid var(--bur);border-radius:12px;font-family:'Jost',sans-serif;font-size:14px;font-weight:500;cursor:pointer;margin-top:1.5rem;transition:all 0.2s;min-height:50px;letter-spacing:.5px;}
+.btn-restart:hover{background:var(--bur-p)}
+@media(max-width:600px){
+  .header{padding:40px 20px 36px}
+  .header h1{font-size:1.9rem}
+  .progress-wrap{padding:16px 20px 20px}
+  .content{padding:2rem 1rem 0.75rem}
+  .nav{padding:1rem 1rem 2.5rem;flex-wrap:wrap;}
+  .btn-main{order:1}
+  .btn-back{order:2;width:100%;}
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <span class="program-badge">La Mujer Que Nací Para Ser</span>
+  <h1>Evaluación de Mentalidad</h1>
+  <div class="divider"></div>
+  <p>Descubre el patrón de pensamiento que más te ha estado deteniendo y recibe un análisis profundo de su raíz y los pasos para interrumpirlo.</p>
+</div>
+
+<div class="progress-wrap">
+  <div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
+  <div class="prog-label" id="progLabel">1 de 10</div>
+</div>
+
+<!-- SCREEN 1: ELEGIR GRUPO -->
+<div class="screen active" id="s-grupo">
+  <div class="content">
+    <div class="q-meta">Paso 1 de 2 — Elige tu grupo</div>
+    <div class="q-text">¿Cuál es el grupo de pensamientos que más te representa ahora mismo?</div>
+    <div id="groupsContainer"></div>
+  </div>
+  <div class="nav">
+    <button class="btn-main" id="btnGrupoNext" disabled onclick="iniciarEval()">Continuar &#8594;</button>
+  </div>
+</div>
+
+<!-- SCREEN 2: PREGUNTAS (una a la vez) -->
+<div class="screen" id="s-preguntas">
+  <div class="content" id="preguntaContent"></div>
+  <div class="nav">
+    <button class="btn-back" id="btnAnterior" onclick="anteriorPregunta()">&#8592; Anterior</button>
+    <button class="btn-main" id="btnSiguiente" disabled onclick="siguientePregunta()">Siguiente &#8594;</button>
+    <button class="btn-main" id="btnResultado" disabled onclick="verResultado()" style="display:none">Ver mi análisis &#8594;</button>
+  </div>
+</div>
+
+<!-- SCREEN 3: RESULTADO -->
+<div class="screen" id="s-resultado">
+  <div class="content" id="resultadoContent"></div>
+</div>
+
+<script>
+var grupos = [
+  {
+    id:'identidad', emoji:'🧠', name:'Identidad',
+    thoughts:['"Así soy yo, y cambiar me cuesta demasiado."','"No soy suficiente para lo que Dios me está pidiendo."','"Dios usa a otras personas, pero no a mí."','"Mi pasado pesa más que mi propósito."'],
+    preguntas:[
+      {q:'Cuando alguien te hace un cumplido sincero, ¿cuál es tu reacción más honesta?',opts:['Lo recibo con gratitud y lo creo completamente','Lo agradezco, pero internamente no me lo creo','Busco razones por las que probablemente no es verdad','Asumo que exageran o tienen algún interés']},
+      {q:'¿Cómo te describes cuando alguien te pregunta quién eres?',opts:['Hablo de mis valores, pasiones y lo que amo hacer','Hablo de mis roles: mamá, esposa, profesional…','Me cuesta definirme, siento que no sé quién soy','Hablo de mis errores, limitaciones o lo que me falta']},
+      {q:'¿Cuándo fue la última vez que tomaste una decisión confiando en lo que Dios puso en ti?',opts:['Recientemente, camino en esa confianza','Hace algún tiempo, ahora estoy más dudosa','Casi nunca, necesito confirmación constante','No recuerdo haberlo hecho con esa clase de confianza']},
+      {q:'¿Con qué frecuencia piensas en errores del pasado cuando intentas avanzar?',opts:['Rara vez, los proceso y los suelto','Los recuerdo pero no permito que me definan','Los cargo con frecuencia y me frenan','Siento que siempre están presentes, condicionando todo']},
+      {q:'Cuando escuchas que Dios tiene un propósito para ti, ¿qué sientes internamente?',opts:['Emoción y certeza, lo creo para mí','Esperanza, aunque a veces dudo','Duda, siento que es para otras pero no para mí','Distancia, como si ese propósito fuera para alguien más']},
+      {q:'¿Qué tan fácil te es recibir crítica sin que afecte tu visión de ti misma?',opts:['Bastante fácil, sé separar la crítica de mi valor','Algo difícil, me afecta un poco pero lo proceso','Difícil, tiendo a sentir que "así soy yo"','Muy difícil, una crítica puede desmoronarme por días']},
+      {q:'¿Alguna vez dejaste de hacer algo que Dios te pidió porque no te sentías la persona correcta?',opts:['No, avanzo aunque me sienta insuficiente','Una o dos veces, pero lo reconocí y seguí','Varias veces, es un patrón que se repite en mí','Con frecuencia, siempre concluyo que otros son más aptos']},
+      {q:'Cuando te comparas con otras mujeres, ¿desde dónde comparas?',opts:['Rara vez me comparo, confío en mi camino único','Me comparo ocasionalmente pero me recupero rápido','Me comparo seguido y casi siempre salgo perdiendo','La comparación es constante y me deja sintiéndome menos']},
+      {q:'¿Qué tanto peso tiene tu historia pasada sobre las decisiones de hoy?',opts:['Poco, mi historia me formó pero no me gobierna','Algo, pero intento que no sea determinante','Bastante, muchas decisiones están teñidas por lo que viví','Mucho, el pasado sigue siendo el filtro principal de todo']},
+      {q:'Si Dios te dijera hoy "te llamé específicamente a ti para esto", ¿lo creerías?',opts:['Sí, con convicción y gratitud','Lo creería con algo de sorpresa, aún me cuesta','Dudaría mucho, sentiría que se equivocó de persona','Pensaría que no me conoce tan bien como cree']}
+    ],
+    raiz:'La raíz de este patrón es una identidad fracturada que no ha sido completamente rendida a Cristo. Tu imagen de ti misma fue construida por experiencias dolorosas, palabras que alguien dijo, fracasos que nunca procesaste. Y esa imagen, aunque falsa, se volvió cómoda porque al menos es conocida. Mientras sigas creyendo más en la versión de ti misma que el dolor construyó, que en la versión que Dios declara, seguirás viviendo por debajo de lo que fuiste creada para ser.',
+    verso:'"Ya no eres esclava, sino hija; y si hija, también heredera de Dios por medio de Cristo."',
+    ref:'Gálatas 4:7',
+    pasos:[
+      {t:'Identifica el origen exacto de la mentira',d:'Cada mentira de identidad tuvo un punto de entrada. Pregúntate: ¿Cuándo empecé a creer esto de mí misma? ¿Quién lo dijo primero? ¿Qué experiencia lo confirmó? Escríbelo. Lo que no se nombra no se puede confrontar.'},
+      {t:'Confronta la mentira con la verdad específica',d:'No basta con decir "soy hija de Dios" de manera general. Identifica la mentira específica y ponle encima la verdad específica. Si la mentira es "no soy suficiente", la verdad es "Cristo en mí es más que suficiente para lo que Él me pide."'},
+      {t:'Cambia la narrativa de tu historia',d:'Tu historia no es un archivo de vergüenzas: es el material con el que Dios trabaja. Empieza a contarla diferente: no como víctima de lo que pasó, sino como sobreviviente que avanza hacia su propósito.'},
+      {t:'Somete tu mente a renovación intencionada',d:'Romanos 12:2 habla de transformación por la renovación del entendimiento. Requiere práctica diaria: lecturas bíblicas de identidad, declaraciones en voz alta sobre quién eres en Cristo, y eliminar los entornos que refuerzan la versión falsa de ti misma.'},
+      {t:'Rodéate de personas que ya te ven como Dios te ve',d:'Tu identidad se forma en comunidad. Evalúa: ¿Las personas con quienes más convives refuerzan tu valor y tu propósito? ¿O refuerzan tus limitaciones y tus fracasos? Ajusta tu entorno con esa claridad.'},
+      {t:'Crea un ritual de identidad diario',d:'Cada mañana, antes de revisar el teléfono, declara en voz alta quién eres. No quién quieres ser: quién ya eres. Haz esto por 30 días consecutivos y observa cómo cambia el filtro con el que interpretas todo.'}
+    ]
+  },
+  {
+    id:'capacidad', emoji:'🚧', name:'Capacidad',
+    thoughts:['"No estoy lista todavía para dar ese paso."','"Necesito prepararme más antes de empezar."','"Eso es para personas más capaces que yo."','"No creo poder hacerlo bien."'],
+    preguntas:[
+      {q:'¿Cuánto tiempo llevas esperando sentirte "lista" para algo que ya sabes que debes hacer?',opts:['Días o semanas, es una espera reciente','Varios meses, ya lleva tiempo','Más de un año sin que ese "lista" llegue','No recuerdo desde cuándo espero ese momento']},
+      {q:'¿Cuántos cursos o formaciones has consumido sin implementar lo aprendido?',opts:['Poco, lo que aprendo lo aplico casi de inmediato','Algunos, me cuesta un poco pasar a la acción','Muchos, consumo constantemente pero rara vez actúo','Casi todo se queda en apuntes o en intención']},
+      {q:'Cuando ves a alguien menos preparada dar un paso que tú no has dado, ¿qué ocurre internamente?',opts:['Me alegra y me inspira, cada quien tiene su tiempo','Siento algo de incomodidad pero la apoyo genuinamente','Me genera frustración conmigo misma','Mezclo envidia con excusas de por qué su caso es diferente']},
+      {q:'¿Con qué frecuencia usas frases como "cuando aprenda más, cuando esté mejor preparada"?',opts:['Casi nunca, actúo con lo que tengo','Algunas veces me pasa','Con frecuencia, es mi respuesta automática','Es prácticamente mi frase principal para justificar la pausa']},
+      {q:'¿Crees de verdad que Dios espera que llegues perfectamente equipada para usarte?',opts:['No, sé que Él equipa a los que llama','Intelectualmente lo sé, pero no lo vivo','A veces lo dudo cuando veo mis limitaciones','En el fondo, siento que debo llegar lista primero']},
+      {q:'¿Hay un paso concreto que sientes que Dios te pide y que llevas tiempo sin dar?',opts:['No, estoy obedeciendo lo que conozco de Su dirección','Hay algo pequeño que he postergado más de lo que debería','Sí, algo claro que lleva meses o años sin moverse','Sí, lo sé con certeza y tengo miedo de admitirlo']},
+      {q:'¿Qué tan seguido tu "preparación adicional" es en realidad una forma de sentirte más segura antes de exponerte?',opts:['Rara vez, soy honesta sobre mis motivaciones','Algunas veces me doy cuenta de que es más seguridad que formación','Con frecuencia, reconozco que el conocimiento me da control','Casi siempre, aprender es mi forma de no tener que actuar todavía']},
+      {q:'Cuando piensas en dar ese paso, ¿cuál es el pensamiento que aparece primero?',opts:['"Puedo hacerlo, Dios va conmigo"','"Quisiera poder, pero me falta algo"','"Seguro que hay alguien más capacitada"','"¿Y si lo intento y confirmo que no puedo?"']},
+      {q:'¿Alguna vez viste cómo algo que tú sabías fue hecho por otra con resultados mediocres porque tú no actuaste?',opts:['No me ha pasado o no lo he notado','Sí, y lo tomé como lección para actuar más rápido','Sí, y me dolió pero lo racionalicé con excusas','Sí, y aun así seguí esperando estar más lista']},
+      {q:'Si Dios te dijera hoy "con lo que tienes ahora es suficiente, muévete", ¿qué harías?',opts:['Me movería con fe aunque sintiera miedo','Pediría una señal más para confirmar que es Él','Seguiría preparándome un poco más, por si acaso','Honestamente, buscaría otra razón para esperar']}
+    ],
+    raiz:'La raíz profunda de este patrón no es falta de capacidad, es falta de fe disfrazada de responsabilidad. Hay un punto en que la preparación deja de ser formación y se convierte en un escudo emocional: mientras estudias, no te expones. Mientras te preparas, no puedes fallar. Dios nunca llamó a los perfectamente equipados. Llamó a los disponibles.',
+    verso:'"No porque seamos competentes por nosotros mismos, sino que nuestra competencia proviene de Dios."',
+    ref:'2 Corintios 3:5',
+    pasos:[
+      {t:'Diferencia preparación legítima de parálisis disfrazada',d:'Si llevas más de 90 días preparándote sin ninguna acción paralela, no te estás formando, te estás protegiendo. La señal es clara.'},
+      {t:'Define el paso mínimo viable, no el paso perfecto',d:'No te preguntes qué necesitas para hacerlo perfecto. Pregúntate qué necesitas para dar el primer paso posible. La obediencia pequeña abre puertas que la preparación indefinida mantiene cerradas.'},
+      {t:'Recuerda a quién va contigo',d:'Moisés tartamudeaba y Dios lo llamó a hablar ante el Faraón. Gedeón era el menos de su familia. Ester tenía miedo. El patrón del reino no es "Dios llama a los capaces". Es "Dios capacita a los llamados."'},
+      {t:'Crea un sistema de rendición de cuentas con fecha',d:'Las intenciones sin fecha son deseos. Escoge una acción concreta, ponle una fecha inamovible, y compártela con alguien de confianza que te pregunte si lo hiciste.'},
+      {t:'Audita tu consumo vs. tu producción',d:'En los últimos 30 días, ¿cuántas horas consumiste información? ¿Cuántas actuaste sobre lo que ya sabías? Si la proporción está muy desbalanceada, es una señal.'},
+      {t:'Comienza imperfectamente y corrígete en el camino',d:'Cuando actúas con lo que tienes, recibes retroalimentación real que ningún curso te puede dar. Muévete, aprende, ajusta, repite.'}
+    ]
+  },
+  {
+    id:'fracaso', emoji:'💔', name:'Miedo al fracaso',
+    thoughts:['"¿Y si lo intento y no funciona?"','"Prefiero no arriesgarme a volver a fallar."','"Ya fallé antes, no quiero repetirlo."','"Tal vez este no es el momento correcto."'],
+    preguntas:[
+      {q:'¿Cuántas veces has dejado de intentar algo por recordar un fracaso anterior?',opts:['Pocas veces, el fracaso no suele detenerme','Algunas veces, reconozco que me frena ocasionalmente','Muchas veces, es un patrón claro en mis decisiones','Casi siempre, el recuerdo del fracaso aparece primero']},
+      {q:'¿Cómo defines el fracaso en tu vida?',opts:['Como una oportunidad de aprendizaje que me hace crecer','Como algo doloroso pero temporal y superable','Como una señal de que no tengo lo que se necesita','Como la confirmación de mis peores miedos sobre mí misma']},
+      {q:'¿Con qué frecuencia el "no es el momento correcto" es miedo disfrazado de discernimiento?',opts:['Rara vez, sé distinguir bien los tiempos de Dios','Algunas veces me confundo y necesito parar a evaluar','Con frecuencia, uso el "tiempo" como escudo emocional','Casi siempre, sé que es miedo pero lo llamo de otra forma']},
+      {q:'Cuando imaginas que algo no te sale como esperabas, ¿qué es lo que más temes?',opts:['El tiempo y recursos invertidos','La decepción de personas cercanas','Confirmar que no soy capaz como pensaba','El juicio público y la vergüenza ante otros']},
+      {q:'¿Qué tan seguido vives en modo "por si acaso" tomando decisiones para evitar el peor escenario?',opts:['Poco, decido desde lo que quiero, no desde lo que temo','Algo, pero trato de no dejar que el miedo lleve el timón','Bastante, la protección es uno de mis filtros principales','Casi todo, vivo anticipando y evitando el dolor posible']},
+      {q:'¿Has procesado emocionalmente el fracaso que más te marcó?',opts:['Sí, lo trabajé, lo solté y fue parte de mi crecimiento','Parcialmente, lo procesé pero queda algo por sanar','Poco, prefiero no pensar en él','No, es un tema que evito activamente porque todavía duele']},
+      {q:'Cuando ves a alguien fallar públicamente, ¿cuál es tu reacción más honesta?',opts:['Admiro su valentía de haberlo intentado','Siento empatía, cualquiera puede equivocarse','Pienso en cuánto me dolería que me pasara a mí','Me reafirma que es mejor no arriesgarme']},
+      {q:'¿Cuántas decisiones actuales están motivadas por evitar repetir un dolor pasado?',opts:['Pocas, decido hacia lo que quiero construir','Algunas, pero intento ser consciente de eso','Bastante, el dolor pasado condiciona más de lo que quisiera','Casi todo, vivo más protegiéndome que avanzando']},
+      {q:'¿Serías capaz de hacer algo importante sin garantía de que va a funcionar?',opts:['Sí, la fe me mueve aunque no haya certeza','Posiblemente, aunque necesitaría mucha convicción','Me costaría mucho, necesito sentir más seguridad','Honestamente, no, la incertidumbre me paraliza']},
+      {q:'Si fracasaras en algo importante mañana, ¿cómo te afectaría a largo plazo?',opts:['Lo procesaría, aprendería y seguiría adelante','Me afectaría un tiempo pero me recuperaría','Tardaría mucho en volver a intentar algo similar','Probablemente lo usaría como razón para no arriesgarme más']}
+    ],
+    raiz:'La raíz de este patrón es una herida no sanada que se convirtió en sistema de gobierno. Tu mente aprendió que intentar duele. Y desde entonces trabaja incansablemente para evitar ese dolor, incluso a costa de tu propósito. Lo que parece prudencia es en realidad miedo con vocabulario espiritual. El fracaso que llevas cargando se volvió un profeta falso que te dice cómo va a terminar todo lo que intentes.',
+    verso:'"El justo cae siete veces, y vuelve a levantarse."',
+    ref:'Proverbios 24:16',
+    pasos:[
+      {t:'Cierra el archivo del fracaso pasado con intención',d:'Ese fracaso ya ocurrió. No puede ocurrir de nuevo porque ese momento ya no existe. Necesitas hacer un acto intencional de cierre: escribe lo que pasó, lo que aprendiste, y lo que dejas ir. No es negación, es liberación.'},
+      {t:'Redefine lo que significa realmente fracasar',d:'¿Y si el verdadero fracaso no es intentar y no lograrlo, sino llegar al final de tu vida sin haber intentado lo que Dios puso en tu corazón? La pregunta no es "¿y si fallo?" sino "¿y si nunca lo intento?"'},
+      {t:'Procesa la herida, no la gestiones',d:'Gestionar el dolor significa aprender a vivir con él. Procesarlo significa sanarlo de raíz. Muchas veces necesitas llevar ese fracaso específico ante Dios en conversación profunda, y posiblemente ante una consejera de confianza.'},
+      {t:'Entrena tu tolerancia a la incertidumbre',d:'El miedo al fracaso vive de la necesidad de certeza. La fe, por definición, opera sin ella. Toma una decisión esta semana que no tenga resultado garantizado. El objetivo es entrenar a tu sistema nervioso a moverse sin garantías.'},
+      {t:'Distingue protección de parálisis',d:'La prudencia evalúa el riesgo, hace los ajustes necesarios, y avanza. El miedo evalúa el riesgo, amplifica lo peor, y se queda. Si llevas más de tres meses evaluando la misma decisión, ya no es prudencia.'},
+      {t:'Crea evidencia contraria al relato del fracaso',d:'Tu mente cree en el fracaso porque tiene evidencia de él. Empieza por algo que puedas comprometerte a terminar, y termínalo. El cerebro necesita esa nueva historia para creerla.'}
+    ]
+  },
+  {
+    id:'opinion', emoji:'👀', name:'Opinión de otros',
+    thoughts:['"¿Qué van a pensar de mí si hago esto?"','"No quiero que me critiquen o me juzguen."','"Me da miedo que se burlen de mí."','"Siento que tengo que agradar a todos."'],
+    preguntas:[
+      {q:'¿Cuántas decisiones importantes has tomado pensando primero en lo que otros dirán?',opts:['Pocas, soy bastante libre en mis decisiones','Algunas, pero intento no dejarme gobernar por eso','Muchas, el "¿qué dirán?" es uno de mis filtros principales','Casi todas, está tan automático que a veces no lo noto']},
+      {q:'¿Cuándo fue la última vez que no hiciste algo que querías por miedo a la reacción de otros?',opts:['No recuerdo una vez reciente','Hace algún tiempo, fue una situación específica','Hace poco, este mes incluso','Esta semana, es algo que me ocurre con frecuencia']},
+      {q:'¿De qué grupo específico te importa más la opinión?',opts:['Familia cercana o pareja','Amigas, comunidad de fe o entorno social','Audiencia, seguidores o colegas','Todos por igual, no puedo reducirlo a uno']},
+      {q:'¿Cómo reaccionas internamente cuando alguien te critica, aunque sea levemente?',opts:['Lo evalúo, tomo lo útil y suelto lo que no construye','Me duele un poco, pero lo proceso rápido','Me afecta profundamente y lo pienso por horas o días','Me paraliza y me hace cuestionar todo lo que estoy haciendo']},
+      {q:'¿Con qué frecuencia modificas lo que dices o haces para evitar que alguien se moleste?',opts:['Rara vez, me expreso con bastante libertad','Algunas veces, sobre todo en temas sensibles','Con frecuencia, ya es algo casi automático','Casi siempre, el filtro de "¿cómo lo recibirán?" está siempre activo']},
+      {q:'¿Sientes que tienes permiso de Dios para avanzar aunque personas importantes no estén de acuerdo?',opts:['Sí, camino con esa convicción aunque duela','A veces sí, pero hay momentos en que necesito su validación','Me cuesta sentirlo con claridad cuando hay desacuerdo','No, necesito que las personas que importan digan que sí']},
+      {q:'¿Cuántas veces has minimizado un logro tuyo para no parecer presumida o por miedo a la envidia?',opts:['Pocas veces, comparto mis logros con naturalidad','Algunas veces, sobre todo en ciertos entornos','Con frecuencia, minimizar es mi modo por defecto','Casi siempre, me cuesta celebrar en voz alta lo que logro']},
+      {q:'¿Qué sientes cuando alguien habla mal de ti o te malinterpreta?',opts:['Incomodidad breve, pero no cambia mi sentido de quién soy','Dolor real, aunque procuro que no redefina mi valor','Me afecta mucho más de lo que me gustaría','Siento que algo en mí se rompe y tarda tiempo en reconstruirse']},
+      {q:'¿Hasta qué punto la aprobación de otros es condición necesaria para avanzar en algo?',opts:['No es condición, avanzo con o sin aprobación','Es útil tenerla, aunque no completamente necesaria','Me ayuda mucho, y su ausencia me frena bastante','Es prácticamente indispensable, sin ella me bloqueo']},
+      {q:'Si supieras que nadie te va a juzgar por lo que haces, ¿qué cambiaría en tu vida?',opts:['Poco, vivo bastante alineada con quien soy','Algunas cosas serían distintas, pero no radicalmente','Muchas cosas cambiarían, hay mucho que no me permito','Mi vida sería completamente diferente a como es hoy']}
+    ],
+    raiz:'La raíz de este patrón es una necesidad de aprobación que antecede a tu fe. Algo en tu historia te enseñó que el amor era condicional: que para ser amada, aceptada, incluida, debías comportarte de cierta manera. Esa lección se instaló tan profundo que ahora opera de manera automática, mucho antes de que tu mente consciente la cuestione.',
+    verso:'"¿Busco ahora el favor de los hombres, o el de Dios? Si todavía agradara a los hombres, no sería siervo de Cristo."',
+    ref:'Gálatas 1:10',
+    pasos:[
+      {t:'Identifica a quién le has dado el poder',d:'No es "todo el mundo": es alguien específico. ¿Quién es la persona cuyo "no" te detiene más? Ponle nombre. Lo que no nombras no puedes trabajar.'},
+      {t:'Investiga el origen de la necesidad de aprobación',d:'Esta necesidad no nació sola. Puede ser una infancia donde el amor fue condicional al comportamiento, o una relación donde tu valor dependía del rendimiento. Encontrar el origen no es para culpar: es para entender qué herida está detrás.'},
+      {t:'Practica decir y hacer antes de pedir permiso',d:'Esta semana, da un paso que hayas estado postergando esperando la aprobación de alguien. Hazlo sin pedirle permiso a nadie primero. Entrénate a consultar primero a Dios y luego avanzar.'},
+      {t:'Aprende a separar la crítica útil de la que no construye',d:'¿Esta persona me conoce, me ama y tiene mis mejores intereses? Si sí, escúchala. Si no, no le des el mismo peso que le das a la voz de Dios.'},
+      {t:'Ancla tu identidad en la aprobación que ya tienes',d:'Dios ya dijo sí sobre ti. No cuando lo hagas bien. No cuando lo logres. Ya. "Fuiste aceptada en el Amado" (Efesios 1:6). Empieza cada día recordando eso antes de exponerte a lo que otros podrían decir.'},
+      {t:'Amplía tu tolerancia al malestar de la desaprobación',d:'La desaprobación duele. El objetivo no es que no duela, sino que el dolor no sea la señal que te detiene. Haz algo esta semana que sepas que alguien no va a entender, y observa que puedes sobrevivir su incomodidad.'}
+    ]
+  },
+  {
+    id:'comparacion', emoji:'⛓️', name:'Comparación',
+    thoughts:['"Ella lo hace mejor que yo, no tiene sentido intentarlo."','"Siento que voy atrasada comparada con otros."','"Ya hay muchas personas haciendo esto."','"No tengo lo que ellas tienen."'],
+    preguntas:[
+      {q:'¿Con qué frecuencia tu motivación baja cuando ves que otras ya lo están haciendo?',opts:['Rara vez, me inspiro genuinamente en las demás','Algunas veces me afecta pero lo proceso','Con bastante frecuencia, la comparación me roba el impulso','Casi siempre, verlas avanzar me hace querer dejar de intentarlo']},
+      {q:'Cuando comparas tu proceso con el de otra persona, ¿eres consciente de que ves su resultado y no su proceso?',opts:['Sí, siempre lo tengo presente y me ayuda','A veces lo recuerdo, otras veces lo olvido','Rara vez lo pienso así cuando estoy en modo comparación','No, no suelo hacer esa distinción']},
+      {q:'¿Sientes que tu llamado es único, o que compites con otras por un espacio limitado?',opts:['Lo siento único e irrepetible, confío en eso','Intelectualmente lo creo, pero emocionalmente a veces compito','Con frecuencia siento que el espacio es escaso','La competencia es real para mí, aunque sé que no debería ser']},
+      {q:'¿Cuánto tiempo al día pasas revisando lo que otras mujeres en tu área están logrando?',opts:['Poco, soy bastante intencional con eso','Moderado, aunque trato de equilibrarlo','Bastante, es un hábito que no he logrado cambiar','Demasiado, lo hago de manera casi automática']},
+      {q:'¿Cuándo fue la última vez que celebraste genuinamente el logro de alguien que hace algo similar a ti?',opts:['Recientemente, lo hago con frecuencia y de corazón','Hace algún tiempo, me cuesta un poco pero lo intento','Hace mucho, la celebración genuina no es fácil para mí','No recuerdo haberlo hecho desde un lugar verdaderamente libre']},
+      {q:'¿Con qué frecuencia usas el éxito de otros como argumento para no comenzar?',opts:['Rara vez, el éxito ajeno no afecta mi decisión de avanzar','Algunas veces, cuando estoy más vulnerable','Con frecuencia, "ya hay muchos haciéndolo" es una excusa real','Casi siempre, es uno de mis argumentos principales']},
+      {q:'¿Tienes claridad de lo que Dios específicamente te llamó a hacer con tu voz y tu historia?',opts:['Sí, tengo una dirección clara y confianza en ella','Lo intuyo pero no tengo total claridad todavía','Tengo ideas pero no la convicción que quisiera','No, no sé con certeza cuál es mi llamado específico']},
+      {q:'Cuando alguien en tu entorno tiene un logro que tú deseabas, ¿qué ocurre dentro de ti?',opts:['Me alegra genuinamente y me impulsa','Siento algo, pero lo transformo en motivación','Me genera tristeza o frustración que me cuesta procesar','Una combinación de dolor, envidia y distancia de esa persona']},
+      {q:'¿En qué área de tu vida la comparación te hace más daño?',opts:['En el avance profesional o ministerial','En los logros económicos o materiales','En las relaciones: pareja, familia, hijos','En la apariencia, estilo o imagen personal']},
+      {q:'Si desaparecieran las redes sociales por un mes, ¿cómo cambiaría tu paz y motivación?',opts:['Poco, mi paz no depende mucho de lo que veo allí','Algo, habría un alivio real aunque me adaptaría','Bastante, las redes alimentan mucho mi comparación','Mucho, creo que sería una de las mejores cosas que me pudieran pasar']}
+    ],
+    raiz:'La raíz de la comparación crónica no es envidia, aunque puede producirla. Es desorientación de propósito. Cuando no tienes claridad profunda sobre lo que Dios te llamó a ser y hacer específicamente a ti, automáticamente usas el camino de otros como mapa. El problema es que el mapa de otra no lleva a tu destino: lleva al de ella.',
+    verso:'"Cada uno someta a prueba su propia obra, y entonces tendrá motivo de gloriarse solo respecto de sí mismo."',
+    ref:'Gálatas 6:4',
+    pasos:[
+      {t:'Desintoxícate del entorno que alimenta la comparación',d:'Si hay cuentas específicas o entornos que de manera consistente te dejan sintiéndote "menos", es tiempo de hacer un ajuste intencional. Silenciar no es envidia, es sabiduría.'},
+      {t:'Encuentra tu propuesta única e irrepetible',d:'Hay una combinación de historia, personalidad, dones y experiencias que solo existe en ti. Esa combinación es tu diferenciador en el reino. Nadie te puede copiar porque nadie vivió exactamente lo que tú viviste.'},
+      {t:'Transforma la comparación en curiosidad',d:'En lugar de preguntar "¿por qué ella sí y yo no?", empieza a preguntar "¿qué puedo aprender de su camino para el mío?" La primera pregunta te enfrenta con ella. La segunda te conecta con tu propio proceso.'},
+      {t:'Construye tu propio indicador de éxito',d:'La comparación tiene poder porque estás usando el indicador de éxito de otro para medir tu avance. Necesitas definir: ¿Qué es éxito para mí en esta etapa, según lo que Dios me ha pedido?'},
+      {t:'Practica la celebración genuina como disciplina espiritual',d:'Esta semana, elige a una mujer que haya logrado algo en tu área y exprésale tu celebración genuina. Hazlo como acto de obediencia aunque no lo sientas completamente.'},
+      {t:'Invierte en claridad de propósito',d:'La comparación disminuye en proporción directa a la claridad de tu llamado. Si la comparación es crónica, hay trabajo de propósito pendiente que necesitas hacer.'}
+    ]
+  },
+  {
+    id:'recursos', emoji:'💸', name:'Recursos',
+    thoughts:['"No tengo el dinero para empezar ahora."','"No tengo el apoyo que necesito."','"Siento que me faltan demasiadas cosas."','"Cuando tenga más, entonces lo hago."'],
+    preguntas:[
+      {q:'Si tuvieras exactamente los recursos que dices necesitar, ¿darías el paso mañana mismo?',opts:['Sí, definitivamente, lo haría sin dudarlo','Probablemente, aunque quizás surgirían otras razones','No estoy segura, podría haber otras cosas que me frenen','Honestamente, no lo sé']},
+      {q:'¿Cuántas veces has comenzado algo con recursos limitados y lo has podido sostener?',opts:['Varias veces, tengo evidencia clara de eso','Alguna vez lo logré','Pocas veces, me cuesta comenzar con poco','Casi nunca, necesito sentir que tengo lo suficiente']},
+      {q:'¿Qué porcentaje de lo que dices necesitar es esencial vs. lo que te haría sentir más segura?',opts:['Soy honesta: la mayoría es para sentirme más segura','Hay de los dos, es una mezcla difícil de separar','La mayoría es realmente esencial','Todo es genuinamente necesario, mi situación es real']},
+      {q:'¿Has orado enfocadamente sobre la provisión para ese paso que sientes que Dios te llama a dar?',opts:['Sí, y he visto respuesta concreta de parte de Dios','Sí, pero aún espero, sigo en ese proceso','Raramente lo hago de manera específica y sostenida','No, espero tenerlo primero y luego involucrar a Dios']},
+      {q:'¿El apoyo que dices necesitar es indispensable, o podrías avanzar sin él aunque sea más difícil?',opts:['Podría avanzar sin él, aunque sería más difícil','Es muy útil pero no completamente indispensable','Me sería muy difícil avanzar sin ese apoyo','Sin ese apoyo siento que el paso no tiene sentido darlo']},
+      {q:'¿Conoces a alguien que comenzó con menos recursos que los que tú tienes ahora y avanzó?',opts:['Sí, y su historia me inspira activamente','Sí, pero siento que su situación era diferente a la mía','No conozco a nadie así en mi entorno','No he buscado ese tipo de historias activamente']},
+      {q:'¿Hay recursos que ya tienes —habilidades, tiempo, relaciones— que no estás usando?',opts:['Sí, y soy honesta en que podría usarlos mejor','Algunos, aunque no siempre sé cómo activarlos','Pocos, genuinamente siento que no tengo mucho con qué trabajar','No, estoy usando todo lo que tengo']},
+      {q:'Cuando dices "cuando tenga más", ¿tienes una condición concreta en mente, o se mueve cada vez que te acercas?',opts:['Tengo una condición concreta y realista en mente','Tengo una idea pero no es completamente concreta','Es algo vago que tiende a moverse cuando me acerco','No lo había pensado así, pero al reflexionar, se mueve']},
+      {q:'¿Qué crees que Dios piensa de tu situación actual de recursos?',opts:['Que tiene todo lo necesario para proveer cuando obedezca','Que mi situación le importa y está obrando aunque no lo vea','Que me pide esperar en Él, aunque no sé hasta cuándo','Que quizás no es el tiempo porque las condiciones no están dadas']},
+      {q:'Si Dios te dijera "da el paso con lo que tienes hoy", ¿cuál sería tu respuesta honesta?',opts:['Lo haría, confiando en que Él provee en el proceso','Lo haría con miedo pero en obediencia','Pediría una señal de confirmación adicional','Pediría más tiempo para reunir lo que falta']}
+    ],
+    raiz:'La raíz de este patrón es la confusión entre condiciones y obediencia. Has hecho un trato no declarado con Dios: "Yo avanzo cuando tú me des lo que necesito." Pero la economía del reino funciona de manera inversa: obedeces con lo que tienes, y Dios provee en el proceso, no antes. El "cuando tenga más" es, en su núcleo, un problema de confianza.',
+    verso:'"Mi Dios, pues, suplirá todo lo que os falta conforme a sus riquezas en gloria en Cristo Jesús."',
+    ref:'Filipenses 4:19',
+    pasos:[
+      {t:'Haz un inventario real y honesto de lo que ya tienes',d:'No de lo que te falta: de lo que ya tienes. Tiempo libre que no estás aprovechando, habilidades que no estás usando, relaciones que no has activado. Escribe una lista en papel.'},
+      {t:'Distingue el paso mínimo del paso perfecto',d:'¿Cuánto necesitas realmente para dar el primer paso posible? No el paso ideal: el primer movimiento. En la mayoría de los casos, ese número es significativamente menor de lo que crees.'},
+      {t:'Encuentra evidencia de provisión en tu historia de fe',d:'¿Cuántas veces en tu vida Dios proveyó en el proceso, no antes? Esa historia es tuya. Escríbela. La memoria espiritual de la provisión pasada es el mejor antídoto contra el miedo a la escasez futura.'},
+      {t:'Aprende la diferencia entre esperar en Dios y esconderte detrás de Dios',d:'Hay una espera que es fe: activa, expectante, obediente en lo que ya sabes. Y hay una espera que es miedo: pasiva, indefinida, usando la espiritualidad como razón para no moverte.'},
+      {t:'Pon la obediencia antes de la provisión',d:'La multiplicación de los panes ocurrió cuando los discípulos repartieron lo poco que tenían. La provisión vino después del movimiento, no antes. Muévete con lo que tienes hoy.'},
+      {t:'Define una fecha de obediencia, no de recursos',d:'Pon primero la fecha de obediencia, y luego trabaja hacia ella con lo que tienes mientras confías en que Dios añade lo que falta. La fecha cambia tu postura: ya no eres observadora esperando, sino participante avanzando.'}
+    ]
+  },
+  {
+    id:'procrastinacion', emoji:'⏳', name:'Procrastinación',
+    thoughts:['"Después lo hago con más calma."','"Aún no siento que sea el tiempo."','"Cuando me sienta lista, empiezo."','"Mañana sí lo voy a hacer en serio."'],
+    preguntas:[
+      {q:'¿Cuántas veces esta semana dijiste "mañana" o "después" a algo importante?',opts:['Una o ninguna, soy bastante consistente','Dos o tres veces, ocurre pero no es lo dominante','Más de tres veces, es un patrón claro','Perdí la cuenta, pasa casi todos los días']},
+      {q:'¿Cómo describirías tu relación con las cosas importantes que sabes que debes hacer pero no haces?',opts:['Las hago aunque no tenga ganas, la disciplina me mueve','Las hago cuando encuentro motivación suficiente','Las postergo hasta que la presión externa me obliga','Las evito y casi siempre encuentro algo más urgente que hacer']},
+      {q:'Cuando logras hacer algo difícil que habías postergado, ¿qué fue lo que finalmente te movió?',opts:['La disciplina, me comprometí y lo hice independiente de cómo me sentía','La motivación llegó en algún punto y entonces actué','La presión del último momento me obligó','Una consecuencia externa que me forzó a moverme']},
+      {q:'¿El "no es el tiempo" va acompañado de búsqueda activa de Dios, o es solo incomodidad?',opts:['Sé distinguirlos bien, tengo claridad en eso','A veces los confundo y necesito parar a evaluar','Rara vez lo distingo con honestidad en el momento','No sé distinguirlos, me convenzo de que todo es paz']},
+      {q:'¿Hay algo que sientes que Dios te ha estado pidiendo por más de un año y que no has comenzado?',opts:['No, he obedecido con prontitud lo que he sentido','Hay algo, pero es relativamente reciente','Sí, lleva claramente más de un año','Sí, y ya ni sé exactamente cuánto tiempo lleva ahí']},
+      {q:'¿Qué haces con más frecuencia cuando tienes tiempo disponible para algo importante?',opts:['Avanzo en lo que importa, aprovecho el tiempo','Mezclo descanso legítimo con avance real','Descanso o hago cosas poco importantes porque "ya habrá tiempo"','Hago mil cosas urgentes pero no importantes y evito lo que realmente debería']},
+      {q:'¿Qué emoción aparece justo antes de decidir no hacer algo que deberías?',opts:['Rara vez identifico una emoción, simplemente no lo hago','Algo de pereza o falta de energía','Ansiedad o incomodidad ante lo que implica comenzar','Miedo o duda de si voy a poder hacerlo bien']},
+      {q:'¿Cuántas ideas o pasos que sentiste de parte de Dios han quedado incompletos o sin comenzar?',opts:['Pocos, generalmente termino lo que comienzo','Algunos, hay cosas que se quedaron en el camino','Varios, tengo un patrón de empezar sin terminar','Muchos, podría hacer una lista larga de cosas que no avanzaron']},
+      {q:'¿Qué tan seguido confundes descanso legítimo con evitación?',opts:['Rara vez, soy bastante honesta sobre cuándo necesito descansar','Algunas veces me cuesta distinguirlo','Con frecuencia, el "necesito descansar" es a veces "no quiero enfrentar eso"','Casi siempre, el descanso llegó a ser mi forma principal de evitar lo que importa']},
+      {q:'Si tuvieras que comprometerte públicamente hoy con una fecha para algo que has postergado, ¿qué pasaría?',opts:['Lo haría sin problema, el compromiso público me ayuda','Lo haría con algo de presión pero lo cumpliría','Me generaría mucha ansiedad pero lo intentaría','No me atrevería, el miedo a no cumplirlo es demasiado grande']}
+    ],
+    raiz:'La raíz de la procrastinación crónica no es pereza, aunque lo parece. Es regulación emocional mal aprendida. En algún momento, tu sistema interno aprendió que la tarea postergada conecta con algo doloroso: el miedo a no hacerlo bien, la ansiedad de la exposición, la incertidumbre de lo desconocido. Y en lugar de tolerar ese malestar, tu mente encontró que postergar lo alivia temporalmente.',
+    verso:'"Todo lo que tu mano halle para hacer, hazlo con toda tu fuerza."',
+    ref:'Eclesiastés 9:10',
+    pasos:[
+      {t:'Identifica la emoción que estás evitando, no la tarea',d:'La próxima vez que vayas a postergar algo, detente y pregúntate: ¿Qué estoy sintiendo ahora mismo respecto a esta tarea? Ansiedad, aburrimiento, miedo, abrumamiento, duda. Nómbralo. Lo que nombras pierde parte de su poder.'},
+      {t:'Usa el principio de los 5 minutos',d:'El mayor obstáculo de la procrastinación es el comienzo, no la tarea en sí. Comprométete solo con los primeros 5 minutos. La mayoría de las veces, una vez que comienzas, el impulso lleva más lejos de lo que esperabas.'},
+      {t:'Distingue los tiempos de Dios de tu resistencia emocional',d:'El discernimiento legítimo viene con paz activa, dirección clara y obediencia en lo que ya sabes. La resistencia emocional viene con culpa, evitación constante y excusas que cambian.'},
+      {t:'Crea estructura externa que compense la motivación interna',d:'La motivación es emocional y fluctúa. La estructura es mecánica y permanece. Crea compromisos que te obliguen a moverte cuando no tienes ganas: una hora bloqueada, un compromiso público, una persona que te rinda cuentas.'},
+      {t:'Corta el ciclo de alivio con consecuencias intencionales',d:'Dile a alguien: "Si no lo hago para el viernes, te doy X." El costo inmediato cambia el cálculo interno y te da una razón para moverte ahora.'},
+      {t:'Practica la obediencia incompleta como punto de partida',d:'No tienes que hacerlo perfecto para hacerlo. La obediencia parcial vale infinitamente más que la obediencia perfecta que nunca llega. Dios puede trabajar con lo que está en movimiento.'}
+    ]
+  },
+  {
+    id:'perfeccionismo', emoji:'🎯', name:'Perfeccionismo',
+    thoughts:['"Tiene que salir perfecto antes de mostrarlo."','"Aún no está lo suficientemente bueno."','"Necesito mejorar más antes de dar el paso."','"No quiero equivocarme y hacerlo mal."'],
+    preguntas:[
+      {q:'¿Cuántos proyectos o ideas tienes "casi listas" sin haber lanzado o entregado?',opts:['Ninguno, termino lo que comienzo y lo suelto','Uno o dos que han tardado más de lo que debería','Varios, hay un patrón de cosas que no terminan de salir','Muchos, rara vez lanzo algo porque siempre hay algo que mejorar']},
+      {q:'Cuando muestras algo tuyo a otros, ¿cuál es tu reacción interna más honesta?',opts:['Confianza, lo entrego y suelto el resultado','Nerviosismo leve pero lo supero relativamente rápido','Mucha ansiedad, monitoro cada reacción y gesto','Casi nunca llego a ese momento porque evito exponerme']},
+      {q:'¿Con qué frecuencia revisas o corriges algo más veces de lo estrictamente necesario?',opts:['Poco, confío en mi criterio y en el proceso','A veces me excedo, pero me doy cuenta y paro','Con frecuencia, no sé bien cuándo es suficiente','Siempre, nunca siento que está en el punto que debería']},
+      {q:'¿Cómo defines cuándo algo está "suficientemente bueno" para mostrarse?',opts:['Cuando cumple su propósito principal de manera efectiva','Cuando supera un estándar razonable y honesto','Cuando se aproxima bastante a la imagen perfecta que tengo en mente','Cuando ya no puedo encontrarle ningún defecto posible']},
+      {q:'¿El nivel de exigencia que te aplicas a ti es el mismo que le aplicarías a otra persona en tu lugar?',opts:['No, soy mucho más flexible con otros que conmigo','Un poco más exigente conmigo, pero no dramáticamente','Bastante más exigente conmigo, reconozco el doble estándar','No, con los demás soy muy comprensiva, conmigo casi nunca']},
+      {q:'¿Has perdido oportunidades reales por esperar el momento perfecto?',opts:['No, generalmente actúo a tiempo','Quizás alguna, aunque no estoy completamente segura','Sí, puedo identificar oportunidades que se cerraron mientras esperaba','Sí, y sé claramente que fue el perfeccionismo, aunque me cuesta admitirlo']},
+      {q:'¿De dónde crees que viene tu estándar de lo que es "suficientemente bueno"?',opts:['De valores genuinos de excelencia y servicio','De un ambiente familiar o educativo muy exigente','De miedo al juicio o a la crítica de otros','No lo sé con claridad, nunca lo había analizado']},
+      {q:'¿Qué es lo que más temes que pase si algo tuyo sale al mundo sin estar en su punto perfecto?',opts:['Que no cumpla su propósito de manera efectiva','Que alguien lo critique o encuentre errores','Que me juzguen como incompetente o poco preparada','Que confirme mis propias dudas sobre si tengo lo que se necesita']},
+      {q:'¿Cuánto tiempo y energía inviertes en hacer algo perfecto que podría haber funcionado con el 80% de ese esfuerzo?',opts:['Poco, soy eficiente con mi tiempo y energía','Algo, pero me doy cuenta y generalmente lo corrijo','Bastante, el último 20% me lleva más tiempo que el 80% inicial','Casi siempre, el tiempo que invierto en perfeccionar es desproporcionado']},
+      {q:'Si te dijeran que tienes 48 horas para lanzar algo que llevas meses preparando, ¿qué harías?',opts:['Lo lanzaría, lo bueno hecho supera lo perfecto no lanzado','Lo lanzaría con algo de angustia pero podría hacerlo','Entraría en pánico y buscaría conseguir más tiempo','No lo haría, prefiero no lanzar a lanzar algo que no está listo']}
+    ],
+    raiz:'La raíz del perfeccionismo no es amor por la excelencia, aunque convive con ella. Es miedo al juicio disfrazado de estándares altos. La excelencia genuina lanza, recibe retroalimentación, y mejora. El perfeccionismo retiene indefinidamente, porque lanzar significa exponerse, y exponerse significa arriesgarse a la crítica, y la crítica confirmaría el miedo más profundo: que no eres suficiente.',
+    verso:'"El que al viento observa, no sembrará; y el que mira a las nubes, no segará."',
+    ref:'Eclesiastés 11:4',
+    pasos:[
+      {t:'Distingue excelencia de perfeccionismo con una pregunta',d:'La excelencia pregunta: "¿Esto cumple su propósito de manera efectiva?" El perfeccionismo pregunta: "¿Puede alguien encontrar algo que criticar?" La primera orienta hacia el servicio. La segunda orienta hacia la protección.'},
+      {t:'Practica el lanzamiento deliberadamente imperfecto',d:'Escoge algo que llevas tiempo preparando y lánzalo esta semana al 80% de lo que considerarías perfecto. Observa qué pasa. La retroalimentación que recibes en lo real vale más que semanas adicionales de preparación.'},
+      {t:'Investiga el origen de tu estándar',d:'¿De dónde viene tu definición de "suficientemente bueno"? ¿Un padre muy exigente? ¿Un entorno donde el error era sinónimo de vergüenza? El perfeccionismo siempre tiene historia. Encontrar su origen te permite cuestionarlo.'},
+      {t:'Pon fechas de lanzamiento inamovibles desde el principio',d:'Antes de comenzar cualquier proyecto nuevo, define la fecha de entrega. No cuando esté lista: una fecha concreta. Y comprométete a respetarla. Lo que no tiene fecha no tiene urgencia.'},
+      {t:'Recuerda que lo no lanzado no sirve a nadie',d:'El devocional perfecto que nunca publicaste no cambió la vida de nadie. Lo bueno que sale al mundo siempre supera en impacto a lo perfecto que se quedó guardado. Tu obediencia importa más que tu presentación.'},
+      {t:'Trabaja el miedo al juicio de raíz',d:'El perfeccionismo es un síntoma: el miedo al juicio es la causa. Cuando tu valor como persona no depende de que tu trabajo sea perfecto, el perfeccionismo pierde su razón de existir.'}
+    ]
+  },
+  {
+    id:'heridas', emoji:'😔', name:'Heridas',
+    thoughts:['"Eso que viví me afectó demasiado."','"No creo poder soltar eso todavía."','"Siento que eso siempre va a estar conmigo."','"Lo que pasó cambió quién soy."'],
+    preguntas:[
+      {q:'¿Hay una herida específica de tu pasado que todavía influye activamente en tus decisiones?',opts:['No, las he procesado y están integradas en mi historia','Hay algo que reaparece ocasionalmente pero no me gobierna','Sí, y sé con claridad exactamente cuál es','Hay varias y me cuesta identificar cuál pesa más']},
+      {q:'¿Con qué frecuencia esa herida aparece disfrazada de cansancio, enojo o distancia emocional?',opts:['Rara vez, tengo bastante conciencia de mis patrones','Algunas veces, especialmente en momentos de estrés','Con bastante frecuencia, aparece en formas que no identifico de inmediato','Casi siempre, rara vez la reconozco como herida en el momento']},
+      {q:'¿Has buscado acompañamiento profesional o pastoral específicamente para esa herida?',opts:['Sí, y ha sido parte real y significativa de mi proceso','Sí, aunque siento que hay más capas por trabajar todavía','No, pero lo he considerado seriamente','No, prefiero procesarlo sola o solo con Dios']},
+      {q:'¿Qué tan dispuesta estás a soltar la narrativa de víctima, aunque hayas sido genuinamente víctima?',opts:['Completamente, entiendo que sanar no invalida lo que viví','Mayormente sí, aunque reconozco que hay puntos con más resistencia','Poco, siento que soltar esa narrativa sería minimizar lo que sufrí','No estoy lista para eso, el dolor todavía es muy presente']},
+      {q:'¿Crees genuinamente que Dios puede usar lo que viviste para algo que todavía no ves?',opts:['Sí, lo creo con convicción y tengo ejemplos de ello','Lo creo intelectualmente, aunque no siempre lo siento','A veces sí, a veces me cuesta creerlo, depende del día','No, hay cosas que siento que no tienen redención posible']},
+      {q:'¿De qué manera esa herida ha afectado tu capacidad de confiar en Dios?',opts:['No ha afectado mi confianza en Dios de manera significativa','Ha creado dudas que he podido trabajar con el tiempo','Ha generado preguntas profundas que todavía no tengo resueltas','Ha dañado seriamente mi imagen de Dios y mi capacidad de confiar']},
+      {q:'¿Cuándo fue la última vez que tomaste una decisión desde la plenitud, y no desde el miedo a repetir el pasado?',opts:['Recientemente, estoy avanzando desde un lugar más sano','Hace algún tiempo, hay progreso aunque no es constante','Hace bastante, la mayoría de mis decisiones tienen la sombra del pasado','No recuerdo con claridad cuándo fue la última vez']},
+      {q:'¿Hay alguien a quien no has podido perdonar completamente, y cuya falta de perdón te sigue costando paz?',opts:['No, he trabajado el perdón aunque fue un proceso difícil','Sí, hay alguien, y soy consciente de que el perdón está pendiente','Sí, y honestamente no sé si estoy lista para perdonar','Sí, y he racionalizado por qué ese perdón no es necesario']},
+      {q:'¿Qué significaría para ti concretamente sanar de esa herida? ¿Qué cambiaría?',opts:['Libertad real para ser quien Dios me llamó a ser sin ese peso','Podría avanzar en cosas que ahora están bloqueadas por ese dolor','No me permito imaginarlo, parece demasiado lejos','Me asusta imaginar quién sería sin esa herida, ha sido parte de mí por tanto tiempo']},
+      {q:'¿Crees que puedes avanzar en el proceso de sanidad en paralelo, o sientes que debes sanar primero para avanzar?',opts:['Creo que puedo avanzar mientras me sano, no necesito estar sana primero','Creo que hay un nivel mínimo de sanidad que necesito antes de ciertos pasos','Siento que Dios me está esperando en ese lugar de sanidad antes de avanzar','No lo he pensado en esos términos, es una pregunta nueva para mí']}
+    ],
+    raiz:'La raíz de este patrón es que la herida dejó de ser algo que te pasó y se convirtió en parte de lo que crees que eres. Pasaste de "me pasó algo muy doloroso" a "soy alguien a quien le pasan estas cosas". Y esa identidad de herida, aunque es dolorosa, también es familiar. El problema no es el dolor en sí: es que la herida tiene voto sobre tus decisiones, voz sobre tu identidad y poder sobre tu futuro.',
+    verso:'"El Espíritu del Señor está sobre mí, porque me ha ungido para proclamar libertad a los cautivos."',
+    ref:'Lucas 4:18',
+    pasos:[
+      {t:'Permite que la herida sea real sin ser permanente',d:'No necesitas minimizar lo que viviste para poder sanar. El dolor fue real. Y también es real que esa herida puede sanar completamente. Sanar no traiciona lo que sufriste: lo honra, porque significa que lo que pasó no tuvo la última palabra.'},
+      {t:'Busca acompañamiento especializado, no solo espiritual',d:'Algunas heridas no sanan solo con oración y voluntad. Una consejera cristiana o un proceso estructurado de sanidad interior puede llegar a lugares donde la determinación sola no llega. Pedir ayuda no es falta de fe: es sabiduría.'},
+      {t:'Separa lo que eres de lo que viviste',d:'En papel: en una columna, escribe lo que te pasó. En otra, escribe quién eres. Son dos historias completamente diferentes. Una describe eventos. La otra describe identidad.'},
+      {t:'Trabaja el perdón como acto de liberación propia',d:'Perdonar no significa decir que lo que hicieron estuvo bien. Significa decidir que tú no vas a seguir pagando el precio de lo que ellos hicieron. El resentimiento te afecta a ti mucho más de lo que les afecta a ellos.'},
+      {t:'Dale a Dios acceso al punto exacto del dolor',d:'No basta con pedirle sanidad en términos generales. Necesitas llevar ante Dios el momento específico, la persona específica, la palabra específica. La sanidad más profunda ocurre cuando lo específico es entregado.'},
+      {t:'Construye una nueva narrativa desde lo que Dios hace con el dolor',d:'La historia de tu herida no termina en el daño: termina en la redención. Dios puede tomar exactamente lo que fue diseñado para destruirte y convertirlo en lo que te equipa para servir. Tu herida sanada es tu ministerio más poderoso.'}
+    ]
+  },
+  {
+    id:'espiritual', emoji:'🙇‍♀️', name:'Espiritual',
+    thoughts:['"Estoy esperando en Dios para dar el paso."','"No siento paz todavía para hacerlo."','"No me siento lista espiritualmente."','"Dios conoce mi corazón, Él entiende."'],
+    preguntas:[
+      {q:'¿Cuánto tiempo llevas "esperando en Dios" respecto a esa área o decisión específica?',opts:['Días o semanas, es una espera reciente y activa','Meses, con discernimiento genuinamente activo','Más de un año, con momentos de búsqueda y momentos de pausa','Ya perdí la cuenta, no sé exactamente cuánto tiempo lleva']},
+      {q:'¿Qué pasos concretos de búsqueda espiritual has dado durante ese tiempo de espera?',opts:['Oración enfocada, ayuno, consejo pastoral, búsqueda activa y sostenida','Oración general y lectura de la Biblia de manera regular','Poco, principalmente espero que algo llegue a mí','Casi ninguno, mi espera es más pasiva que activa']},
+      {q:'¿Cómo distingues si lo que experimentas es paz espiritual genuina, o alivio emocional de no moverte?',opts:['Tengo claridad en eso y sé distinguirlos bien','A veces los confundo, es un área que me cuesta discernir','Rara vez lo distingo con honestidad en el momento','Nunca lo había pensado en esos términos hasta ahora']},
+      {q:'¿Has buscado consejo pastoral específicamente sobre esa decisión o área que esperas?',opts:['Sí, y he recibido dirección que me ha dado claridad','Sí, pero no he recibido la claridad que esperaba todavía','He buscado de manera informal y casual, no con intención profunda','No, prefiero esperar a que Dios me hable directamente']},
+      {q:'¿Hubo algún momento en que sentiste claramente que Dios te habló sobre eso, y elegiste no avanzar?',opts:['No, genuinamente sigo esperando esa dirección clara','Sí, y avancé obedeciendo aunque con algo de miedo','Sí, pero dudé de si era realmente Él o yo proyectando','Sí, y elegí no avanzar porque no era el momento que yo quería']},
+      {q:'¿La espera actual está acompañada de crecimiento espiritual activo, o de estancamiento general?',opts:['De crecimiento, estoy avanzando en muchas otras áreas mientras espero','De algo de los dos, hay áreas que avanzan y otras que no','Honestamente, de bastante estancamiento, no solo en esa área','De estancamiento general, la espera se ha extendido a muchas dimensiones']},
+      {q:'Cuando piensas en dar ese paso, ¿cuál es el pensamiento espiritual que aparece para frenarte?',opts:['"Necesito más tiempo de oración antes de moverme"','"No tengo confirmación suficiente de que es Dios"','"No me siento espiritualmente lista o madura para esto"','"Dios sabe que mi corazón quiere hacerlo, eso es suficiente por ahora"']},
+      {q:'¿Con qué frecuencia usas lenguaje espiritual para justificar una inacción que en el fondo es miedo?',opts:['Rara vez, soy bastante honesta conmigo misma sobre eso','Algunas veces, especialmente cuando la decisión me genera ansiedad','Con frecuencia, reconozco que el lenguaje espiritual puede ser un escudo','Casi siempre, es mi patrón principal y a veces ni me doy cuenta']},
+      {q:'¿Hay áreas donde eres desobediente a lo que ya sabes, mientras esperas dirección en otra?',opts:['No, estoy siendo fiel en lo que conozco mientras espero','Hay algo pequeño donde podría ser más fiel','Sí, hay áreas donde la obediencia está pendiente y la sé','Sí, y prefiero no pensarlo porque me incomoda mucho']},
+      {q:'Si Dios te hablara con total claridad hoy y te dijera "muévete ahora", ¿cuál sería tu respuesta honesta?',opts:['Me movería en obediencia aunque tuviera miedo','Lo haría con mucho miedo pero lo haría','Pediría una confirmación adicional antes de moverme','Honestamente, buscaría razones espirituales para esperar un poco más']}
+    ],
+    raiz:'La raíz aquí es la espiritualidad usada como escudo emocional. Y es el patrón más difícil de confrontar porque tiene el lenguaje correcto. "Esperando en Dios" suena maduro. "No tengo paz" suena discernido. Pero hay una diferencia crucial entre la espera que es obediencia y la espera que es evasión. Dios no necesita más tiempo para hablarte. Lo que muchas veces necesitamos es más honestidad para reconocer que ya escuchamos, y simplemente tenemos miedo.',
+    verso:'"El que observa el viento no sembrará; y el que mira las nubes no segará."',
+    ref:'Eclesiastés 11:4',
+    pasos:[
+      {t:'Audita honestamente la calidad de tu espera',d:'Hay dos tipos de espera: la espera activa del que busca, ora enfocadamente, obedece en lo que sabe y mantiene expectativa viva; y la espera pasiva del que simplemente no se mueve. ¿Cuál de las dos describes honestamente en este momento?'},
+      {t:'Distingue el freno del Espíritu de tu propio miedo con criterios concretos',d:'El freno genuino del Espíritu Santo viene con paz que no es ausencia de ansiedad sino presencia de certeza, dirección alternativa clara, y confirmación en la Palabra o en consejo sabio. El miedo disfrazado viene con alivio temporal y vaguedad indefinida.'},
+      {t:'Busca consejo pastoral con intención profunda',d:'El discernimiento solitario tiene puntos ciegos. No busques a alguien que te diga lo que quieres escuchar: busca a alguien que te conozca, te ame y tenga la valentía de decirte la verdad.'},
+      {t:'Sé fiel en lo que ya sabes mientras esperas lo que no sabes',d:'Si mientras "esperas dirección" en algo grande, también has dejado de avanzar en cosas pequeñas que ya sabías que debías hacer, eso no es discernimiento: es parálisis con vocabulario espiritual.'},
+      {t:'Haz el ejercicio de la honestidad radical',d:'Siéntate sola, en silencio, y responde por escrito: ¿Qué es lo peor que podría pasar si obedezco? ¿Qué es lo que realmente temo? ¿Si el miedo no existiera, qué haría? La "espera espiritual" muchas veces tiene un nombre más concreto: miedo específico a algo específico.'},
+      {t:'Muévete en lo que ya sabes y observa cómo Dios responde',d:'La obediencia abre la revelación. En el reino, la luz generalmente alcanza solo hasta el próximo paso: no te da el mapa completo, te da el paso siguiente. Da ese paso y la próxima luz aparecerá.'}
+    ]
+  }
+];
+
+var grupoSel = null;
+var preguntaActual = 0;
+var respuestas = {};
+
+// Render grupos
+(function(){
+  var h = '<div class="group-cards">';
+  grupos.forEach(function(g){
+    h += '<div class="group-card" data-id="' + g.id + '">';
+    h += '<div class="gc-dot"></div>';
+    h += '<div class="gc-body">';
+    h += '<div class="gc-name">' + g.emoji + ' ' + g.name + '</div>';
+    h += '<ul class="group-thoughts">';
+    g.thoughts.forEach(function(t){ h += '<li>' + t + '</li>'; });
+    h += '</ul></div></div>';
+  });
+  h += '</div>';
+  document.getElementById('groupsContainer').innerHTML = h;
+
+  document.getElementById('groupsContainer').addEventListener('click', function(e){
+    var card = e.target.closest('.group-card');
+    if(!card) return;
+    document.querySelectorAll('.group-card').forEach(function(c){ c.classList.remove('selected'); });
+    card.classList.add('selected');
+    var id = card.getAttribute('data-id');
+    grupoSel = grupos.find(function(g){ return g.id === id; });
+    document.getElementById('btnGrupoNext').disabled = false;
+  });
+})();
+
+function iniciarEval(){
+  if(!grupoSel) return;
+  respuestas = {};
+  preguntaActual = 0;
+  document.getElementById('s-grupo').classList.remove('active');
+  document.getElementById('s-preguntas').classList.add('active');
+  renderPregunta();
+}
+
+function renderPregunta(){
+  var total = grupoSel.preguntas.length;
+  var q = grupoSel.preguntas[preguntaActual];
+  var pct = Math.round(((preguntaActual+1)/total)*100);
+  document.getElementById('progFill').style.width = pct+'%';
+  document.getElementById('progLabel').textContent = (preguntaActual+1)+' de '+total;
+
+  var h = '<div class="q-meta">'+grupoSel.emoji+' '+grupoSel.name+' &mdash; Pregunta '+(preguntaActual+1)+' de '+total+'</div>';
+  h += '<div class="q-text">'+q.q+'</div>';
+  h += '<div class="options" id="optsActuales">';
+  q.opts.forEach(function(opt, i){
+    var sel = respuestas[preguntaActual] === i ? ' selected' : '';
+    h += '<button class="option'+sel+'" onclick="elegirRespuesta(this,'+i+')">';
+    h += '<div class="opt-dot"></div><span class="opt-text">'+opt+'</span>';
+    h += '</button>';
+  });
+  h += '</div>';
+  document.getElementById('preguntaContent').innerHTML = h;
+
+  var isUltima = preguntaActual === total-1;
+  var tieneResp = respuestas.hasOwnProperty(preguntaActual);
+
+  document.getElementById('btnAnterior').style.display = preguntaActual > 0 ? 'block' : 'none';
+  document.getElementById('btnSiguiente').style.display = isUltima ? 'none' : 'block';
+  document.getElementById('btnResultado').style.display = isUltima ? 'block' : 'none';
+  document.getElementById('btnSiguiente').disabled = !tieneResp;
+  document.getElementById('btnResultado').disabled = !tieneResp;
+
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function elegirRespuesta(el, i){
+  document.querySelectorAll('#optsActuales .option').forEach(function(o){ o.classList.remove('selected'); });
+  el.classList.add('selected');
+  respuestas[preguntaActual] = i;
+  document.getElementById('btnSiguiente').disabled = false;
+  document.getElementById('btnResultado').disabled = false;
+}
+
+function siguientePregunta(){
+  if(!respuestas.hasOwnProperty(preguntaActual)){ alert('Por favor selecciona una respuesta antes de continuar'); return; }
+  preguntaActual++;
+  renderPregunta();
+}
+
+function anteriorPregunta(){
+  preguntaActual--;
+  renderPregunta();
+}
+
+function verResultado(){
+  document.getElementById('s-preguntas').classList.remove('active');
+  document.getElementById('progress-wrap') && (document.getElementById('progress-wrap').style.display='none');
+  document.querySelector('.progress-wrap').style.display = 'none';
+  document.getElementById('s-resultado').classList.add('active');
+
+  var g = grupoSel;
+  var liHtml = g.pasos.map(function(p){
+    return '<li><strong>'+p.t+'.</strong> '+p.d+'</li>';
+  }).join('');
+
+  document.getElementById('resultadoContent').innerHTML =
+    '<div class="result-badge">'+g.emoji+' '+g.name+'</div>' +
+    '<div class="result-title">La raíz de este patrón</div>' +
+    '<div class="divider-sm"></div>' +
+    '<div class="result-desc"><p>'+g.raiz+'</p></div>' +
+    '<div class="recs-card"><h4>Pasos para interrumpir este ciclo</h4><ul>'+liHtml+'</ul></div>' +
+    '<div class="verse-box"><p>'+g.verso+'</p><span>— '+g.ref+'</span></div>' +
+    '<button class="btn-restart" onclick="location.reload()">Hacer la evaluación nuevamente</button>';
+
+  document.getElementById('progFill').style.width = '100%';
+  document.getElementById('progLabel').textContent = 'Completado';
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+</script>
+</body>
+</html>
