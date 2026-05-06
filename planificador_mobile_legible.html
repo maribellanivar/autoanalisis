@@ -1,0 +1,349 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500&display=swap');
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --burgundy: #6B2737; --burgundy-light: #8B3A4A; --burgundy-pale: #F5EAEC;
+    --earth: #8B7355; --earth-light: #C4A882;
+    --cream: #FAF7F2; --ink: #2C1810; --muted: #7A6A5A;
+    --line: rgba(107,39,55,0.18);
+  }
+  html, body { font-family: 'Jost', sans-serif; -webkit-text-size-adjust: 100%; }
+  .planner { background: var(--cream); width: 100%; padding: 0 0 4rem; color: var(--ink); }
+
+  /* HEADER */
+  .planner-header { text-align: center; padding: 2rem 1.25rem 1.5rem; border-bottom: 1px solid var(--line); margin-bottom: 0; }
+  .eyebrow { font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--earth); font-weight: 500; margin-bottom: 0.6rem; display: block; }
+  .planner-header h1 { font-family: 'Cormorant Garamond', serif; font-size: 36px; font-weight: 600; color: var(--burgundy); line-height: 1.15; margin-bottom: 0.4rem; }
+  .planner-header .sub { font-size: 15px; color: var(--muted); font-weight: 300; letter-spacing: 0.05em; }
+
+  /* USER BAR */
+  .user-bar { background: var(--burgundy-pale); border-bottom: 1px solid var(--line); padding: 1.25rem 1.25rem; }
+  .user-bar-label { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--burgundy); font-weight: 500; margin-bottom: 8px; display: block; }
+  .user-row { display: flex; gap: 8px; }
+  .user-row input { flex: 1; background: white; border: 1.5px solid var(--line); border-radius: 8px; padding: 0.75rem 1rem; font-family: 'Jost', sans-serif; font-size: 17px; color: var(--ink); outline: none; min-width: 0; }
+  .user-row input:focus { border-color: var(--burgundy); }
+  .user-row button { background: var(--burgundy); color: white; border: none; border-radius: 8px; padding: 0.75rem 1.1rem; font-size: 15px; font-family: 'Jost', sans-serif; font-weight: 500; cursor: pointer; white-space: nowrap; }
+  .user-tag { font-size: 13px; color: var(--muted); margin-top: 8px; display: none; }
+
+  /* INNER */
+  .inner { padding: 1.25rem 1.25rem 0; }
+
+  /* MONTH BAR */
+  .month-bar { display: flex; align-items: center; gap: 10px; background: white; border: 1.5px solid var(--line); border-radius: 8px; padding: 0.9rem 1rem; margin-bottom: 1.25rem; }
+  .month-bar label { font-size: 12px; color: var(--burgundy); font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; white-space: nowrap; }
+  .month-bar input { flex: 1; background: transparent; border: none; outline: none; font-family: 'Cormorant Garamond', serif; font-size: 20px; color: var(--ink); font-weight: 500; min-width: 0; }
+
+  /* PROGRESS */
+  .prog-wrap { background: var(--line); border-radius: 4px; height: 4px; margin-bottom: 5px; overflow: hidden; }
+  .prog-fill { background: var(--burgundy); height: 100%; border-radius: 4px; transition: width 0.4s; width: 0%; }
+  .prog-label { font-size: 12px; color: var(--muted); text-align: right; margin-bottom: 1rem; }
+
+  /* EXPAND BTN */
+  .expand-btn { display: block; width: 100%; background: transparent; border: 1.5px solid var(--line); border-radius: 8px; padding: 0.65rem; font-family: 'Jost', sans-serif; font-size: 14px; color: var(--muted); cursor: pointer; letter-spacing: 0.04em; margin-bottom: 1.25rem; }
+  .expand-btn:active { background: var(--burgundy-pale); color: var(--burgundy); }
+
+  /* SECTION */
+  .section { margin-bottom: 1.25rem; background: white; border-radius: 12px; border: 1.5px solid var(--line); overflow: hidden; }
+
+  .section-header { display: flex; align-items: center; gap: 10px; padding: 1.1rem 1.1rem; background: var(--burgundy-pale); cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  .section-header:active { background: #efd6da; }
+
+  .section-num { width: 32px; height: 32px; background: var(--burgundy); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 500; flex-shrink: 0; }
+
+  .section-title { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 600; color: var(--burgundy); flex: 1; line-height: 1.2; }
+
+  .section-icon { font-size: 20px; color: var(--earth-light); flex-shrink: 0; }
+  .chevron { color: var(--burgundy); font-size: 16px; transition: transform 0.25s; flex-shrink: 0; }
+  .chevron.open { transform: rotate(180deg); }
+
+  .section-body { padding: 1.25rem 1.1rem; display: none; }
+  .section-body.open { display: block; }
+
+  /* QUOTE */
+  .quote-block { background: var(--burgundy-pale); border-left: 3px solid var(--burgundy); padding: 0.9rem 1rem; margin-bottom: 1.25rem; border-radius: 0 8px 8px 0; }
+  .quote-block p { font-family: 'Cormorant Garamond', serif; font-size: 17px; font-style: italic; color: var(--burgundy); line-height: 1.5; }
+
+  /* FIELDS */
+  .field-group { margin-bottom: 1.1rem; }
+  .field-label { display: block; font-size: 13px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); margin-bottom: 7px; line-height: 1.4; }
+
+  textarea {
+    width: 100%;
+    background: var(--cream);
+    border: 1.5px solid var(--line);
+    border-radius: 8px;
+    padding: 0.85rem 1rem;
+    font-family: 'Jost', sans-serif;
+    font-size: 17px;
+    color: var(--ink);
+    resize: none;
+    outline: none;
+    line-height: 1.65;
+    -webkit-appearance: none;
+    display: block;
+  }
+  textarea:focus { border-color: var(--burgundy-light); background: white; }
+
+  input[type="text"].fi {
+    width: 100%;
+    background: var(--cream);
+    border: 1.5px solid var(--line);
+    border-radius: 8px;
+    padding: 0.85rem 1rem;
+    font-family: 'Jost', sans-serif;
+    font-size: 17px;
+    color: var(--ink);
+    outline: none;
+    -webkit-appearance: none;
+    display: block;
+  }
+  input[type="text"].fi:focus { border-color: var(--burgundy-light); background: white; }
+
+  .main-focus-input {
+    width: 100%;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 24px;
+    font-weight: 500;
+    color: var(--burgundy);
+    text-align: center;
+    border: none;
+    border-bottom: 2px solid var(--burgundy);
+    border-radius: 0;
+    background: transparent;
+    padding: 0.5rem 0.5rem;
+    outline: none;
+    display: block;
+    -webkit-appearance: none;
+  }
+
+  /* CHECKBOXES */
+  .checkbox-group { display: flex; flex-direction: column; gap: 10px; }
+  .checkbox-item { display: flex; align-items: flex-start; gap: 12px; padding: 12px 14px; background: var(--cream); border-radius: 8px; border: 1.5px solid transparent; }
+  .checkbox-item:has(input:checked) { border-color: var(--earth-light); background: #FAF5EF; }
+  .checkbox-item input[type="checkbox"] { width: 22px; height: 22px; margin-top: 1px; accent-color: var(--burgundy); flex-shrink: 0; cursor: pointer; }
+  .checkbox-item label { font-size: 17px; color: var(--ink); line-height: 1.5; cursor: pointer; flex: 1; }
+  .checkbox-item:has(input:checked) label { color: var(--earth); }
+
+  /* SCHEDULE */
+  .sched-stack { display: flex; flex-direction: column; gap: 12px; }
+
+  /* DAILY TASKS */
+  .daily-tasks { display: flex; flex-direction: column; gap: 10px; }
+  .task-row { display: flex; align-items: center; gap: 10px; padding: 12px 12px; background: var(--cream); border-radius: 8px; border: 1.5px solid var(--line); }
+  .task-badge { font-size: 11px; font-weight: 500; letter-spacing: 0.07em; text-transform: uppercase; padding: 4px 10px; border-radius: 5px; white-space: nowrap; flex-shrink: 0; }
+  .badge-main { background: var(--burgundy); color: white; }
+  .badge-sec { background: var(--earth-light); color: white; }
+  .task-row input { border: none; background: transparent; padding: 0; font-size: 17px; font-family: 'Jost', sans-serif; color: var(--ink); outline: none; flex: 1; min-width: 0; }
+
+  /* EVAL */
+  .eval-week { margin-bottom: 1.1rem; padding: 1.1rem; background: var(--cream); border-radius: 10px; border: 1.5px solid var(--line); }
+  .eval-week h4 { font-family: 'Cormorant Garamond', serif; font-size: 20px; color: var(--burgundy); margin-bottom: 0.75rem; font-weight: 600; }
+  .star-row { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+  .star-row label { font-size: 14px; color: var(--muted); width: 75px; flex-shrink: 0; }
+  .stars { display: flex; gap: 6px; }
+  .star { width: 32px; height: 32px; cursor: pointer; color: #D3C4B0; font-size: 26px; transition: color 0.1s; -webkit-tap-highlight-color: transparent; }
+  .star.filled { color: var(--burgundy); }
+
+  /* IDENTITY */
+  .identity-list { display: flex; flex-direction: column; gap: 10px; }
+  .identity-item { display: flex; align-items: center; gap: 12px; }
+  .identity-bullet { width: 8px; height: 8px; background: var(--burgundy); border-radius: 50%; flex-shrink: 0; }
+
+  /* CLOSING */
+  .closing-block { background: var(--burgundy); border-radius: 12px; padding: 2rem 1.5rem; text-align: center; margin: 1.5rem 1.25rem 0; }
+  .closing-block p { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-style: italic; color: white; line-height: 1.7; margin-bottom: 1.25rem; }
+  .save-btn { background: white; color: var(--burgundy); border: none; border-radius: 8px; padding: 0.8rem 2rem; font-family: 'Jost', sans-serif; font-size: 15px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; }
+  .save-btn:active { opacity: 0.85; }
+  .save-status { font-size: 13px; color: rgba(255,255,255,0.75); margin-top: 10px; min-height: 18px; }
+</style>
+
+<div class="planner">
+  <h2 class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;">Planificador mensual de disciplina espiritual para mujeres cristianas</h2>
+
+  <div class="planner-header">
+    <span class="eyebrow">Planificador mensual</span>
+    <h1>Mi Vida Bajo Enfoque</h1>
+    <p class="sub">Disciplina · Propósito · Obediencia</p>
+  </div>
+
+  <div class="user-bar">
+    <span class="user-bar-label">Tu espacio personal</span>
+    <div class="user-row">
+      <input type="text" id="user-input" placeholder="Escribe tu nombre..." />
+      <button id="user-btn">Entrar</button>
+    </div>
+    <p class="user-tag" id="user-tag"></p>
+  </div>
+
+  <div id="main-content" style="display:none;">
+    <div class="inner">
+      <div class="month-bar">
+        <label>Mes</label>
+        <input type="text" id="mes-input" placeholder="Mes y año..." />
+      </div>
+      <div class="prog-wrap"><div class="prog-fill" id="prog-bar"></div></div>
+      <p class="prog-label" id="prog-label">0 de 10 secciones completadas</p>
+      <button class="expand-btn" id="toggle-all">Expandir todas las secciones</button>
+      <div id="sections-container"></div>
+    </div>
+    <div class="closing-block">
+      <p>"Este mes no voy a hacer más… voy a hacer lo correcto."</p>
+      <p style="font-size:18px; margin-bottom:1.5rem;">"No voy a seguir dispersa… voy a vivir enfocada."</p>
+      <button class="save-btn" id="main-save-btn">Guardar mi planificador</button>
+      <p class="save-status" id="save-status"></p>
+    </div>
+  </div>
+</div>
+
+<script>
+const sections = [
+  { id:'s1', num:1, icon:'ti-cross', title:'Claridad espiritual — Alineación', quote:'"No planifiques tu mes sin dirección… o solo estarás ocupada, no alineada."',
+    fields:[{type:'ta',id:'q1a',label:'¿Qué siento que Dios me está pidiendo en esta temporada?',rows:3},{type:'ta',id:'q1b',label:'¿En qué área específica necesito obedecer?',rows:3},{type:'ta',id:'q1c',label:'¿Qué he estado evitando que sé que debo hacer?',rows:3}]},
+  { id:'s2', num:2, icon:'ti-target', title:'Mi prioridad del mes — Solo una', quote:'"Si no cabe aquí… no cabe en tu agenda."',
+    fields:[{type:'focus',id:'q2a',label:'Mi enfoque principal este mes es'},{type:'ta',id:'q2b',label:'¿Por qué esto es importante?',rows:3},{type:'ta',id:'q2c',label:'¿Qué pasa si NO lo hago?',rows:3}]},
+  { id:'s3', num:3, icon:'ti-ban', title:'Lo que voy a eliminar', quote:'"No hay enfoque sin renuncia."',
+    fields:[{type:'ta',id:'q3a',label:'Cosas que voy a pausar',rows:3},{type:'ta',id:'q3b',label:'Distracciones que voy a cortar',rows:3},{type:'ta',id:'q3c',label:'Compromisos que voy a cancelar o reducir',rows:3}]},
+  { id:'s4', num:4, icon:'ti-shield', title:'Mis límites — Aprender a decir no',
+    fields:[{type:'ta',id:'q4a',label:'No voy a decir sí a',rows:3},{type:'ta',id:'q4b',label:'Voy a proteger mi tiempo de',rows:3},{type:'ta',id:'q4c',label:'Cuando alguien me pida algo, responderé',rows:3,ph:'"Ahora mismo estoy enfocada en algo importante"'}]},
+  { id:'s5', num:5, icon:'ti-clock', title:'Bloques de enfoque semanales', quote:'"Lo que no se agenda… no se hace."',
+    fields:[{type:'sched',id:'q5'}]},
+  { id:'s6', num:6, icon:'ti-list-check', title:'Mi sistema diario simple', quote:'"Si hago lo principal… gané el día."',
+    fields:[{type:'daily',id:'q6'}]},
+  { id:'s7', num:7, icon:'ti-lock', title:'Reglas de disciplina personal',
+    fields:[{type:'checks',id:'q7',items:[{id:'cb1',label:'No redes sociales antes de mi bloque de enfoque'},{id:'cb2',label:'No multitasking mientras trabajo en mi prioridad'},{id:'cb3',label:'No negociar con lo que ya decidí'}]},{type:'ta',id:'q7extra',label:'Mi regla personal (agrega la tuya)',rows:3}]},
+  { id:'s8', num:8, icon:'ti-alert-triangle', title:'Posibles sabotajes — Anticípate', quote:'"La disciplinada no evita la batalla… se prepara para ella."',
+    fields:[{type:'ta',id:'q8a',label:'¿Qué me va a distraer este mes?',rows:3},{type:'ta',id:'q8b',label:'¿Qué excusas suelo usar?',rows:3},{type:'ta',id:'q8c',label:'¿Qué voy a hacer cuando no tenga ganas?',rows:3}]},
+  { id:'s9', num:9, icon:'ti-refresh', title:'Sistema de evaluación semanal', fields:[{type:'eval',id:'q9'}]},
+  { id:'s10', num:10, icon:'ti-crown', title:'Mi identidad — Lo más importante', fields:[{type:'identity',id:'q10'}]},
+];
+
+let currentUser = null;
+function ukey(k){ return 'plan__'+currentUser+'__'+k; }
+
+function buildSection(s) {
+  const div = document.createElement('div'); div.className='section'; div.id='sec-'+s.id;
+  const hdr = document.createElement('div'); hdr.className='section-header';
+  hdr.innerHTML=`<div class="section-num">${s.num}</div><span class="section-title">${s.title}</span><i class="ti ${s.icon} section-icon" aria-hidden="true"></i><i class="ti ti-chevron-down chevron" aria-hidden="true"></i>`;
+  const body = document.createElement('div'); body.className='section-body'; body.id='body-'+s.id;
+  if(s.quote){ const q=document.createElement('div'); q.className='quote-block'; q.innerHTML=`<p>${s.quote}</p>`; body.appendChild(q); }
+  s.fields.forEach(f => {
+    if(f.type==='ta'){
+      const g=document.createElement('div'); g.className='field-group';
+      g.innerHTML=`<label class="field-label">${f.label}</label><textarea id="${f.id}" rows="${f.rows||3}" placeholder="${f.ph||''}"></textarea>`;
+      body.appendChild(g);
+    } else if(f.type==='focus'){
+      const g=document.createElement('div'); g.className='field-group'; g.style.textAlign='center';
+      g.innerHTML=`<label class="field-label" style="text-align:center;display:block;">${f.label}</label><input type="text" id="${f.id}" class="main-focus-input" placeholder="__________" />`;
+      body.appendChild(g);
+    } else if(f.type==='checks'){
+      const g=document.createElement('div'); g.className='field-group';
+      let h='<div class="checkbox-group">';
+      f.items.forEach(it=>{ h+=`<div class="checkbox-item"><input type="checkbox" id="${it.id}" /><label for="${it.id}">${it.label}</label></div>`; });
+      g.innerHTML=h+'</div>'; body.appendChild(g);
+    } else if(f.type==='sched'){
+      const g=document.createElement('div'); g.className='field-group';
+      g.innerHTML=`<div class="sched-stack"><div><label class="field-label">Días a la semana</label><input type="text" id="q5_dias" class="fi" placeholder="Ej: Lunes a viernes" /></div><div><label class="field-label">Horario específico</label><input type="text" id="q5_hora" class="fi" placeholder="Ej: 7:00am – 8:30am" /></div></div>`;
+      body.appendChild(g);
+    } else if(f.type==='daily'){
+      const g=document.createElement('div'); g.className='field-group';
+      g.innerHTML=`<label class="field-label">Mis tareas de hoy</label><div class="daily-tasks"><div class="task-row"><span class="task-badge badge-main">Principal</span><input id="task_main" placeholder="La tarea más importante del día..." /></div><div class="task-row"><span class="task-badge badge-sec">Secundaria 1</span><input id="task_s1" /></div><div class="task-row"><span class="task-badge badge-sec">Secundaria 2</span><input id="task_s2" /></div></div>`;
+      body.appendChild(g);
+    } else if(f.type==='eval'){
+      const g=document.createElement('div'); g.className='field-group';
+      ['Semana 1','Semana 2','Semana 3','Semana 4'].forEach((sem,wi)=>{
+        const w=document.createElement('div'); w.className='eval-week';
+        w.innerHTML=`<h4>${sem}</h4><div class="star-row"><label>Enfoque</label><div class="stars" id="stars_${wi}">${[1,2,3,4,5].map(n=>`<span class="star ti ti-star" data-week="${wi}" data-val="${n}" role="button" tabindex="0"></span>`).join('')}</div></div><div class="field-group"><label class="field-label">¿Dónde fallé?</label><textarea id="eval_fail_${wi}" rows="3"></textarea></div><div class="field-group" style="margin:0"><label class="field-label">¿Qué debo ajustar?</label><textarea id="eval_adj_${wi}" rows="3"></textarea></div>`;
+        g.appendChild(w);
+      });
+      body.appendChild(g);
+    } else if(f.type==='identity'){
+      const g=document.createElement('div'); g.className='field-group';
+      g.innerHTML=`<label class="field-label" style="margin-bottom:12px">Este mes decido ser una mujer que...</label><div class="identity-list">${[1,2,3].map(i=>`<div class="identity-item"><div class="identity-bullet"></div><input type="text" id="id_${i}" class="fi" placeholder="Ej: ejecuta, se gobierna, no negocia..." /></div>`).join('')}</div>`;
+      body.appendChild(g);
+    }
+  });
+  hdr.addEventListener('click',()=>{
+    const o=body.classList.toggle('open');
+    hdr.querySelector('.chevron').classList.toggle('open',o);
+    updateProgress();
+  });
+  div.appendChild(hdr); div.appendChild(body);
+  return div;
+}
+
+const container=document.getElementById('sections-container');
+sections.forEach(s=>container.appendChild(buildSection(s)));
+
+function updateProgress(){
+  const open=document.querySelectorAll('.section-body.open').length;
+  document.getElementById('prog-bar').style.width=(open/10*100)+'%';
+  document.getElementById('prog-label').textContent=open+' de 10 secciones completadas';
+}
+
+let allOpen=false;
+document.getElementById('toggle-all').addEventListener('click',()=>{
+  allOpen=!allOpen;
+  document.querySelectorAll('.section-body').forEach(b=>b.classList.toggle('open',allOpen));
+  document.querySelectorAll('.chevron').forEach(c=>c.classList.toggle('open',allOpen));
+  document.getElementById('toggle-all').textContent=allOpen?'Colapsar todas las secciones':'Expandir todas las secciones';
+  updateProgress();
+});
+
+function collectData(){
+  const d={mes:document.getElementById('mes-input').value,stars:{},checks:{}};
+  document.querySelectorAll('textarea, input[type="text"]').forEach(el=>{ if(el.id&&el.id!=='user-input') d[el.id]=el.value; });
+  document.querySelectorAll('input[type="checkbox"]').forEach(cb=>{ d.checks[cb.id]=cb.checked; });
+  document.querySelectorAll('.stars').forEach(se=>{ const w=se.id.replace('stars_',''); d.stars['week_'+w]=se.querySelectorAll('.star.filled').length; });
+  return d;
+}
+function saveData(){
+  if(!currentUser) return;
+  try{ localStorage.setItem(ukey('data'),JSON.stringify(collectData())); }catch(e){}
+}
+function loadData(){
+  if(!currentUser) return;
+  try{
+    const r=localStorage.getItem(ukey('data')); if(!r) return;
+    const d=JSON.parse(r);
+    if(d.mes) document.getElementById('mes-input').value=d.mes;
+    Object.keys(d).forEach(k=>{
+      if(k==='mes'||k==='stars'||k==='checks') return;
+      const el=document.getElementById(k);
+      if(el&&(el.tagName==='TEXTAREA'||el.type==='text')) el.value=d[k]||'';
+    });
+    if(d.checks) Object.keys(d.checks).forEach(id=>{ const cb=document.getElementById(id); if(cb) cb.checked=d.checks[id]; });
+    if(d.stars) Object.keys(d.stars).forEach(wk=>{ const w=wk.replace('week_',''),v=d.stars[wk]; document.querySelectorAll(`.star[data-week="${w}"]`).forEach((s,i)=>s.classList.toggle('filled',i<v)); });
+  }catch(e){}
+}
+function attachListeners(){
+  document.querySelectorAll('textarea, input[type="text"], input[type="checkbox"]').forEach(el=>{
+    if(el.id==='user-input') return;
+    el.addEventListener('input',saveData); el.addEventListener('change',saveData);
+  });
+  document.querySelectorAll('.stars').forEach(se=>{
+    se.querySelectorAll('.star').forEach(star=>{
+      star.addEventListener('click',()=>{
+        const w=star.dataset.week,v=parseInt(star.dataset.val);
+        document.querySelectorAll(`.star[data-week="${w}"]`).forEach((s,i)=>s.classList.toggle('filled',i<v));
+        saveData();
+      });
+    });
+  });
+}
+function enterApp(name){
+  currentUser=name.trim().toLowerCase().replace(/\s+/g,'_');
+  document.getElementById('user-tag').textContent='Bienvenida, '+name.trim()+' — tu progreso es privado';
+  document.getElementById('user-tag').style.display='block';
+  document.getElementById('main-content').style.display='block';
+  loadData(); attachListeners();
+}
+document.getElementById('user-btn').addEventListener('click',()=>{ const n=document.getElementById('user-input').value.trim(); if(n) enterApp(n); });
+document.getElementById('user-input').addEventListener('keydown',e=>{ if(e.key==='Enter'){ const n=e.target.value.trim(); if(n) enterApp(n); }});
+document.getElementById('main-save-btn').addEventListener('click',()=>{
+  saveData();
+  const st=document.getElementById('save-status');
+  st.textContent='✓ Guardado — solo tú puedes verlo';
+  setTimeout(()=>st.textContent='',3000);
+});
+</script>
