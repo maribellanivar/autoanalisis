@@ -1,0 +1,265 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500&display=swap');
+  *{box-sizing:border-box;margin:0;padding:0;}
+  :root{
+    --bur:#6B2737;--bur-l:#8B3A4A;--bur-p:#F5EAEC;
+    --earth:#8B7355;--earth-l:#C4A882;
+    --cream:#FAF7F2;--ink:#2C1810;--muted:#7A6A5A;
+    --line:rgba(107,39,55,0.15);
+  }
+  html,body{font-family:'Jost',sans-serif;-webkit-text-size-adjust:100%;background:var(--cream);}
+  .app{width:100%;min-height:600px;background:var(--cream);color:var(--ink);display:flex;flex-direction:column;}
+
+  /* LOGIN */
+  .login-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:600px;padding:2.5rem 1.5rem;text-align:center;}
+  .login-screen .eyebrow{font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--earth);font-weight:500;margin-bottom:1rem;}
+  .login-screen h1{font-family:'Cormorant Garamond',serif;font-size:2.4em;font-weight:600;color:var(--bur);line-height:1.2;margin-bottom:0.5rem;}
+  .login-screen .sub{font-size:13px;color:var(--muted);font-weight:300;letter-spacing:0.05em;margin-bottom:2.5rem;}
+  .login-box{width:100%;max-width:340px;background:white;border:1px solid var(--line);border-radius:12px;padding:1.5rem;}
+  .login-box label{display:block;font-size:10px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
+  .login-box input{width:100%;background:var(--cream);border:1px solid var(--line);border-radius:6px;padding:0.7rem 0.9rem;font-family:'Jost',sans-serif;font-size:16px;color:var(--ink);outline:none;margin-bottom:1rem;}
+  .login-box input:focus{border-color:var(--bur-l);}
+  .login-box button{width:100%;background:var(--bur);color:white;border:none;border-radius:6px;padding:0.75rem;font-family:'Jost',sans-serif;font-size:14px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;}
+  .login-box button:active{opacity:0.85;}
+
+  /* TOP BAR */
+  .top-bar{background:var(--bur-p);border-bottom:1px solid var(--line);padding:0.75rem 1.25rem;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+  .top-bar .brand{font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:600;color:var(--bur);}
+  .top-bar .user-name{font-size:11px;color:var(--muted);font-weight:400;}
+
+  /* PAGE NAVIGATION */
+  .page-nav{background:white;border-bottom:1px solid var(--line);padding:0.6rem 1rem;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+  .nav-btn{background:transparent;border:1px solid var(--line);border-radius:6px;padding:0.4rem 0.9rem;font-family:'Jost',sans-serif;font-size:13px;color:var(--bur);cursor:pointer;font-weight:500;}
+  .nav-btn:disabled{opacity:0.3;cursor:default;}
+  .nav-btn:not(:disabled):active{background:var(--bur-p);}
+  .page-indicator{font-size:12px;color:var(--muted);font-weight:400;}
+
+  /* PROGRESS DOTS */
+  .dots-bar{padding:0.6rem 1rem;display:flex;justify-content:center;gap:5px;flex-wrap:wrap;background:white;border-bottom:1px solid var(--line);flex-shrink:0;}
+  .dot{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--line);background:transparent;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--muted);font-weight:500;cursor:pointer;transition:all 0.2s;flex-shrink:0;}
+  .dot.active{background:var(--bur);border-color:var(--bur);color:white;}
+  .dot.done{background:var(--bur-p);border-color:var(--earth-l);color:var(--bur);}
+
+  /* PAGE CONTENT */
+  .page-content{flex:1;padding:1.5rem 1.25rem 2rem;overflow-y:auto;}
+
+  /* MONTH PAGE */
+  .month-page{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:420px;text-align:center;padding:1rem;}
+  .month-page h2{font-family:'Cormorant Garamond',serif;font-size:2em;font-weight:600;color:var(--bur);margin-bottom:0.5rem;}
+  .month-page p{font-size:13px;color:var(--muted);margin-bottom:2rem;line-height:1.6;}
+  .month-input-wrap{width:100%;}
+  .month-input-wrap label{display:block;font-size:10px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
+  .month-input-wrap input{width:100%;font-family:'Cormorant Garamond',serif;font-size:1.6em;font-weight:500;color:var(--bur);text-align:center;border:none;border-bottom:2px solid var(--bur);background:transparent;outline:none;padding:0.4rem 0;}
+
+  /* SECTION PAGE */
+  .sec-eyebrow{font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--earth);font-weight:500;margin-bottom:0.5rem;}
+  .sec-h2{font-family:'Cormorant Garamond',serif;font-size:1.5em;font-weight:600;color:var(--bur);margin-bottom:1.25rem;line-height:1.3;}
+  .quote-block{background:var(--bur-p);border-left:3px solid var(--bur);padding:0.7rem 1rem;margin-bottom:1.25rem;border-radius:0 6px 6px 0;}
+  .quote-block p{font-family:'Cormorant Garamond',serif;font-size:13px;font-style:italic;color:var(--bur);line-height:1.5;}
+  .field-group{margin-bottom:1.1rem;}
+  .field-label{display:block;font-size:10px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:5px;}
+  textarea{width:100%;background:var(--cream);border:1px solid var(--line);border-radius:6px;padding:0.65rem 0.85rem;font-family:'Jost',sans-serif;font-size:15px;color:var(--ink);resize:vertical;outline:none;min-height:80px;line-height:1.6;-webkit-appearance:none;}
+  textarea:focus{border-color:var(--bur-l);background:white;}
+  input.fi{width:100%;background:var(--cream);border:1px solid var(--line);border-radius:6px;padding:0.65rem 0.85rem;font-family:'Jost',sans-serif;font-size:15px;color:var(--ink);outline:none;-webkit-appearance:none;}
+  input.fi:focus{border-color:var(--bur-l);background:white;}
+  .main-focus{font-family:'Cormorant Garamond',serif;font-size:1.4em;font-weight:500;color:var(--bur);text-align:center;border:none;border-bottom:2px solid var(--bur);border-radius:0;background:transparent;padding:0.5rem 0.25rem;width:100%;outline:none;}
+  .cb-group{display:flex;flex-direction:column;gap:8px;}
+  .cb-item{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;background:var(--cream);border-radius:6px;border:1px solid transparent;}
+  .cb-item:has(input:checked){border-color:var(--earth-l);background:#FAF5EF;}
+  .cb-item input[type=checkbox]{width:18px;height:18px;margin-top:2px;accent-color:var(--bur);flex-shrink:0;cursor:pointer;}
+  .cb-item label{font-size:14px;color:var(--ink);line-height:1.5;cursor:pointer;}
+  .cb-item:has(input:checked) label{color:var(--earth);}
+  .sched-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .daily-list{display:flex;flex-direction:column;gap:8px;}
+  .task-row{display:flex;align-items:center;gap:8px;padding:9px 10px;background:var(--cream);border-radius:6px;border:1px solid var(--line);}
+  .badge{font-size:9px;font-weight:500;letter-spacing:0.07em;text-transform:uppercase;padding:3px 7px;border-radius:4px;white-space:nowrap;flex-shrink:0;}
+  .bm{background:var(--bur);color:white;}
+  .bs{background:var(--earth-l);color:white;}
+  .task-row input{border:none;background:transparent;padding:0;font-size:14px;font-family:'Jost',sans-serif;color:var(--ink);outline:none;flex:1;min-width:0;}
+  .eval-week{margin-bottom:1rem;padding:1rem;background:var(--cream);border-radius:8px;border:1px solid var(--line);}
+  .eval-week h4{font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--bur);margin-bottom:0.65rem;font-weight:600;}
+  .star-row{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+  .star-row label{font-size:11px;color:var(--muted);width:65px;flex-shrink:0;}
+  .stars{display:flex;gap:5px;}
+  .star{width:28px;height:28px;cursor:pointer;color:#D3C4B0;font-size:22px;transition:color 0.1s;-webkit-tap-highlight-color:transparent;}
+  .star.filled{color:var(--bur);}
+  .id-list{display:flex;flex-direction:column;gap:10px;}
+  .id-item{display:flex;align-items:center;gap:10px;}
+  .id-dot{width:6px;height:6px;background:var(--bur);border-radius:50%;flex-shrink:0;}
+
+  /* CLOSING PAGE */
+  .closing-page{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:420px;text-align:center;}
+  .closing-inner{background:var(--bur);border-radius:12px;padding:2rem 1.5rem;width:100%;}
+  .closing-inner p{font-family:'Cormorant Garamond',serif;font-size:1.2em;font-style:italic;color:white;line-height:1.7;margin-bottom:1rem;}
+  .save-btn{background:white;color:var(--bur);border:none;border-radius:6px;padding:0.7rem 1.75rem;font-family:'Jost',sans-serif;font-size:13px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;margin-top:0.5rem;}
+  .save-btn:active{opacity:0.85;}
+  .save-status{font-size:12px;color:rgba(255,255,255,0.65);margin-top:8px;min-height:18px;}
+</style>
+
+<div class="app" id="app">
+  <h2 class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;">Planificador mensual disciplina cristiana</h2>
+
+  <!-- LOGIN -->
+  <div class="login-screen" id="login-screen">
+    <p class="eyebrow">Planificador mensual</p>
+    <h1>Mi Vida Bajo Enfoque</h1>
+    <p class="sub">Disciplina · Propósito · Obediencia</p>
+    <div class="login-box">
+      <label for="u-input">Tu nombre</label>
+      <input type="text" id="u-input" placeholder="Escribe tu nombre..." />
+      <button id="u-btn">Entrar a mi planificador</button>
+    </div>
+  </div>
+
+  <!-- PLANNER -->
+  <div id="planner" style="display:none;flex-direction:column;flex:1;">
+    <div class="top-bar">
+      <span class="brand">Mi Vida Bajo Enfoque</span>
+      <span class="user-name" id="u-name"></span>
+    </div>
+    <div class="dots-bar" id="dots-bar"></div>
+    <div class="page-nav">
+      <button class="nav-btn" id="prev-btn">← Anterior</button>
+      <span class="page-indicator" id="page-ind"></span>
+      <button class="nav-btn" id="next-btn">Siguiente →</button>
+    </div>
+    <div class="page-content" id="page-content"></div>
+  </div>
+</div>
+
+<script>
+const PAGES = [
+  { type:'month' },
+  { type:'section', num:1, icon:'ti-cross', title:'Claridad espiritual', subtitle:'Alineación con Dios', quote:'"No planifiques tu mes sin dirección… o solo estarás ocupada, no alineada."',
+    fields:[{type:'ta',id:'q1a',label:'¿Qué siento que Dios me está pidiendo en esta temporada?',rows:3},{type:'ta',id:'q1b',label:'¿En qué área específica necesito obedecer?',rows:3},{type:'ta',id:'q1c',label:'¿Qué he estado evitando que sé que debo hacer?',rows:3}]},
+  { type:'section', num:2, icon:'ti-target', title:'Mi prioridad del mes', subtitle:'Solo una', quote:'"Si no cabe aquí… no cabe en tu agenda."',
+    fields:[{type:'focus',id:'q2a',label:'Mi enfoque principal este mes es'},{type:'ta',id:'q2b',label:'¿Por qué esto es importante?',rows:2},{type:'ta',id:'q2c',label:'¿Qué pasa si NO lo hago?',rows:2}]},
+  { type:'section', num:3, icon:'ti-ban', title:'Lo que voy a eliminar', subtitle:'', quote:'"No hay enfoque sin renuncia."',
+    fields:[{type:'ta',id:'q3a',label:'Cosas que voy a pausar',rows:2},{type:'ta',id:'q3b',label:'Distracciones que voy a cortar',rows:2},{type:'ta',id:'q3c',label:'Compromisos que voy a cancelar o reducir',rows:2}]},
+  { type:'section', num:4, icon:'ti-shield', title:'Mis límites', subtitle:'Aprender a decir no', quote:'',
+    fields:[{type:'ta',id:'q4a',label:'No voy a decir sí a',rows:2},{type:'ta',id:'q4b',label:'Voy a proteger mi tiempo de',rows:2},{type:'ta',id:'q4c',label:'Cuando alguien me pida algo, responderé',rows:2,ph:'"Ahora mismo estoy enfocada en algo importante"'}]},
+  { type:'section', num:5, icon:'ti-clock', title:'Bloques de enfoque semanales', subtitle:'', quote:'"Lo que no se agenda… no se hace."',
+    fields:[{type:'sched',id:'q5'}]},
+  { type:'section', num:6, icon:'ti-list-check', title:'Mi sistema diario simple', subtitle:'', quote:'"Si hago lo principal… gané el día."',
+    fields:[{type:'daily',id:'q6'}]},
+  { type:'section', num:7, icon:'ti-lock', title:'Reglas de disciplina personal', subtitle:'', quote:'',
+    fields:[{type:'checks',id:'q7',items:[{id:'cb1',label:'No redes sociales antes de mi bloque de enfoque'},{id:'cb2',label:'No multitasking mientras trabajo en mi prioridad'},{id:'cb3',label:'No negociar con lo que ya decidí'}]},{type:'ta',id:'q7x',label:'Mi regla personal (agrega la tuya)',rows:2}]},
+  { type:'section', num:8, icon:'ti-alert-triangle', title:'Posibles sabotajes', subtitle:'Anticípate', quote:'"La disciplinada no evita la batalla… se prepara para ella."',
+    fields:[{type:'ta',id:'q8a',label:'¿Qué me va a distraer este mes?',rows:2},{type:'ta',id:'q8b',label:'¿Qué excusas suelo usar?',rows:2},{type:'ta',id:'q8c',label:'¿Qué voy a hacer cuando no tenga ganas?',rows:2}]},
+  { type:'section', num:9, icon:'ti-refresh', title:'Evaluación semanal', subtitle:'', quote:'',
+    fields:[{type:'eval',id:'q9'}]},
+  { type:'section', num:10, icon:'ti-crown', title:'Mi identidad', subtitle:'Lo más importante', quote:'',
+    fields:[{type:'identity',id:'q10'}]},
+  { type:'closing' }
+];
+
+let currentUser = null, currentPage = 0;
+
+function ukey(k){ return 'plan__'+currentUser+'__'+k; }
+
+function buildDots(){
+  const bar = document.getElementById('dots-bar'); bar.innerHTML='';
+  PAGES.forEach((p,i)=>{
+    const d = document.createElement('div'); d.className='dot'+(i===currentPage?' active':i<currentPage?' done':'');
+    d.textContent = i===0?'📅':i===PAGES.length-1?'✓':(i);
+    d.addEventListener('click',()=>goTo(i));
+    bar.appendChild(d);
+  });
+}
+
+function buildPage(p){
+  const c = document.getElementById('page-content'); c.innerHTML='';
+  if(p.type==='month'){
+    c.innerHTML=`<div class="month-page"><p class="eyebrow">Planificador mensual</p><h2>Mi Vida Bajo Enfoque</h2><p>Antes de planificar, establece tu mes. Cada sección te guiará a vivir enfocada y alineada con Dios.</p><div class="month-input-wrap"><label>Mes y año</label><input type="text" id="mes-input" class="main-focus" placeholder="Escribe el mes..." /></div></div>`;
+    loadField('mes-input');
+    document.getElementById('mes-input').addEventListener('input',()=>saveField('mes-input'));
+  } else if(p.type==='section'){
+    const wrap = document.createElement('div');
+    if(p.subtitle) wrap.innerHTML+=`<p class="sec-eyebrow">Sección ${p.num} — ${p.subtitle}</p>`;
+    wrap.innerHTML+=`<h2 class="sec-h2">${p.title}</h2>`;
+    if(p.quote) wrap.innerHTML+=`<div class="quote-block"><p>${p.quote}</p></div>`;
+    p.fields.forEach(f=>{
+      const g=document.createElement('div'); g.className='field-group';
+      if(f.type==='ta'){
+        g.innerHTML=`<label class="field-label" for="${f.id}">${f.label}</label><textarea id="${f.id}" rows="${f.rows||3}" placeholder="${f.ph||''}"></textarea>`;
+        wrap.appendChild(g); loadField(f.id);
+        document.getElementById(f.id).addEventListener('input',()=>saveField(f.id));
+      } else if(f.type==='focus'){
+        g.style.textAlign='center';
+        g.innerHTML=`<label class="field-label" for="${f.id}" style="display:block;text-align:center">${f.label}</label><input type="text" id="${f.id}" class="main-focus" placeholder="__________" />`;
+        wrap.appendChild(g); loadField(f.id);
+        document.getElementById(f.id).addEventListener('input',()=>saveField(f.id));
+      } else if(f.type==='checks'){
+        let h='<div class="cb-group">';
+        f.items.forEach(it=>{ h+=`<div class="cb-item"><input type="checkbox" id="${it.id}" /><label for="${it.id}">${it.label}</label></div>`; });
+        g.innerHTML=h+'</div>'; wrap.appendChild(g);
+        f.items.forEach(it=>{ loadCheck(it.id); document.getElementById(it.id).addEventListener('change',()=>saveCheck(it.id)); });
+      } else if(f.type==='sched'){
+        g.innerHTML=`<div class="sched-grid"><div><label class="field-label">Días a la semana</label><input type="text" id="q5d" class="fi" placeholder="Ej: Lunes a viernes" /></div><div><label class="field-label">Horario específico</label><input type="text" id="q5h" class="fi" placeholder="Ej: 7:00am – 8:30am" /></div></div>`;
+        wrap.appendChild(g); ['q5d','q5h'].forEach(id=>{ loadField(id); document.getElementById(id).addEventListener('input',()=>saveField(id)); });
+      } else if(f.type==='daily'){
+        g.innerHTML=`<label class="field-label">Mis tareas del día</label><div class="daily-list"><div class="task-row"><span class="badge bm">Principal</span><input id="tm" class="fi" style="border:none;background:transparent;padding:0" placeholder="La tarea más importante..." /></div><div class="task-row"><span class="badge bs">Secundaria 1</span><input id="ts1" style="border:none;background:transparent;padding:0;font-size:14px;color:var(--ink);outline:none;flex:1;font-family:'Jost',sans-serif" /></div><div class="task-row"><span class="badge bs">Secundaria 2</span><input id="ts2" style="border:none;background:transparent;padding:0;font-size:14px;color:var(--ink);outline:none;flex:1;font-family:'Jost',sans-serif" /></div></div>`;
+        wrap.appendChild(g); ['tm','ts1','ts2'].forEach(id=>{ loadField(id); document.getElementById(id).addEventListener('input',()=>saveField(id)); });
+      } else if(f.type==='eval'){
+        ['Semana 1','Semana 2','Semana 3','Semana 4'].forEach((sem,wi)=>{
+          const w=document.createElement('div'); w.className='eval-week';
+          w.innerHTML=`<h4>${sem}</h4><div class="star-row"><label>Enfoque</label><div class="stars" id="st${wi}">${[1,2,3,4,5].map(n=>`<span class="star ti ti-star" data-w="${wi}" data-v="${n}" role="button" tabindex="0"></span>`).join('')}</div></div><div class="field-group"><label class="field-label">¿Dónde fallé?</label><textarea id="ef${wi}" rows="2"></textarea></div><div class="field-group" style="margin:0"><label class="field-label">¿Qué debo ajustar?</label><textarea id="ea${wi}" rows="2"></textarea></div>`;
+          wrap.appendChild(w);
+          loadStars(wi); [`ef${wi}`,`ea${wi}`].forEach(id=>{ loadField(id); document.getElementById(id).addEventListener('input',()=>saveField(id)); });
+          document.getElementById(`st${wi}`).querySelectorAll('.star').forEach(s=>{
+            s.addEventListener('click',()=>{ const v=parseInt(s.dataset.v); setStars(s.dataset.w,v); saveStars(s.dataset.w,v); });
+          });
+        });
+      } else if(f.type==='identity'){
+        const id_wrap=document.createElement('div'); id_wrap.className='field-group';
+        id_wrap.innerHTML=`<label class="field-label" style="margin-bottom:10px">Este mes decido ser una mujer que...</label><div class="id-list">${[1,2,3].map(i=>`<div class="id-item"><div class="id-dot"></div><input type="text" id="id${i}" class="fi" placeholder="Ej: ejecuta, se gobierna, no negocia..." /></div>`).join('')}</div>`;
+        wrap.appendChild(id_wrap);
+        [1,2,3].forEach(i=>{ loadField('id'+i); document.getElementById('id'+i).addEventListener('input',()=>saveField('id'+i)); });
+      }
+    });
+    c.appendChild(wrap);
+  } else if(p.type==='closing'){
+    c.innerHTML=`<div class="closing-page"><div class="closing-inner"><p>"Este mes no voy a hacer más… voy a hacer lo correcto."</p><p style="font-size:1em;margin-bottom:1.5rem;">"No voy a seguir dispersa… voy a vivir enfocada."</p><button class="save-btn" id="save-all-btn">Guardar mi planificador</button><p class="save-status" id="save-status"></p></div></div>`;
+    document.getElementById('save-all-btn').addEventListener('click',()=>{
+      const s=document.getElementById('save-status');
+      s.textContent='✓ Guardado — solo tú puedes verlo';
+      setTimeout(()=>s.textContent='',3000);
+    });
+  }
+}
+
+function setStars(wi,val){
+  document.querySelectorAll(`.star[data-w="${wi}"]`).forEach((s,i)=>s.classList.toggle('filled',i<val));
+}
+function loadStars(wi){
+  try{ const r=localStorage.getItem(ukey('stars_'+wi)); if(r) setStars(wi,parseInt(r)); }catch(e){}
+}
+function saveStars(wi,val){ try{ localStorage.setItem(ukey('stars_'+wi),val); }catch(e){} }
+function loadField(id){ try{ const v=localStorage.getItem(ukey(id)); if(v!==null){ const el=document.getElementById(id); if(el) el.value=v; } }catch(e){} }
+function saveField(id){ try{ const el=document.getElementById(id); if(el) localStorage.setItem(ukey(id),el.value); }catch(e){} }
+function loadCheck(id){ try{ const v=localStorage.getItem(ukey('cb_'+id)); const el=document.getElementById(id); if(el&&v!==null) el.checked=v==='true'; }catch(e){} }
+function saveCheck(id){ try{ const el=document.getElementById(id); if(el) localStorage.setItem(ukey('cb_'+id),el.checked); }catch(e){} }
+
+function goTo(i){
+  currentPage=i;
+  buildDots();
+  buildPage(PAGES[i]);
+  document.getElementById('page-ind').textContent=(i===0?'Portada':i===PAGES.length-1?'Cierre':'Sección '+(i)+' de '+(PAGES.length-2));
+  document.getElementById('prev-btn').disabled=i===0;
+  document.getElementById('next-btn').disabled=i===PAGES.length-1;
+  document.getElementById('page-content').scrollTop=0;
+}
+
+document.getElementById('u-btn').addEventListener('click',()=>{
+  const name=document.getElementById('u-input').value.trim(); if(!name) return;
+  currentUser=name.toLowerCase().replace(/\s+/g,'_');
+  document.getElementById('u-name').textContent=name;
+  document.getElementById('login-screen').style.display='none';
+  const pl=document.getElementById('planner'); pl.style.display='flex';
+  goTo(0);
+});
+document.getElementById('u-input').addEventListener('keydown',e=>{ if(e.key==='Enter'){ document.getElementById('u-btn').click(); }});
+document.getElementById('prev-btn').addEventListener('click',()=>{ if(currentPage>0) goTo(currentPage-1); });
+document.getElementById('next-btn').addEventListener('click',()=>{ if(currentPage<PAGES.length-1) goTo(currentPage+1); });
+</script>
