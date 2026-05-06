@@ -1,0 +1,329 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500&display=swap');
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bur: #6B2737; --bur-l: #8B3A4A; --bur-p: #F5EAEC;
+    --earth: #8B7355; --earth-l: #C4A882;
+    --cream: #FAF7F2; --ink: #2C1810; --muted: #7A6A5A;
+    --line: rgba(107,39,55,0.15);
+  }
+  html, body { font-family: 'Jost', sans-serif; -webkit-text-size-adjust: 100%; width: 100%; }
+  .planner { background: #520101; min-height: 100vh; padding: 0; color: white; width: 100%; }
+
+  .planner-header { background: #520101; padding: 50px 30px 40px; border-bottom: 1px solid rgba(255,255,255,0.08); }
+  .eyebrow { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: #8d735e; font-weight: 600; font-family: 'Cormorant Garamond', serif; display: block; margin-bottom: 16px; }
+  .planner-header h1 { font-family: 'Cormorant Garamond', serif; font-size: 2.2em; font-weight: 600; color: white; line-height: 1.15; margin-bottom: 10px; letter-spacing: -0.5px; }
+  .planner-header .subtitle { font-size: 13px; color: rgba(255,255,255,0.7); font-weight: 300; letter-spacing: 0.05em; }
+
+  .user-bar { background: rgba(255,255,255,0.08); border-bottom: 1px solid rgba(255,255,255,0.1); padding: 16px 30px; }
+  .user-bar-label { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.5); font-weight: 500; margin-bottom: 8px; }
+  .user-bar-row { display: flex; gap: 8px; align-items: center; }
+  .user-bar-row input { flex: 1; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; padding: 10px 14px; font-family: 'Jost', sans-serif; font-size: 15px; color: white; outline: none; }
+  .user-bar-row input::placeholder { color: rgba(255,255,255,0.4); }
+  .user-bar-row input:focus { border-color: rgba(255,255,255,0.5); background: rgba(255,255,255,0.15); }
+  .user-bar-btn { background: white; color: #6B2737; border: none; border-radius: 6px; padding: 10px 18px; font-size: 14px; font-family: 'Jost', sans-serif; font-weight: 500; cursor: pointer; white-space: nowrap; }
+  .user-tag { font-size: 12px; color: rgba(255,255,255,0.55); margin-top: 8px; display: none; }
+
+  .inner { padding: 24px 30px 60px; max-width: 600px; margin: 0 auto; }
+
+  .month-bar { display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; padding: 12px 16px; margin-bottom: 20px; }
+  .month-bar label { font-size: 10px; color: rgba(255,255,255,0.5); font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; white-space: nowrap; }
+  .month-bar input { flex: 1; background: transparent; border: none; outline: none; font-family: 'Cormorant Garamond', serif; font-size: 18px; color: white; font-weight: 500; min-width: 0; }
+  .month-bar input::placeholder { color: rgba(255,255,255,0.35); }
+
+  .prog-wrap { background: rgba(255,255,255,0.12); border-radius: 4px; height: 3px; margin-bottom: 6px; overflow: hidden; }
+  .prog-bar { background: white; height: 100%; border-radius: 4px; transition: width 0.4s; width: 0%; }
+  .prog-label { font-size: 10px; color: rgba(255,255,255,0.45); text-align: right; margin-bottom: 16px; }
+
+  .expand-btn { display: block; width: 100%; background: transparent; border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; padding: 10px; font-family: 'Jost', sans-serif; font-size: 12px; color: rgba(255,255,255,0.6); cursor: pointer; letter-spacing: 0.05em; margin-bottom: 20px; }
+  .expand-btn:active { background: rgba(255,255,255,0.08); }
+
+  .section { margin-bottom: 14px; background: rgba(255,255,255,0.06); border-radius: 10px; border: 1px solid rgba(255,255,255,0.12); overflow: hidden; }
+  .sec-header { display: flex; align-items: center; gap: 10px; padding: 14px 16px; background: rgba(255,255,255,0.05); border-bottom: 1px solid rgba(255,255,255,0.08); cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  .sec-num { width: 28px; height: 28px; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 500; flex-shrink: 0; }
+  .sec-title { font-family: 'Cormorant Garamond', serif; font-size: 17px; font-weight: 600; color: white; flex: 1; line-height: 1.3; }
+  .sec-icon { font-size: 16px; color: rgba(255,255,255,0.4); flex-shrink: 0; }
+  .chevron { color: rgba(255,255,255,0.5); font-size: 13px; transition: transform 0.25s; flex-shrink: 0; }
+  .chevron.open { transform: rotate(180deg); }
+  .sec-body { padding: 16px; display: none; }
+  .sec-body.open { display: block; }
+
+  .quote-block { background: rgba(255,255,255,0.06); border-left: 3px solid rgba(255,255,255,0.3); padding: 10px 12px; margin-bottom: 16px; border-radius: 0 6px 6px 0; }
+  .quote-block p { font-family: 'Cormorant Garamond', serif; font-size: 14px; font-style: italic; color: rgba(255,255,255,0.85); line-height: 1.5; }
+
+  .field-group { margin-bottom: 14px; }
+  .field-label { display: block; font-size: 10px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 6px; }
+
+  textarea { width: 100%; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 6px; padding: 10px 12px; font-family: 'Jost', sans-serif; font-size: 15px; color: white; resize: vertical; outline: none; min-height: 76px; line-height: 1.6; -webkit-appearance: none; }
+  textarea::placeholder { color: rgba(255,255,255,0.3); }
+  textarea:focus { border-color: rgba(255,255,255,0.4); background: rgba(255,255,255,0.12); }
+
+  input[type="text"].field-input { width: 100%; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 6px; padding: 10px 12px; font-family: 'Jost', sans-serif; font-size: 15px; color: white; outline: none; -webkit-appearance: none; }
+  input[type="text"].field-input::placeholder { color: rgba(255,255,255,0.3); }
+  input[type="text"].field-input:focus { border-color: rgba(255,255,255,0.4); background: rgba(255,255,255,0.12); }
+
+  .main-focus { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 500; color: white; text-align: center; border: none; border-bottom: 2px solid rgba(255,255,255,0.4); border-radius: 0; background: transparent; padding: 8px 4px; width: 100%; outline: none; }
+  .main-focus::placeholder { color: rgba(255,255,255,0.3); }
+
+  .checkbox-group { display: flex; flex-direction: column; gap: 8px; }
+  .cb-item { display: flex; align-items: flex-start; gap: 12px; padding: 12px 14px; background: rgba(255,255,255,0.06); border-radius: 6px; border: 1px solid transparent; }
+  .cb-item:has(input:checked) { border-color: rgba(255,255,255,0.25); background: rgba(255,255,255,0.1); }
+  .cb-item input[type="checkbox"] { width: 18px; height: 18px; margin-top: 2px; accent-color: white; flex-shrink: 0; cursor: pointer; }
+  .cb-item label { font-size: 14px; color: rgba(255,255,255,0.85); line-height: 1.5; cursor: pointer; flex: 1; }
+  .cb-item:has(input:checked) label { color: white; }
+
+  .sched-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
+  .daily-list { display: flex; flex-direction: column; gap: 8px; }
+  .task-row { display: flex; align-items: center; gap: 8px; padding: 10px 12px; background: rgba(255,255,255,0.06); border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); }
+  .task-badge { font-size: 9px; font-weight: 500; letter-spacing: 0.07em; text-transform: uppercase; padding: 3px 7px; border-radius: 4px; white-space: nowrap; flex-shrink: 0; }
+  .badge-m { background: white; color: #6B2737; }
+  .badge-s { background: rgba(255,255,255,0.2); color: white; }
+  .task-row input { border: none; background: transparent; padding: 0; font-size: 14px; font-family: 'Jost', sans-serif; color: white; outline: none; flex: 1; min-width: 0; }
+  .task-row input::placeholder { color: rgba(255,255,255,0.3); }
+
+  .eval-week { margin-bottom: 12px; padding: 14px; background: rgba(255,255,255,0.05); border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); }
+  .eval-week h4 { font-family: 'Cormorant Garamond', serif; font-size: 16px; color: white; margin-bottom: 10px; font-weight: 600; }
+  .star-row { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+  .star-row label { font-size: 11px; color: rgba(255,255,255,0.5); width: 65px; flex-shrink: 0; }
+  .stars { display: flex; gap: 6px; }
+  .star { width: 28px; height: 28px; cursor: pointer; color: rgba(255,255,255,0.2); font-size: 22px; transition: color 0.1s; -webkit-tap-highlight-color: transparent; }
+  .star.filled { color: white; }
+
+  .identity-list { display: flex; flex-direction: column; gap: 10px; }
+  .id-item { display: flex; align-items: center; gap: 10px; }
+  .id-dot { width: 6px; height: 6px; background: rgba(255,255,255,0.5); border-radius: 50%; flex-shrink: 0; }
+
+  .closing { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 24px 20px; text-align: center; margin-top: 24px; }
+  .closing p { font-family: 'Cormorant Garamond', serif; font-size: 17px; font-style: italic; color: rgba(255,255,255,0.9); line-height: 1.7; margin-bottom: 1rem; }
+  .save-btn { background: white; color: #6B2737; border: none; border-radius: 6px; padding: 12px 28px; font-family: 'Jost', sans-serif; font-size: 13px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; }
+  .save-btn:active { opacity: 0.85; }
+  .save-status { font-size: 12px; color: rgba(255,255,255,0.55); margin-top: 10px; height: 16px; }
+</style>
+
+<div class="planner">
+  <h2 class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;">Planificador mensual disciplina cristiana</h2>
+
+  <div class="planner-header">
+    <span class="eyebrow">La Mujer Que Nací Para Ser</span>
+    <h1>Mi Vida Bajo Enfoque</h1>
+    <p class="subtitle">Disciplina · Propósito · Obediencia</p>
+  </div>
+
+  <div class="user-bar">
+    <div class="user-bar-label">Tu espacio personal</div>
+    <div class="user-bar-row">
+      <input type="text" id="user-input" placeholder="Escribe tu nombre para entrar..." />
+      <button class="user-bar-btn" id="user-btn">Entrar</button>
+    </div>
+    <p class="user-tag" id="user-tag"></p>
+  </div>
+
+  <div class="inner" id="main-content" style="display:none;">
+    <div class="month-bar">
+      <label>Mes</label>
+      <input type="text" id="mes-input" placeholder="Escribe el mes y año..." />
+    </div>
+    <div class="prog-wrap"><div class="prog-bar" id="prog-bar"></div></div>
+    <p class="prog-label" id="prog-label">0 de 10 secciones abiertas</p>
+    <button class="expand-btn" id="expand-btn">Expandir todas las secciones</button>
+    <div id="sections-container"></div>
+    <div class="closing">
+      <p>"Este mes no voy a hacer más… voy a hacer lo correcto."</p>
+      <p style="font-size:15px;margin-bottom:1.5rem;">"No voy a seguir dispersa… voy a vivir enfocada."</p>
+      <button class="save-btn" id="main-save">Guardar mi planificador</button>
+      <p class="save-status" id="save-status"></p>
+    </div>
+  </div>
+</div>
+
+<script>
+const SECTIONS = [
+  { id:'s1', num:1, icon:'ti-cross', title:'Claridad espiritual — Alineación', quote:'"No planifiques tu mes sin dirección… o solo estarás ocupada, no alineada."',
+    fields:[{type:'ta',id:'q1a',label:'¿Qué siento que Dios me está pidiendo en esta temporada?',rows:3},{type:'ta',id:'q1b',label:'¿En qué área específica necesito obedecer?',rows:3},{type:'ta',id:'q1c',label:'¿Qué he estado evitando que sé que debo hacer?',rows:3}]},
+  { id:'s2', num:2, icon:'ti-target', title:'Mi prioridad del mes — Solo una', quote:'"Si no cabe aquí… no cabe en tu agenda."',
+    fields:[{type:'focus',id:'q2a',label:'Mi enfoque principal este mes es'},{type:'ta',id:'q2b',label:'¿Por qué esto es importante?',rows:2},{type:'ta',id:'q2c',label:'¿Qué pasa si NO lo hago?',rows:2}]},
+  { id:'s3', num:3, icon:'ti-ban', title:'Lo que voy a eliminar', quote:'"No hay enfoque sin renuncia."',
+    fields:[{type:'ta',id:'q3a',label:'Cosas que voy a pausar',rows:2},{type:'ta',id:'q3b',label:'Distracciones que voy a cortar',rows:2},{type:'ta',id:'q3c',label:'Compromisos que voy a cancelar o reducir',rows:2}]},
+  { id:'s4', num:4, icon:'ti-shield', title:'Mis límites — Aprender a decir no',
+    fields:[{type:'ta',id:'q4a',label:'No voy a decir sí a',rows:2},{type:'ta',id:'q4b',label:'Voy a proteger mi tiempo de',rows:2},{type:'ta',id:'q4c',label:'Cuando alguien me pida algo, responderé',rows:2,ph:'"Ahora mismo estoy enfocada en algo importante"'}]},
+  { id:'s5', num:5, icon:'ti-clock', title:'Bloques de enfoque semanales', quote:'"Lo que no se agenda… no se hace."',
+    fields:[{type:'sched',id:'q5'}]},
+  { id:'s6', num:6, icon:'ti-list-check', title:'Mi sistema diario simple', quote:'"Si hago lo principal… gané el día."',
+    fields:[{type:'daily',id:'q6'}]},
+  { id:'s7', num:7, icon:'ti-lock', title:'Reglas de disciplina personal',
+    fields:[{type:'checks',id:'q7',items:[{id:'cb1',label:'No redes sociales antes de mi bloque de enfoque'},{id:'cb2',label:'No multitasking mientras trabajo en mi prioridad'},{id:'cb3',label:'No negociar con lo que ya decidí'}]},{type:'ta',id:'q7x',label:'Mi regla personal (agrega la tuya)',rows:2}]},
+  { id:'s8', num:8, icon:'ti-alert-triangle', title:'Posibles sabotajes — Anticípate', quote:'"La disciplinada no evita la batalla… se prepara para ella."',
+    fields:[{type:'ta',id:'q8a',label:'¿Qué me va a distraer este mes?',rows:2},{type:'ta',id:'q8b',label:'¿Qué excusas suelo usar?',rows:2},{type:'ta',id:'q8c',label:'¿Qué voy a hacer cuando no tenga ganas?',rows:2}]},
+  { id:'s9', num:9, icon:'ti-refresh', title:'Evaluación semanal', fields:[{type:'eval',id:'q9'}]},
+  { id:'s10', num:10, icon:'ti-crown', title:'Mi identidad — Lo más importante', fields:[{type:'identity',id:'q10'}]},
+];
+
+let currentUser = null;
+
+function userKey(field) { return 'plan__' + currentUser + '__' + field; }
+
+function buildSection(s) {
+  const div = document.createElement('div');
+  div.className = 'section'; div.id = 'sec-' + s.id;
+
+  const hdr = document.createElement('div');
+  hdr.className = 'sec-header';
+  hdr.innerHTML = `<div class="sec-num">${s.num}</div><span class="sec-title">${s.title}</span><i class="ti ${s.icon} sec-icon" aria-hidden="true"></i><i class="ti ti-chevron-down chevron" aria-hidden="true"></i>`;
+
+  const body = document.createElement('div');
+  body.className = 'sec-body'; body.id = 'body-' + s.id;
+
+  if (s.quote) { body.innerHTML = `<div class="quote-block"><p>${s.quote}</p></div>`; }
+
+  s.fields.forEach(f => {
+    if (f.type === 'ta') {
+      const g = document.createElement('div'); g.className = 'field-group';
+      g.innerHTML = `<label class="field-label" for="${f.id}">${f.label}</label><textarea id="${f.id}" rows="${f.rows||3}" placeholder="${f.ph||''}"></textarea>`;
+      body.appendChild(g);
+    } else if (f.type === 'focus') {
+      const g = document.createElement('div'); g.className = 'field-group'; g.style.textAlign = 'center';
+      g.innerHTML = `<label class="field-label" for="${f.id}" style="text-align:center;display:block;color:rgba(255,255,255,0.5);">${f.label}</label><input type="text" id="${f.id}" class="main-focus" placeholder="__________" />`;
+      body.appendChild(g);
+    } else if (f.type === 'checks') {
+      const g = document.createElement('div'); g.className = 'field-group';
+      let h = '<div class="checkbox-group">';
+      f.items.forEach(it => { h += `<div class="cb-item"><input type="checkbox" id="${it.id}" /><label for="${it.id}">${it.label}</label></div>`; });
+      g.innerHTML = h + '</div>'; body.appendChild(g);
+    } else if (f.type === 'sched') {
+      const g = document.createElement('div'); g.className = 'field-group';
+      g.innerHTML = `<div class="sched-grid"><div><label class="field-label">Días a la semana</label><input type="text" id="q5d" class="field-input" placeholder="Ej: Lunes a viernes" /></div><div><label class="field-label">Horario específico</label><input type="text" id="q5h" class="field-input" placeholder="Ej: 7:00am – 8:30am" /></div></div>`;
+      body.appendChild(g);
+    } else if (f.type === 'daily') {
+      const g = document.createElement('div'); g.className = 'field-group';
+      g.innerHTML = `<label class="field-label">Mis tareas del día</label><div class="daily-list"><div class="task-row"><span class="task-badge badge-m">Principal</span><input id="tm" placeholder="La tarea más importante..." /></div><div class="task-row"><span class="task-badge badge-s">Secundaria 1</span><input id="ts1" placeholder="" /></div><div class="task-row"><span class="task-badge badge-s">Secundaria 2</span><input id="ts2" placeholder="" /></div></div>`;
+      body.appendChild(g);
+    } else if (f.type === 'eval') {
+      const g = document.createElement('div'); g.className = 'field-group';
+      ['Semana 1','Semana 2','Semana 3','Semana 4'].forEach((sem, wi) => {
+        const w = document.createElement('div'); w.className = 'eval-week';
+        w.innerHTML = `<h4>${sem}</h4><div class="star-row"><label>Enfoque</label><div class="stars" id="st${wi}">${[1,2,3,4,5].map(n=>`<span class="star ti ti-star" data-w="${wi}" data-v="${n}" role="button" tabindex="0" aria-label="Estrella ${n}"></span>`).join('')}</div></div><div class="field-group"><label class="field-label">¿Dónde fallé?</label><textarea id="ef${wi}" rows="2"></textarea></div><div class="field-group" style="margin:0"><label class="field-label">¿Qué debo ajustar?</label><textarea id="ea${wi}" rows="2"></textarea></div>`;
+        g.appendChild(w);
+      });
+      body.appendChild(g);
+    } else if (f.type === 'identity') {
+      const g = document.createElement('div'); g.className = 'field-group';
+      g.innerHTML = `<label class="field-label" style="margin-bottom:10px">Este mes decido ser una mujer que...</label><div class="identity-list">${[1,2,3].map(i=>`<div class="id-item"><div class="id-dot"></div><input type="text" id="id${i}" class="field-input" placeholder="Ej: ejecuta, se gobierna, no negocia..." /></div>`).join('')}</div>`;
+      body.appendChild(g);
+    }
+  });
+
+  hdr.addEventListener('click', () => {
+    const open = body.classList.toggle('open');
+    hdr.querySelector('.chevron').classList.toggle('open', open);
+    updateProg();
+  });
+
+  div.appendChild(hdr); div.appendChild(body);
+  return div;
+}
+
+function updateProg() {
+  const open = document.querySelectorAll('.sec-body.open').length;
+  document.getElementById('prog-bar').style.width = (open/10*100) + '%';
+  document.getElementById('prog-label').textContent = open + ' de 10 secciones abiertas';
+}
+
+let allOpen = false;
+document.getElementById('expand-btn').addEventListener('click', () => {
+  allOpen = !allOpen;
+  document.querySelectorAll('.sec-body').forEach(b => b.classList.toggle('open', allOpen));
+  document.querySelectorAll('.chevron').forEach(c => c.classList.toggle('open', allOpen));
+  document.getElementById('expand-btn').textContent = allOpen ? 'Colapsar todas las secciones' : 'Expandir todas las secciones';
+  updateProg();
+});
+
+function collectData() {
+  const d = {};
+  document.querySelectorAll('textarea, input[type="text"][id]').forEach(el => {
+    if (el.id && el.id !== 'user-input' && el.id !== 'mes-input') d[el.id] = el.value;
+  });
+  d['mes'] = document.getElementById('mes-input').value;
+  document.querySelectorAll('input[type="checkbox"]').forEach(cb => { d['cb_'+cb.id] = cb.checked; });
+  document.querySelectorAll('.stars').forEach(sel => {
+    const wi = sel.id.replace('st','');
+    d['stars_'+wi] = sel.querySelectorAll('.star.filled').length;
+  });
+  return d;
+}
+
+async function saveData() {
+  if (!currentUser) return;
+  const data = collectData();
+  try { await window.storage.set(userKey('data'), JSON.stringify(data)); } catch(e) {}
+}
+
+async function loadData() {
+  if (!currentUser) return;
+  try {
+    const r = await window.storage.get(userKey('data'));
+    if (!r) return;
+    const d = JSON.parse(r.value);
+    if (d.mes) document.getElementById('mes-input').value = d.mes;
+    Object.keys(d).forEach(k => {
+      if (k === 'mes') return;
+      if (k.startsWith('cb_')) {
+        const cb = document.getElementById(k.replace('cb_',''));
+        if (cb) cb.checked = d[k];
+      } else if (k.startsWith('stars_')) {
+        const wi = k.replace('stars_',''), val = d[k];
+        document.querySelectorAll(`.star[data-w="${wi}"]`).forEach((s,i) => s.classList.toggle('filled', i < val));
+      } else {
+        const el = document.getElementById(k);
+        if (el && (el.tagName === 'TEXTAREA' || el.type === 'text')) el.value = d[k]||'';
+      }
+    });
+  } catch(e) {}
+}
+
+function attachListeners() {
+  document.querySelectorAll('textarea, input[type="text"][id], input[type="checkbox"]').forEach(el => {
+    if (el.id === 'user-input' || el.id === 'mes-input') return;
+    el.addEventListener('input', saveData);
+    el.addEventListener('change', saveData);
+  });
+  document.getElementById('mes-input').addEventListener('input', saveData);
+  document.querySelectorAll('.stars').forEach(sel => {
+    sel.querySelectorAll('.star').forEach(star => {
+      star.addEventListener('click', () => {
+        const wi = star.dataset.w, val = parseInt(star.dataset.v);
+        document.querySelectorAll(`.star[data-w="${wi}"]`).forEach((s,i) => s.classList.toggle('filled', i < val));
+        saveData();
+      });
+    });
+  });
+}
+
+function enterApp(name) {
+  currentUser = name.trim().toLowerCase().replace(/\s+/g,'_');
+  document.getElementById('user-tag').textContent = 'Bienvenida, ' + name.trim() + ' — tu progreso es privado';
+  document.getElementById('user-tag').style.display = 'block';
+  document.getElementById('main-content').style.display = 'block';
+  loadData().then(() => attachListeners());
+}
+
+document.getElementById('user-btn').addEventListener('click', () => {
+  const name = document.getElementById('user-input').value.trim();
+  if (!name) return;
+  enterApp(name);
+});
+
+document.getElementById('user-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter') { const name = e.target.value.trim(); if(name) enterApp(name); }
+});
+
+document.getElementById('main-save').addEventListener('click', async () => {
+  await saveData();
+  const s = document.getElementById('save-status');
+  s.textContent = '✓ Guardado — solo tú puedes verlo';
+  setTimeout(() => s.textContent = '', 3000);
+});
+
+const container = document.getElementById('sections-container');
+SECTIONS.forEach(s => container.appendChild(buildSection(s)));
+</script>
