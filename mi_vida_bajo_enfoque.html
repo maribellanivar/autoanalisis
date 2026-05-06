@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>Mi Vida Bajo Enfoque — Planificador Mensual</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --burgundy: #6B2737; --burgundy-light: #8B3A4A; --burgundy-pale: #F5EAEC;
+      --earth: #8B7355; --earth-light: #C4A882;
+      --cream: #FAF7F2; --ink: #2C1810; --muted: #7A6A5A;
+      --line: rgba(107,39,55,0.15);
+    }
+    html, body {
+      font-family: 'Jost', sans-serif;
+      background: var(--cream);
+      color: var(--ink);
+      -webkit-text-size-adjust: 100%;
+      font-size: 18px;
+    }
+    .planner { width: 100%; max-width: 640px; margin: 0 auto; padding: 0 0 5rem; background: var(--cream); }
+
+    /* HEADER */
+    .planner-header { text-align: center; padding: 3rem 1.5rem 2rem; border-bottom: 1px solid var(--line); }
+    .eyebrow { font-size: 0.7rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--earth); font-weight: 500; margin-bottom: 0.75rem; display: block; }
+    .planner-header h1 { font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; font-weight: 600; color: var(--burgundy); line-height: 1.15; margin-bottom: 0.5rem; }
+    .planner-header .sub { font-size: 0.9rem; color: var(--muted); font-weight: 300; letter-spacing: 0.06em; }
+
+    /* AUTH */
+    .auth-screen { padding: 2rem 1.5rem; }
+    .auth-card { background: white; border: 1.5px solid var(--line); border-radius: 16px; padding: 2rem 1.5rem; }
+    .auth-card h2 { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; font-weight: 600; color: var(--burgundy); margin-bottom: 0.4rem; }
+    .auth-desc { font-size: 0.9rem; color: var(--muted); margin-bottom: 1.75rem; line-height: 1.6; }
+    .form-group { margin-bottom: 1.1rem; }
+    .form-label { display: block; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.4rem; }
+    .form-input { width: 100%; background: var(--cream); border: 1.5px solid var(--line); border-radius: 10px; padding: 0.9rem 1rem; font-family: 'Jost', sans-serif; font-size: 1rem; color: var(--ink); outline: none; display: block; }
+    .form-input:focus { border-color: var(--burgundy); background: white; }
+    .form-input.err { border-color: #b03030; background: #fff5f5; }
+    .err-msg { font-size: 0.8rem; color: #b03030; margin-top: 0.3rem; display: none; }
+    .err-msg.show { display: block; }
+    .general-err { font-size: 0.85rem; color: #b03030; margin-bottom: 0.75rem; min-height: 1.2rem; text-align: center; }
+    .auth-btn { width: 100%; background: var(--burgundy); color: white; border: none; border-radius: 10px; padding: 1rem; font-family: 'Jost', sans-serif; font-size: 1rem; font-weight: 500; cursor: pointer; margin-top: 0.25rem; }
+    .auth-btn:active { opacity: 0.85; }
+
+    /* TOP BAR */
+    .top-bar { background: var(--burgundy-pale); border-bottom: 1px solid var(--line); padding: 1rem 1.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+    .top-info .top-name { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; color: var(--burgundy); font-weight: 600; }
+    .top-info .top-email { font-size: 0.75rem; color: var(--muted); margin-top: 2px; }
+    .logout-btn { background: transparent; border: 1.5px solid var(--line); border-radius: 8px; padding: 0.5rem 1rem; font-family: 'Jost', sans-serif; font-size: 0.8rem; color: var(--muted); cursor: pointer; white-space: nowrap; flex-shrink: 0; }
+    .logout-btn:active { background: white; }
+
+    /* INNER */
+    .inner { padding: 1.5rem 1.5rem 0; }
+    .month-bar { display: flex; align-items: center; gap: 12px; background: white; border: 1.5px solid var(--line); border-radius: 10px; padding: 1rem 1.25rem; margin-bottom: 1.5rem; }
+    .month-bar label { font-size: 0.7rem; color: var(--burgundy); font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; white-space: nowrap; }
+    .month-bar input { flex: 1; background: transparent; border: none; outline: none; font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; color: var(--ink); font-weight: 500; min-width: 0; }
+
+    .prog-wrap { background: var(--line); border-radius: 4px; height: 4px; overflow: hidden; margin-bottom: 0.4rem; }
+    .prog-fill { background: var(--burgundy); height: 100%; border-radius: 4px; transition: width 0.4s; width: 0%; }
+    .prog-label { font-size: 0.78rem; color: var(--muted); text-align: right; margin-bottom: 1.25rem; }
+
+    .expand-btn { display: block; width: 100%; background: transparent; border: 1.5px solid var(--line); border-radius: 10px; padding: 0.8rem; font-family: 'Jost', sans-serif; font-size: 0.9rem; color: var(--muted); cursor: pointer; margin-bottom: 1.5rem; }
+    .expand-btn:active { background: var(--burgundy-pale); color: var(--burgundy); }
+
+    /* SECTIONS */
+    .section { margin-bottom: 1.25rem; background: white; border-radius: 14px; border: 1.5px solid var(--line); overflow: hidden; }
+    .section-header { display: flex; align-items: center; gap: 12px; padding: 1.1rem 1.25rem; background: var(--burgundy-pale); cursor: pointer; -webkit-tap-highlight-color: transparent; }
+    .section-header:active { background: #eed5da; }
+    .sec-num { width: 34px; height: 34px; background: var(--burgundy); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; font-weight: 500; flex-shrink: 0; }
+    .sec-title { font-family: 'Jost', sans-serif; font-size: 0.95rem; font-weight: 500; color: var(--burgundy); flex: 1; line-height: 1.3; letter-spacing: 0.06em; text-transform: uppercase; }
+    .chevron { color: var(--burgundy); font-size: 1.1rem; transition: transform 0.25s; flex-shrink: 0; line-height: 1; }
+    .chevron.open { transform: rotate(180deg); }
+    .section-body { padding: 1.4rem 1.25rem; display: none; }
+    .section-body.open { display: block; }
+
+    .quote-block { background: var(--burgundy-pale); border-left: 3px solid var(--burgundy); padding: 1rem 1.1rem; margin-bottom: 1.4rem; border-radius: 0 8px 8px 0; }
+    .quote-block p { font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; font-style: italic; color: var(--burgundy); line-height: 1.6; }
+
+    .field-group { margin-bottom: 1.25rem; }
+    .field-label { display: block; font-size: 0.8rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.5rem; line-height: 1.5; }
+
+    textarea { width: 100%; background: var(--cream); border: 1.5px solid var(--line); border-radius: 10px; padding: 1rem 1.1rem; font-family: 'Jost', sans-serif; font-size: 1rem; color: var(--ink); resize: none; outline: none; line-height: 1.7; -webkit-appearance: none; display: block; }
+    textarea:focus { border-color: var(--burgundy-light); background: white; }
+
+    input.fi { width: 100%; background: var(--cream); border: 1.5px solid var(--line); border-radius: 10px; padding: 1rem 1.1rem; font-family: 'Jost', sans-serif; font-size: 1rem; color: var(--ink); outline: none; -webkit-appearance: none; display: block; }
+    input.fi:focus { border-color: var(--burgundy-light); background: white; }
+
+    .main-focus-input { width: 100%; font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; font-weight: 500; color: var(--burgundy); text-align: center; border: none; border-bottom: 2px solid var(--burgundy); border-radius: 0; background: transparent; padding: 0.6rem 0.5rem; outline: none; display: block; -webkit-appearance: none; }
+
+    /* CHECKBOXES */
+    .checkbox-group { display: flex; flex-direction: column; gap: 10px; }
+    .checkbox-item { display: flex; align-items: flex-start; gap: 14px; padding: 1rem 1.1rem; background: var(--cream); border-radius: 10px; border: 1.5px solid transparent; }
+    .checkbox-item.checked { border-color: var(--earth-light); background: #FAF5EF; }
+    .checkbox-item input[type="checkbox"] { width: 24px; height: 24px; margin-top: 1px; accent-color: var(--burgundy); flex-shrink: 0; cursor: pointer; }
+    .checkbox-item label { font-size: 1rem; color: var(--ink); line-height: 1.55; cursor: pointer; flex: 1; }
+    .checkbox-item.checked label { color: var(--earth); }
+
+    /* SCHEDULE — 3 rows */
+    .sched-stack { display: flex; flex-direction: column; gap: 1rem; }
+    .sched-row { background: var(--cream); border: 1.5px solid var(--line); border-radius: 10px; padding: 1rem 1.1rem; }
+    .sched-row-label { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--burgundy); margin-bottom: 0.6rem; }
+    .sched-pair { display: flex; gap: 8px; }
+    .sched-pair input { flex: 1; background: white; border: 1.5px solid var(--line); border-radius: 8px; padding: 0.65rem 0.75rem; font-family: 'Jost', sans-serif; font-size: 0.95rem; color: var(--ink); outline: none; min-width: 0; }
+    .sched-pair input:focus { border-color: var(--burgundy-light); }
+    .sched-pair-lbl { font-size: 0.7rem; color: var(--muted); margin-bottom: 4px; letter-spacing: 0.06em; text-transform: uppercase; }
+
+    /* DAILY TASKS */
+    .daily-tasks { display: flex; flex-direction: column; gap: 10px; }
+    .task-row { display: flex; align-items: center; gap: 10px; padding: 1rem 1.1rem; background: var(--cream); border-radius: 10px; border: 1.5px solid var(--line); }
+    .task-badge { font-size: 0.65rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; padding: 4px 10px; border-radius: 5px; white-space: nowrap; flex-shrink: 0; }
+    .badge-main { background: var(--burgundy); color: white; }
+    .badge-sec { background: var(--earth-light); color: white; }
+    .task-row input { border: none; background: transparent; padding: 0; font-size: 1rem; font-family: 'Jost', sans-serif; color: var(--ink); outline: none; flex: 1; min-width: 0; }
+
+    /* EVAL — smaller stars */
+    .eval-week { margin-bottom: 1.25rem; padding: 1.25rem; background: var(--cream); border-radius: 12px; border: 1.5px solid var(--line); }
+    .eval-week h4 { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; color: var(--burgundy); margin-bottom: 0.85rem; font-weight: 600; }
+    .star-row { display: flex; align-items: center; gap: 8px; margin-bottom: 1rem; }
+    .star-row label { font-size: 0.82rem; color: var(--muted); width: 70px; flex-shrink: 0; }
+    .stars { display: flex; gap: 3px; }
+    .star { font-size: 1.4rem; cursor: pointer; color: #D3C4B0; transition: color 0.1s; -webkit-tap-highlight-color: transparent; line-height: 1; padding: 2px; }
+    .star.filled { color: var(--burgundy); }
+
+    /* IDENTITY */
+    .identity-list { display: flex; flex-direction: column; gap: 12px; }
+    .identity-item { display: flex; align-items: center; gap: 12px; }
+    .identity-bullet { width: 8px; height: 8px; background: var(--burgundy); border-radius: 50%; flex-shrink: 0; }
+
+    /* CLOSING — no italics, minimalist */
+    .closing-block { background: var(--burgundy); border-radius: 14px; padding: 2.5rem 1.75rem; text-align: center; margin: 1.5rem 1.5rem 0; }
+    .closing-block .closing-line { font-family: 'Jost', sans-serif; font-size: 1rem; font-style: normal; font-weight: 300; color: white; line-height: 1.8; letter-spacing: 0.04em; margin-bottom: 1.75rem; }
+    .save-btn { background: white; color: var(--burgundy); border: none; border-radius: 10px; padding: 0.9rem 2.5rem; font-family: 'Jost', sans-serif; font-size: 0.9rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; }
+    .save-btn:active { opacity: 0.85; }
+    .save-status { font-size: 0.85rem; color: rgba(255,255,255,0.65); margin-top: 0.75rem; min-height: 1.2rem; }
+  </style>
+</head>
+<body>
+<div class="planner">
+
+  <div class="planner-header">
+    <span class="eyebrow">Planificador mensual</span>
+    <h1>MI VIDA BAJO ENFOQUE</h1>
+    <p class="sub">Disciplina · Propósito · Obediencia</p>
+  </div>
+
+  <!-- AUTH — email only -->
+  <div id="auth-screen" class="auth-screen">
+    <div class="auth-card">
+      <h2>Entra a tu planificador</h2>
+      <p class="auth-desc">Escribe tu nombre y email para acceder. Tu planificador se guarda en este dispositivo y solo tú puedes verlo.</p>
+      <div class="form-group">
+        <label class="form-label">Tu nombre</label>
+        <input type="text" id="auth-name" class="form-input" placeholder="Nombre" autocomplete="name" />
+        <p class="err-msg" id="err-name">Por favor escribe tu nombre.</p>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Tu email</label>
+        <input type="email" id="auth-email" class="form-input" placeholder="tucorreo@ejemplo.com" autocomplete="email" />
+        <p class="err-msg" id="err-email">Por favor escribe un email válido.</p>
+      </div>
+      <p class="general-err" id="err-general"></p>
+      <button class="auth-btn" id="auth-btn">Entrar a mi planificador</button>
+    </div>
+  </div>
+
+  <!-- PLANNER -->
+  <div id="planner-screen" style="display:none;">
+    <div class="top-bar">
+      <div class="top-info">
+        <div class="top-name" id="top-name"></div>
+        <div class="top-email" id="top-email"></div>
+      </div>
+      <button class="logout-btn" id="logout-btn">Salir</button>
+    </div>
+
+    <div class="inner">
+      <div class="month-bar">
+        <label>Mes</label>
+        <input type="text" id="mes-input" placeholder="Mes y año..." />
+      </div>
+      <div class="prog-wrap"><div class="prog-fill" id="prog-bar"></div></div>
+      <p class="prog-label" id="prog-label">0 de 10 secciones completadas</p>
+      <button class="expand-btn" id="toggle-all">Expandir todas las secciones</button>
+      <div id="sections-container"></div>
+    </div>
+
+    <div class="closing-block">
+      <p class="closing-line">Este mes no voy a hacer más — voy a hacer lo correcto. No voy a seguir dispersa — voy a vivir enfocada.</p>
+      <button class="save-btn" id="main-save-btn">Guardar mi planificador</button>
+      <p class="save-status" id="save-status"></p>
+    </div>
+  </div>
+
+</div>
+<script>
+/* ── UTILS ── */
+function hashStr(s){let h=0;for(let i=0;i<s.length;i++)h=(Math.imul(31,h)+s.charCodeAt(i))|0;return h.toString(36);}
+function ukey(email,field){return 'mvbe__'+hashStr(email.toLowerCase().trim())+'__'+field;}
+function validEmail(e){return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);}
+function showErr(id,msg){const el=document.getElementById(id);if(!el)return;el.textContent=msg||'';el.classList.toggle('show',!!msg);}
+function markErr(id,on){const el=document.getElementById(id);if(el)el.classList.toggle('err',on);}
+
+/* ── AUTH ── */
+let currentUser=null;
+
+document.getElementById('auth-btn').addEventListener('click',doAuth);
+document.getElementById('auth-email').addEventListener('keydown',e=>{if(e.key==='Enter')doAuth();});
+document.getElementById('auth-name').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('auth-email').focus();});
+
+function doAuth(){
+  const name=document.getElementById('auth-name').value.trim();
+  const email=document.getElementById('auth-email').value.trim().toLowerCase();
+  showErr('err-name',''); markErr('auth-name',false);
+  showErr('err-email',''); markErr('auth-email',false);
+  showErr('err-general','');
+  let ok=true;
+  if(!name){showErr('err-name','Por favor escribe tu nombre.');markErr('auth-name',true);ok=false;}
+  if(!validEmail(email)){showErr('err-email','Escribe un email válido, ej: maria@gmail.com');markErr('auth-email',true);ok=false;}
+  if(!ok)return;
+  // Save name linked to this email so it persists on return
+  localStorage.setItem('mvbe__name__'+hashStr(email), name);
+  enterPlanner(name, email);
+}
+
+function enterPlanner(name, email){
+  currentUser={name, email};
+  document.getElementById('auth-screen').style.display='none';
+  document.getElementById('planner-screen').style.display='block';
+  document.getElementById('top-name').textContent=name;
+  document.getElementById('top-email').textContent=email;
+  loadData();
+  attachListeners();
+}
+
+document.getElementById('logout-btn').addEventListener('click',()=>{
+  saveData();
+  currentUser=null;
+  document.getElementById('planner-screen').style.display='none';
+  document.getElementById('auth-screen').style.display='block';
+  document.getElementById('auth-email').value='';
+  document.getElementById('auth-name').value='';
+});
+
+/* ── SECTIONS ── */
+const SECS=[
+  {id:'s1',num:1,title:'Claridad espiritual — Alineación',quote:'"No planifiques tu mes sin dirección… o solo estarás ocupada, no alineada."',
+    fields:[{t:'ta',id:'q1a',lbl:'¿Qué siento que Dios me está pidiendo en esta temporada?'},{t:'ta',id:'q1b',lbl:'¿En qué área específica necesito obedecer?'},{t:'ta',id:'q1c',lbl:'¿Qué he estado evitando que sé que debo hacer?'}]},
+  {id:'s2',num:2,title:'Mi prioridad del mes — Solo una',quote:'"Si no cabe aquí… no cabe en tu agenda."',
+    fields:[{t:'focus',id:'q2a',lbl:'Mi enfoque principal este mes es'},{t:'ta',id:'q2b',lbl:'¿Por qué esto es importante?'},{t:'ta',id:'q2c',lbl:'¿Qué pasa si NO lo hago?'}]},
+  {id:'s3',num:3,title:'Lo que voy a eliminar',quote:'"No hay enfoque sin renuncia."',
+    fields:[{t:'ta',id:'q3a',lbl:'Cosas que voy a pausar'},{t:'ta',id:'q3b',lbl:'Distracciones que voy a cortar'},{t:'ta',id:'q3c',lbl:'Compromisos que voy a cancelar o reducir'}]},
+  {id:'s4',num:4,title:'Mis límites — Aprender a decir no',
+    fields:[{t:'ta',id:'q4a',lbl:'No voy a decir sí a'},{t:'ta',id:'q4b',lbl:'Voy a proteger mi tiempo de'},{t:'ta',id:'q4c',lbl:'Cuando alguien me pida algo, responderé',ph:'"Ahora mismo estoy enfocada en algo importante"'}]},
+  {id:'s5',num:5,title:'Bloques de enfoque semanales',quote:'"Lo que no se agenda… no se hace."',fields:[{t:'sched'}]},
+  {id:'s6',num:6,title:'Mi sistema diario simple',quote:'"Si hago lo principal… gané el día."',fields:[{t:'daily'}]},
+  {id:'s7',num:7,title:'Reglas de disciplina personal',
+    fields:[{t:'checks',items:[{id:'cb1',lbl:'No redes sociales antes de mi bloque de enfoque'},{id:'cb2',lbl:'No multitasking mientras trabajo en mi prioridad'},{id:'cb3',lbl:'No negociar con lo que ya decidí'}]},{t:'ta',id:'q7extra',lbl:'Mi regla personal (agrega la tuya)'}]},
+  {id:'s8',num:8,title:'Posibles sabotajes — Anticípate',quote:'"La disciplinada no evita la batalla… se prepara para ella."',
+    fields:[{t:'ta',id:'q8a',lbl:'¿Qué me va a distraer este mes?'},{t:'ta',id:'q8b',lbl:'¿Qué excusas suelo usar?'},{t:'ta',id:'q8c',lbl:'¿Qué voy a hacer cuando no tenga ganas?'}]},
+  {id:'s9',num:9,title:'Sistema de evaluación semanal',fields:[{t:'eval'}]},
+  {id:'s10',num:10,title:'Mi identidad — Lo más importante',fields:[{t:'identity'}]},
+];
+
+function buildSection(s){
+  const wrap=document.createElement('div');wrap.className='section';wrap.id='sec-'+s.id;
+  const hdr=document.createElement('div');hdr.className='section-header';
+  hdr.innerHTML=`<div class="sec-num">${s.num}</div><span class="sec-title">${s.title}</span><span class="chevron">▾</span>`;
+  const body=document.createElement('div');body.className='section-body';body.id='body-'+s.id;
+  if(s.quote){const q=document.createElement('div');q.className='quote-block';q.innerHTML=`<p>${s.quote}</p>`;body.appendChild(q);}
+  s.fields.forEach(f=>{
+    const g=document.createElement('div');g.className='field-group';
+    if(f.t==='ta'){
+      g.innerHTML=`<label class="field-label">${f.lbl}</label><textarea id="${f.id}" rows="4" placeholder="${f.ph||''}"></textarea>`;
+      body.appendChild(g);
+    } else if(f.t==='focus'){
+      g.style.textAlign='center';
+      g.innerHTML=`<label class="field-label" style="display:block;text-align:center">${f.lbl}</label><input id="${f.id}" class="main-focus-input" type="text" placeholder="__________" />`;
+      body.appendChild(g);
+    } else if(f.t==='checks'){
+      let h='<div class="checkbox-group">';
+      f.items.forEach(it=>{h+=`<div class="checkbox-item" id="wrap-${it.id}"><input type="checkbox" id="${it.id}" /><label for="${it.id}">${it.lbl}</label></div>`;});
+      g.innerHTML=h+'</div>';
+      body.appendChild(g);
+    } else if(f.t==='sched'){
+      // 3 rows: each with días + horario
+      let html='<div class="sched-stack">';
+      [1,2,3].forEach(n=>{
+        html+=`<div class="sched-row">
+          <div class="sched-row-label">Bloque ${n}</div>
+          <div style="margin-bottom:4px"><p class="sched-pair-lbl">Días</p><input id="q5_dias${n}" class="fi" type="text" placeholder="Ej: Lunes, miércoles, viernes" /></div>
+          <div><p class="sched-pair-lbl">Horario</p><input id="q5_hora${n}" class="fi" type="text" placeholder="Ej: 7:00am – 8:30am" /></div>
+        </div>`;
+      });
+      html+='</div>';
+      g.innerHTML=html;
+      body.appendChild(g);
+    } else if(f.t==='daily'){
+      g.innerHTML=`<label class="field-label">Mis tareas de hoy</label><div class="daily-tasks"><div class="task-row"><span class="task-badge badge-main">Principal</span><input id="task_main" type="text" placeholder="La tarea más importante del día..." /></div><div class="task-row"><span class="task-badge badge-sec">Secundaria 1</span><input id="task_s1" type="text" /></div><div class="task-row"><span class="task-badge badge-sec">Secundaria 2</span><input id="task_s2" type="text" /></div></div>`;
+      body.appendChild(g);
+    } else if(f.t==='eval'){
+      ['Semana 1','Semana 2','Semana 3','Semana 4'].forEach((sem,wi)=>{
+        const w=document.createElement('div');w.className='eval-week';
+        w.innerHTML=`<h4>${sem}</h4>
+          <div class="star-row"><label>Enfoque</label><div class="stars" id="stars_${wi}">${[1,2,3,4,5].map(n=>`<span class="star" data-w="${wi}" data-v="${n}">★</span>`).join('')}</div></div>
+          <div class="field-group"><label class="field-label">¿Dónde fallé?</label><textarea id="eval_fail_${wi}" rows="3"></textarea></div>
+          <div class="field-group" style="margin:0"><label class="field-label">¿Qué debo ajustar?</label><textarea id="eval_adj_${wi}" rows="3"></textarea></div>`;
+        body.appendChild(w);
+      });
+    } else if(f.t==='identity'){
+      g.innerHTML=`<label class="field-label" style="margin-bottom:.75rem">Este mes decido ser una mujer que...</label><div class="identity-list">${[1,2,3].map(i=>`<div class="identity-item"><div class="identity-bullet"></div><input id="id_${i}" class="fi" type="text" placeholder="Ej: ejecuta, se gobierna, no negocia..." /></div>`).join('')}</div>`;
+      body.appendChild(g);
+    }
+  });
+  hdr.addEventListener('click',()=>{const o=body.classList.toggle('open');hdr.querySelector('.chevron').classList.toggle('open',o);updateProgress();});
+  wrap.appendChild(hdr);wrap.appendChild(body);
+  return wrap;
+}
+
+const cont=document.getElementById('sections-container');
+SECS.forEach(s=>cont.appendChild(buildSection(s)));
+
+function updateProgress(){
+  const n=document.querySelectorAll('.section-body.open').length;
+  document.getElementById('prog-bar').style.width=(n/10*100)+'%';
+  document.getElementById('prog-label').textContent=n+' de 10 secciones completadas';
+}
+
+let allOpen=false;
+document.getElementById('toggle-all').addEventListener('click',()=>{
+  allOpen=!allOpen;
+  document.querySelectorAll('.section-body').forEach(b=>b.classList.toggle('open',allOpen));
+  document.querySelectorAll('.chevron').forEach(c=>c.classList.toggle('open',allOpen));
+  document.getElementById('toggle-all').textContent=allOpen?'Colapsar todas las secciones':'Expandir todas las secciones';
+  updateProgress();
+});
+
+/* ── DATA ── */
+const AUTH_IDS=new Set(['auth-email','auth-name']);
+
+function collectData(){
+  const d={mes:document.getElementById('mes-input').value,stars:{},checks:{}};
+  document.querySelectorAll('textarea, input[type="text"], input.fi, .main-focus-input').forEach(el=>{
+    if(el.id&&!AUTH_IDS.has(el.id))d[el.id]=el.value;
+  });
+  document.querySelectorAll('input[type="checkbox"]').forEach(cb=>{d.checks[cb.id]=cb.checked;});
+  document.querySelectorAll('.stars').forEach(se=>{
+    const w=se.id.replace('stars_','');
+    d.stars['w'+w]=se.querySelectorAll('.star.filled').length;
+  });
+  return d;
+}
+
+function saveData(){
+  if(!currentUser)return;
+  try{localStorage.setItem(ukey(currentUser.email,'data'),JSON.stringify(collectData()));}catch(e){}
+}
+
+function loadData(){
+  if(!currentUser)return;
+  try{
+    const r=localStorage.getItem(ukey(currentUser.email,'data'));if(!r)return;
+    const d=JSON.parse(r);
+    if(d.mes)document.getElementById('mes-input').value=d.mes;
+    Object.keys(d).forEach(k=>{
+      if(k==='mes'||k==='stars'||k==='checks')return;
+      const el=document.getElementById(k);
+      if(el&&(el.tagName==='TEXTAREA'||el.type==='text'))el.value=d[k]||'';
+    });
+    if(d.checks)Object.keys(d.checks).forEach(id=>{
+      const cb=document.getElementById(id);if(!cb)return;
+      cb.checked=d.checks[id];
+      document.getElementById('wrap-'+id)?.classList.toggle('checked',d.checks[id]);
+    });
+    if(d.stars)Object.keys(d.stars).forEach(wk=>{
+      const w=wk.replace('w',''),v=d.stars[wk];
+      document.querySelectorAll(`.star[data-w="${w}"]`).forEach((s,i)=>s.classList.toggle('filled',i<v));
+    });
+  }catch(e){}
+}
+
+function attachListeners(){
+  document.querySelectorAll('textarea, input[type="text"], input.fi, .main-focus-input').forEach(el=>{
+    if(AUTH_IDS.has(el.id))return;
+    el.addEventListener('input',saveData);
+  });
+  document.getElementById('mes-input').addEventListener('input',saveData);
+  document.querySelectorAll('input[type="checkbox"]').forEach(cb=>{
+    cb.addEventListener('change',()=>{
+      document.getElementById('wrap-'+cb.id)?.classList.toggle('checked',cb.checked);
+      saveData();
+    });
+  });
+  document.querySelectorAll('.stars').forEach(se=>{
+    se.querySelectorAll('.star').forEach(star=>{
+      star.addEventListener('click',()=>{
+        const w=star.dataset.w,v=parseInt(star.dataset.v);
+        document.querySelectorAll(`.star[data-w="${w}"]`).forEach((s,i)=>s.classList.toggle('filled',i<v));
+        saveData();
+      });
+    });
+  });
+}
+
+document.getElementById('main-save-btn').addEventListener('click',()=>{
+  saveData();
+  const st=document.getElementById('save-status');
+  st.textContent='✓ Guardado en este dispositivo';
+  setTimeout(()=>st.textContent='',3000);
+});
+</script>
+</body>
+</html>
