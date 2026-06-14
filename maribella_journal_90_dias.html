@@ -1,0 +1,1006 @@
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font-sans); }
+
+  .journal-wrap {
+    max-width: 680px;
+    padding: 0 0 3rem;
+  }
+
+  .header {
+    text-align: center;
+    padding: 2.5rem 1rem 2rem;
+    border-bottom: 0.5px solid var(--color-border-tertiary);
+    margin-bottom: 2rem;
+  }
+
+  .header-eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--color-text-tertiary);
+    margin-bottom: 0.5rem;
+  }
+
+  .header-title {
+    font-family: var(--font-serif);
+    font-size: 26px;
+    font-weight: 500;
+    color: var(--color-text-primary);
+    margin-bottom: 0.25rem;
+  }
+
+  .header-sub {
+    font-size: 13px;
+    color: var(--color-text-secondary);
+  }
+
+  .day-meta {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    margin: 0 1rem 2rem;
+  }
+
+  .meta-card {
+    background: var(--color-background-secondary);
+    border-radius: var(--border-radius-md);
+    padding: 0.75rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .meta-label {
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-tertiary);
+  }
+
+  .meta-value {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--color-text-primary);
+  }
+
+  .meta-value.day-num {
+    font-family: var(--font-serif);
+    font-size: 22px;
+  }
+
+  .section {
+    margin: 0 1rem 1.5rem;
+    border: 0.5px solid var(--color-border-tertiary);
+    border-radius: var(--border-radius-lg);
+    overflow: hidden;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0.9rem 1.25rem;
+    border-bottom: 0.5px solid var(--color-border-tertiary);
+    background: var(--color-background-secondary);
+  }
+
+  .section-icon {
+    font-size: 16px;
+    color: var(--color-text-tertiary);
+  }
+
+  .section-title {
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+  }
+
+  .section-body {
+    padding: 1.25rem;
+    background: var(--color-background-primary);
+  }
+
+  .verse-block {
+    border-left: 2px solid #510100;
+    padding: 0.75rem 1rem;
+    margin-bottom: 1rem;
+    background: var(--color-background-secondary);
+    border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0;
+  }
+
+  .verse-text {
+    font-family: var(--font-serif);
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--color-text-primary);
+    font-style: italic;
+    margin-bottom: 4px;
+  }
+
+  .verse-ref {
+    font-size: 12px;
+    color: var(--color-text-tertiary);
+  }
+
+  .verse-prompt {
+    font-size: 14px;
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+  }
+
+  textarea {
+    width: 100%;
+    border: 0.5px solid var(--color-border-tertiary);
+    border-radius: var(--border-radius-md);
+    padding: 0.875rem 1rem;
+    font-family: var(--font-sans);
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--color-text-primary);
+    background: var(--color-background-primary);
+    resize: none;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+
+  textarea:focus {
+    border-color: #510100;
+  }
+
+  textarea::placeholder {
+    color: var(--color-text-tertiary);
+    font-style: italic;
+  }
+
+  .breath-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 0;
+  }
+
+  .breath-ring-wrap {
+    position: relative;
+    width: 120px;
+    height: 120px;
+  }
+
+  .breath-ring-wrap svg {
+    position: absolute;
+    inset: 0;
+    transform: rotate(-90deg);
+  }
+
+  .breath-circle-bg {
+    fill: none;
+    stroke: var(--color-border-tertiary);
+    stroke-width: 3;
+  }
+
+  .breath-circle-fg {
+    fill: none;
+    stroke: #510100;
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-dasharray: 339.3;
+    stroke-dashoffset: 339.3;
+    transition: stroke-dashoffset 0.1s linear;
+  }
+
+  .breath-inner {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+  }
+
+  .breath-word {
+    font-size: 13px;
+    font-weight: 500;
+    color: #510100;
+    letter-spacing: 0.05em;
+  }
+
+  .breath-count {
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--color-text-primary);
+    font-family: var(--font-serif);
+    min-width: 2ch;
+    text-align: center;
+  }
+
+  .breath-instruction {
+    font-size: 13px;
+    color: var(--color-text-secondary);
+    text-align: center;
+  }
+
+  .breath-btn {
+    font-size: 13px;
+    font-weight: 500;
+    padding: 0.6rem 1.5rem;
+    border: 0.5px solid var(--color-border-secondary);
+    border-radius: var(--border-radius-md);
+    background: transparent;
+    color: var(--color-text-primary);
+    cursor: pointer;
+    letter-spacing: 0.03em;
+  }
+
+  .breath-btn:hover { background: var(--color-background-secondary); }
+
+  .gratitude-inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .gratitude-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .gratitude-num {
+    font-size: 13px;
+    color: var(--color-text-tertiary);
+    min-width: 16px;
+    text-align: center;
+  }
+
+  .gratitude-row input {
+    flex: 1;
+    border: 0.5px solid var(--color-border-tertiary);
+    border-radius: var(--border-radius-md);
+    padding: 0.65rem 0.875rem;
+    font-size: 14px;
+    color: var(--color-text-primary);
+    background: var(--color-background-primary);
+    outline: none;
+    transition: border-color 0.15s;
+  }
+
+  .gratitude-row input:focus { border-color: #510100; }
+  .gratitude-row input::placeholder { color: var(--color-text-tertiary); font-style: italic; }
+
+  .intention-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 1rem;
+  }
+
+  .intention-chip {
+    padding: 0.6rem 0.875rem;
+    border: 0.5px solid var(--color-border-tertiary);
+    border-radius: var(--border-radius-md);
+    font-size: 13px;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.15s;
+    background: var(--color-background-primary);
+    user-select: none;
+  }
+
+  .intention-chip:hover {
+    border-color: #510100;
+    color: #510100;
+  }
+
+  .intention-chip.selected {
+    background: #510100;
+    color: white;
+    border-color: #510100;
+  }
+
+  .affirmation-display {
+    font-family: var(--font-serif);
+    font-size: 18px;
+    line-height: 1.6;
+    color: var(--color-text-primary);
+    text-align: center;
+    padding: 1rem 0;
+    margin-bottom: 1rem;
+    min-height: 60px;
+  }
+
+  .affirmation-nav {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .aff-btn {
+    font-size: 12px;
+    padding: 0.5rem 1rem;
+    border: 0.5px solid var(--color-border-tertiary);
+    border-radius: var(--border-radius-md);
+    background: transparent;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+  }
+
+  .aff-btn:hover { background: var(--color-background-secondary); }
+
+  .mood-track {
+    display: flex;
+    justify-content: space-between;
+    gap: 6px;
+    margin-bottom: 1rem;
+  }
+
+  .mood-opt {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 0.6rem 0.25rem;
+    border: 0.5px solid var(--color-border-tertiary);
+    border-radius: var(--border-radius-md);
+    cursor: pointer;
+    transition: all 0.15s;
+    background: var(--color-background-primary);
+    user-select: none;
+  }
+
+  .mood-opt:hover { border-color: var(--color-border-secondary); }
+
+  .mood-opt.selected {
+    border-color: #510100;
+    background: var(--color-background-secondary);
+  }
+
+  .mood-icon { font-size: 18px; }
+  .mood-label { font-size: 11px; color: var(--color-text-tertiary); }
+
+  .progress-bar-wrap {
+    height: 3px;
+    background: var(--color-border-tertiary);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-top: 1rem;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    background: #510100;
+    border-radius: 2px;
+    transition: width 0.4s ease;
+  }
+
+  .save-row {
+    margin: 0 1rem;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .save-btn {
+    flex: 1;
+    padding: 0.875rem;
+    background: #510100;
+    color: white;
+    border: none;
+    border-radius: var(--border-radius-md);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    letter-spacing: 0.03em;
+    transition: opacity 0.15s;
+  }
+
+  .save-btn:hover { opacity: 0.88; }
+
+  .clear-btn {
+    padding: 0.875rem 1.25rem;
+    background: transparent;
+    color: var(--color-text-secondary);
+    border: 0.5px solid var(--color-border-tertiary);
+    border-radius: var(--border-radius-md);
+    font-size: 14px;
+    cursor: pointer;
+  }
+
+  .clear-btn:hover { background: var(--color-background-secondary); }
+
+  .nav-days {
+    margin: 0 1rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .nav-btn {
+    padding: 0.6rem 1rem;
+    border: 0.5px solid var(--color-border-tertiary);
+    border-radius: var(--border-radius-md);
+    background: transparent;
+    font-size: 13px;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .nav-btn:hover { background: var(--color-background-secondary); }
+  .nav-btn:disabled { opacity: 0.35; cursor: default; }
+
+  .day-dots {
+    display: flex;
+    gap: 3px;
+    flex-wrap: wrap;
+    justify-content: center;
+    flex: 1;
+  }
+
+  .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-border-tertiary);
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+
+  .dot.done { background: #510100; }
+  .dot.current { background: #510100; opacity: 0.4; }
+
+  .toast {
+    position: fixed;
+    bottom: 1.5rem;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: #510100;
+    color: white;
+    font-size: 13px;
+    padding: 0.6rem 1.25rem;
+    border-radius: var(--border-radius-md);
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.25s ease;
+    white-space: nowrap;
+    z-index: 99;
+  }
+
+  .toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  .stats-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+    margin: 0 1rem 1.5rem;
+  }
+
+  .stat-box {
+    background: var(--color-background-secondary);
+    border-radius: var(--border-radius-md);
+    padding: 0.875rem 1rem;
+    text-align: center;
+  }
+
+  .stat-num {
+    font-family: var(--font-serif);
+    font-size: 22px;
+    font-weight: 500;
+    color: #510100;
+  }
+
+  .stat-lbl {
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-text-tertiary);
+    margin-top: 2px;
+  }
+</style>
+
+<div class="journal-wrap" id="app">
+  <h2 class="sr-only">Journal de mindfulness cristiano de 90 días — Maribella</h2>
+
+  <div class="header">
+    <div class="header-eyebrow">Devocional matutino · 90 días</div>
+    <div class="header-title">Maribella's Journal</div>
+    <div class="header-sub" id="hdr-date"></div>
+  </div>
+
+  <div class="stats-row" id="stats-row">
+    <div class="stat-box"><div class="stat-num" id="s-done">0</div><div class="stat-lbl">Completados</div></div>
+    <div class="stat-box"><div class="stat-num" id="s-streak">0</div><div class="stat-lbl">Racha</div></div>
+    <div class="stat-box"><div class="stat-num" id="s-left">90</div><div class="stat-lbl">Por vivir</div></div>
+  </div>
+
+  <div class="day-meta">
+    <div class="meta-card">
+      <div class="meta-label">Día</div>
+      <div class="meta-value day-num" id="meta-day">1</div>
+    </div>
+    <div class="meta-card">
+      <div class="meta-label">Fecha</div>
+      <div class="meta-value" id="meta-date" style="font-size:13px;"></div>
+    </div>
+    <div class="meta-card">
+      <div class="meta-label">Progreso</div>
+      <div class="meta-value" id="meta-pct">1 / 90</div>
+      <div class="progress-bar-wrap"><div class="progress-bar-fill" id="prog-fill" style="width:1.1%"></div></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <i class="ti ti-wind section-icon" aria-hidden="true"></i>
+      <span class="section-title">Respira · Entra en presencia</span>
+    </div>
+    <div class="section-body">
+      <div class="breath-section">
+        <div class="breath-ring-wrap">
+          <svg viewBox="0 0 120 120" width="120" height="120">
+            <circle class="breath-circle-bg" cx="60" cy="60" r="54"/>
+            <circle class="breath-circle-fg" id="breath-ring" cx="60" cy="60" r="54"/>
+          </svg>
+          <div class="breath-inner">
+            <div class="breath-word" id="breath-word">Inhala</div>
+            <div class="breath-count" id="breath-count">4</div>
+          </div>
+        </div>
+        <div class="breath-instruction" id="breath-instr">4 respiros · Inhala 4 · Sostén 4 · Exhala 4</div>
+        <button class="breath-btn" id="breath-btn" onclick="startBreath()">Comenzar</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <i class="ti ti-book section-icon" aria-hidden="true"></i>
+      <span class="section-title">La Palabra de hoy</span>
+    </div>
+    <div class="section-body">
+      <div class="verse-block">
+        <div class="verse-text" id="verse-text"></div>
+        <div class="verse-ref" id="verse-ref"></div>
+      </div>
+      <div class="verse-prompt" id="verse-prompt"></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <i class="ti ti-mood-smile section-icon" aria-hidden="true"></i>
+      <span class="section-title">¿Cómo estoy llegando?</span>
+    </div>
+    <div class="section-body">
+      <div class="mood-track" id="mood-track">
+        <div class="mood-opt" onclick="selectMood(this,'pesada')"><div class="mood-icon">😔</div><div class="mood-label">Pesada</div></div>
+        <div class="mood-opt" onclick="selectMood(this,'cansada')"><div class="mood-icon">😴</div><div class="mood-label">Cansada</div></div>
+        <div class="mood-opt" onclick="selectMood(this,'tranquila')"><div class="mood-icon">😌</div><div class="mood-label">Tranquila</div></div>
+        <div class="mood-opt" onclick="selectMood(this,'esperanzada')"><div class="mood-icon">🌱</div><div class="mood-label">Esperanzada</div></div>
+        <div class="mood-opt" onclick="selectMood(this,'agradecida')"><div class="mood-icon">✨</div><div class="mood-label">Agradecida</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <i class="ti ti-heart section-icon" aria-hidden="true"></i>
+      <span class="section-title">Gratitud · 3 cosas</span>
+    </div>
+    <div class="section-body">
+      <div class="gratitude-inputs">
+        <div class="gratitude-row"><span class="gratitude-num">1</span><input id="g1" type="text" placeholder="Hoy agradezco..." /></div>
+        <div class="gratitude-row"><span class="gratitude-num">2</span><input id="g2" type="text" placeholder="También soy agradecida por..." /></div>
+        <div class="gratitude-row"><span class="gratitude-num">3</span><input id="g3" type="text" placeholder="Y no puedo dejar de agradecer..." /></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <i class="ti ti-sparkles section-icon" aria-hidden="true"></i>
+      <span class="section-title">Declaración del día</span>
+    </div>
+    <div class="section-body">
+      <div class="affirmation-display" id="aff-display"></div>
+      <div class="affirmation-nav">
+        <button class="aff-btn" onclick="prevAff()"><i class="ti ti-chevron-left" aria-hidden="true"></i></button>
+        <button class="aff-btn" onclick="nextAff()"><i class="ti ti-chevron-right" aria-hidden="true"></i></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <i class="ti ti-target section-icon" aria-hidden="true"></i>
+      <span class="section-title">Mi intención de hoy</span>
+    </div>
+    <div class="section-body">
+      <div class="intention-options" id="int-opts">
+        <div class="intention-chip" onclick="selectInt(this,'Presencia')">Presencia</div>
+        <div class="intention-chip" onclick="selectInt(this,'Disciplina')">Disciplina</div>
+        <div class="intention-chip" onclick="selectInt(this,'Fe en acción')">Fe en acción</div>
+        <div class="intention-chip" onclick="selectInt(this,'Descanso')">Descanso</div>
+        <div class="intention-chip" onclick="selectInt(this,'Valentía')">Valentía</div>
+        <div class="intention-chip" onclick="selectInt(this,'Soltar control')">Soltar control</div>
+      </div>
+      <textarea id="int-custom" rows="2" placeholder="O escribe tu propia intención..."></textarea>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <i class="ti ti-writing section-icon" aria-hidden="true"></i>
+      <span class="section-title">Reflexión matutina</span>
+    </div>
+    <div class="section-body">
+      <div style="font-size:13px;color:var(--color-text-tertiary);margin-bottom:10px;" id="refl-prompt-txt"></div>
+      <textarea id="reflection" rows="6" placeholder="Escribe desde tu corazón..."></textarea>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <i class="ti ti-pray section-icon" aria-hidden="true"></i>
+      <span class="section-title">Oración del día</span>
+    </div>
+    <div class="section-body">
+      <textarea id="prayer" rows="5" placeholder="Señor, hoy te entrego..."></textarea>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <i class="ti ti-check section-icon" aria-hidden="true"></i>
+      <span class="section-title">Un paso concreto hoy</span>
+    </div>
+    <div class="section-body">
+      <textarea id="action" rows="2" placeholder="Hoy voy a..."></textarea>
+    </div>
+  </div>
+
+  <div class="save-row" style="margin-bottom:1.5rem;">
+    <button class="save-btn" onclick="saveDay()"><i class="ti ti-device-floppy" aria-hidden="true"></i> Guardar día <span id="save-day-num">1</span></button>
+    <button class="clear-btn" onclick="clearDay()"><i class="ti ti-refresh" aria-hidden="true"></i></button>
+  </div>
+
+  <div class="nav-days">
+    <button class="nav-btn" id="prev-btn" onclick="goDay(-1)" disabled><i class="ti ti-arrow-left" aria-hidden="true"></i> Anterior</button>
+    <div class="day-dots" id="dots-wrap"></div>
+    <button class="nav-btn" id="next-btn" onclick="goDay(1)">Siguiente <i class="ti ti-arrow-right" aria-hidden="true"></i></button>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const VERSES = [
+  { text: "Porque yo sé los planes que tengo para vosotros, dice el Señor, planes de bienestar y no de mal, para daros un futuro y una esperanza.", ref: "Jeremías 29:11 (RVR1960)", prompt: "¿En qué área de tu vida necesitas recordar hoy que Dios tiene un plan?" },
+  { text: "Todo lo puedo en Cristo que me fortalece.", ref: "Filipenses 4:13 (RVR1960)", prompt: "¿Qué desafío de hoy entregas a la fortaleza de Cristo?" },
+  { text: "No os conforméis a este siglo, sino transformaos por medio de la renovación de vuestro entendimiento.", ref: "Romanos 12:2 (RVR1960)", prompt: "¿Qué patrón de pensamiento quieres renovar hoy?" },
+  { text: "Esfuérzate y sé valiente; no temas ni desmayes, porque Jehová tu Dios estará contigo en dondequiera que vayas.", ref: "Josué 1:9 (RVR1960)", prompt: "¿Qué paso valiente ha estado esperando tu obediencia?" },
+  { text: "Encomienda a Jehová tu camino, y confía en él; y él hará.", ref: "Salmos 37:5 (RVR1960)", prompt: "¿Qué estás cargando sola que Dios te invita a entregarle hoy?" },
+  { text: "El Señor mismo marchará al frente de ti y estará contigo; nunca te dejará ni te abandonará.", ref: "Deuteronomio 31:8 (RVR1960)", prompt: "¿En qué momento de tu semana sentiste que Dios te acompañaba?" },
+  { text: "Porque de tal manera amó Dios al mundo, que ha dado a su Hijo unigénito.", ref: "Juan 3:16 (RVR1960)", prompt: "¿Cuándo fue la última vez que te detuviste a recibir el amor de Dios, no a darlo?" },
+  { text: "Buscad primeramente el reino de Dios y su justicia, y todas estas cosas os serán añadidas.", ref: "Mateo 6:33 (RVR1960)", prompt: "¿Qué estás buscando primero hoy? ¿Qué necesitas reordenar?" },
+  { text: "Vosotros sois la luz del mundo. Una ciudad asentada sobre un monte no se puede esconder.", ref: "Mateo 5:14 (RVR1960)", prompt: "¿Dónde necesitas brillar con más confianza hoy?" },
+  { text: "Fíate de Jehová de todo tu corazón, y no te apoyes en tu propia prudencia.", ref: "Proverbios 3:5 (RVR1960)", prompt: "¿Qué decisión estás intentando controlar en lugar de confiar?" },
+  { text: "Yo soy la vid, vosotros los pámpanos; el que permanece en mí, y yo en él, éste lleva mucho fruto.", ref: "Juan 15:5 (RVR1960)", prompt: "¿En qué área de tu vida necesitas permanecer conectada a la vid hoy?" },
+  { text: "Porque Dios no nos ha dado un espíritu de cobardía, sino de poder, de amor y de dominio propio.", ref: "2 Timoteo 1:7 (RVR1960)", prompt: "¿Cuál de estos tres — poder, amor, dominio propio — necesitas activar hoy?" },
+  { text: "La mujer que teme a Jehová, ésa será alabada.", ref: "Proverbios 31:30 (RVR1960)", prompt: "¿Qué significa para ti ser la mujer que teme a Dios en la práctica de este día?" },
+  { text: "El amor de Dios ha sido derramado en nuestros corazones por el Espíritu Santo que nos fue dado.", ref: "Romanos 5:5 (RVR1960)", prompt: "¿Cómo quieres que ese amor fluya a través de ti hacia otros hoy?" },
+  { text: "Porque somos hechura suya, creados en Cristo Jesús para buenas obras.", ref: "Efesios 2:10 (RVR1960)", prompt: "¿Qué 'buena obra' específica crees que Dios preparó para ti hoy?" },
+  { text: "Confía en el Señor y haz el bien; vive en la tierra y mantente fiel.", ref: "Salmos 37:3 (RVR1960)", prompt: "¿Qué 'bien' concreto puedes hacer hoy aunque no veas el resultado?" },
+  { text: "El que comenzó en vosotros la buena obra, la perfeccionará hasta el día de Jesucristo.", ref: "Filipenses 1:6 (RVR1960)", prompt: "¿Qué proceso en tu vida necesita que confíes en que Dios lo va a completar?" },
+  { text: "Deléitate asimismo en Jehová, y él te concederá las peticiones de tu corazón.", ref: "Salmos 37:4 (RVR1960)", prompt: "¿Qué significa deleitarte en Dios hoy, más allá de pedir?" },
+  { text: "Mas buscad primeramente el reino de Dios y su justicia.", ref: "Mateo 6:33 (RVR1960)", prompt: "¿Cómo luce buscar el reino de Dios en tus decisiones de hoy?" },
+  { text: "El Señor es mi pastor; nada me faltará.", ref: "Salmos 23:1 (RVR1960)", prompt: "¿En qué área de tu vida sientes carencia hoy? ¿Puedes confiar en el Pastor?" },
+  { text: "Clama a mí, y yo te responderé, y te enseñaré cosas grandes y ocultas que tú no conoces.", ref: "Jeremías 33:3 (RVR1960)", prompt: "¿Qué necesitas que Dios te revele hoy? Pídelo específicamente." },
+  { text: "Sea vuestra palabra siempre con gracia, sazonada con sal, para que sepáis cómo debéis responder a cada uno.", ref: "Colosenses 4:6 (RVR1960)", prompt: "¿Hay alguna conversación difícil que necesites encomendarle a Dios antes de tenerla?" },
+  { text: "No nos cansemos, pues, de hacer bien; porque a su tiempo segaremos, si no desmayamos.", ref: "Gálatas 6:9 (RVR1960)", prompt: "¿En qué área necesitas no desmayar hoy, aunque no veas los frutos aún?" },
+  { text: "Porque el Señor es bueno; para siempre es su misericordia, y su verdad por todas las generaciones.", ref: "Salmos 100:5 (RVR1960)", prompt: "¿Cómo has visto la bondad de Dios manifestarse en tu historia?" },
+  { text: "Vestíos de toda la armadura de Dios, para que podáis estar firmes contra las asechanzas del diablo.", ref: "Efesios 6:11 (RVR1960)", prompt: "¿Con qué pieza de la armadura necesitas vestirte especialmente hoy?" },
+  { text: "Mas el fruto del Espíritu es amor, gozo, paz, paciencia, benignidad, bondad, fe.", ref: "Gálatas 5:22 (RVR1960)", prompt: "¿Cuál de estos frutos necesitas que el Espíritu produzca más en ti hoy?" },
+  { text: "Jehová peleará por vosotros, y vosotros estaréis tranquilos.", ref: "Éxodo 14:14 (RVR1960)", prompt: "¿En qué batalla necesitas detenerte y dejar que sea Dios quien pelee?" },
+  { text: "Porque separados de mí nada podéis hacer.", ref: "Juan 15:5 (RVR1960)", prompt: "¿Hay algo que estás intentando construir con tus propias fuerzas sin incluir a Dios?" },
+  { text: "Todo lo que hagáis, hacedlo de corazón, como para el Señor y no para los hombres.", ref: "Colosenses 3:23 (RVR1960)", prompt: "¿A quién estás buscando complacer en la tarea más importante de hoy?" },
+  { text: "El fruto del justo es árbol de vida; y el que gana almas es sabio.", ref: "Proverbios 11:30 (RVR1960)", prompt: "¿Cuál es la semilla que estás plantando hoy en alguien más?" },
+  { text: "La paz de Dios, que sobrepasa todo entendimiento, guardará vuestros corazones y vuestros pensamientos en Cristo Jesús.", ref: "Filipenses 4:7 (RVR1960)", prompt: "¿En qué área de tu mente necesitas la guardia de esa paz que no se explica?" },
+  { text: "Echad toda vuestra ansiedad sobre él, porque él tiene cuidado de vosotros.", ref: "1 Pedro 5:7 (RVR1960)", prompt: "¿Qué carga específica vas a echar sobre Él esta mañana? Nómbrala." },
+  { text: "Y sabemos que a los que aman a Dios, todas las cosas les ayudan a bien.", ref: "Romanos 8:28 (RVR1960)", prompt: "¿Qué situación difícil necesitas empezar a ver como parte del 'bien' que Dios está tejiendo?" },
+  { text: "El hombre no vive solo de pan, sino de toda palabra que sale de la boca de Dios.", ref: "Mateo 4:4 (RVR1960)", prompt: "¿Cómo te estás alimentando del pan de la Palabra esta semana?" },
+  { text: "Restaura a los quebrantados de corazón, y venda sus heridas.", ref: "Salmos 147:3 (RVR1960)", prompt: "¿Qué área de tu corazón necesita la mano restauradora de Dios hoy?" }
+];
+
+const AFFIRMATIONS = [
+  "Fui creada con propósito. Nada en mí fue un error.",
+  "Dios me conoció antes de que yo me conociera a mí misma.",
+  "Mi valía no viene de lo que produzco. Viene de Quién me creó.",
+  "Soy amada en mi proceso, no solo en mis resultados.",
+  "No tengo que probarle nada a nadie. Dios ya me aprobó.",
+  "Mi historia tiene sentido en las manos de Dios.",
+  "Soy lo suficiente para lo que Dios me está llamando a hacer.",
+  "La mujer que nací para ser ya existe. Estoy volviéndome ella.",
+  "No estoy sola en este proceso. El Espíritu de Dios habita en mí.",
+  "Cada día que elijo comenzar con Dios es un día que cambia mi vida.",
+  "Tengo la mente de Cristo. Pienso desde un lugar de fe, no de miedo.",
+  "Mi identidad no está en mis circunstancias. Está en Cristo.",
+  "Soy capaz de lo que Dios me ha llamado a hacer. Él me equipa.",
+  "Esta temporada está formando en mí algo que el mundo va a necesitar.",
+  "Mi disciplina es un acto de fe. Le digo a Dios que creo en lo que viene.",
+  "No vivo para el aplauso humano. Vivo para el 'bien hecho' de Dios.",
+  "Mis pensamientos son renovados. Mi mente pertenece a Cristo.",
+  "Tengo autoridad espiritual sobre cada pensamiento que me quiere destruir.",
+  "Dios pelea por mí. Yo puedo estar tranquila.",
+  "El futuro que Dios preparó para mí es más grande que mi miedo más grande.",
+  "Soy una mujer de fe en acción. Mi obediencia precede al milagro.",
+  "Puedo soltar el control porque confío en el que controla todo.",
+  "Soy la mujer que Dios imaginó cuando me creó. Hoy elijo vivir como ella.",
+  "Mis límites son sagrados porque mi tiempo fue creado por Dios.",
+  "No soy víctima de mi pasado. Soy beneficiaria de la gracia de Dios.",
+  "Lo que Dios comenzó en mí lo terminará. Solo necesito seguir.",
+  "Soy agradecida por quien soy, no sólo por lo que tengo.",
+  "Mi voz importa. Dios me la dio para algo.",
+  "Camino por fe, no por vista. Aunque no lo vea, lo creo.",
+  "Soy la respuesta a la oración de alguien. Por eso estoy aquí."
+];
+
+const REFLECTION_PROMPTS = [
+  "¿Qué versión de ti quieres ser al terminar este día?",
+  "¿Qué patrón de pensamiento necesitas romper hoy?",
+  "¿Dónde estás dándole demasiado poder a las opiniones de otros?",
+  "¿Qué has estado posponiendo que sabes que Dios te está llamando a hacer?",
+  "¿Cómo luce la obediencia para ti hoy?",
+  "¿Qué área de tu vida necesita más fe y menos control?",
+  "¿Qué te dices a ti misma cuando nadie está mirando?",
+  "¿Qué herida pasada todavía está diciendo su opinión en tu presente?",
+  "¿En qué cosa específica puedes escoger el amor propio hoy?",
+  "¿Cuál es la voz más ruidosa en tu cabeza esta mañana, y es la voz de Dios?",
+  "¿Qué significa confiar en Dios para ti hoy, en lo práctico y concreto?",
+  "¿Qué bendición de Dios has estado desestimando porque no luce como esperabas?",
+  "¿A quién necesitas soltar para poder avanzar?",
+  "¿Qué miedo específico quieres darle nombre hoy para poder entregárselo a Dios?",
+  "¿Cuándo fue la última vez que celebraste quién te estás convirtiendo?",
+  "¿Qué parte de tu historia de hoy vas a contar como testimonio mañana?",
+  "¿Qué límite necesitas poner hoy para proteger tu paz?",
+  "¿Cómo luce la mujer que nació para ser en las próximas 24 horas?",
+  "¿Qué necesita más de tu atención hoy: tu fe, tu salud, tus relaciones, o tu vocación?",
+  "¿Qué mentira has estado creyendo sobre ti misma que Dios quiere confrontar hoy?"
+];
+
+let currentDay = 1;
+let journalData = {};
+let currentAff = 0;
+let selectedMood = '';
+let selectedInt = '';
+let breathRunning = false;
+let breathTimer = null;
+
+function loadStorage() {
+  try {
+    const d = localStorage.getItem('mj_data');
+    if (d) journalData = JSON.parse(d);
+  } catch(e) { journalData = {}; }
+}
+
+function saveStorage() {
+  try { localStorage.setItem('mj_data', JSON.stringify(journalData)); } catch(e){}
+}
+
+function todayStr() {
+  return new Date().toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' });
+}
+
+function shortDate(offset) {
+  const d = new Date(); d.setDate(d.getDate() + offset);
+  return d.toLocaleDateString('es-ES', { day: 'numeric', month: 'short' });
+}
+
+function renderDay(n) {
+  currentDay = n;
+  const idx = (n - 1) % VERSES.length;
+  const v = VERSES[idx];
+
+  document.getElementById('meta-day').textContent = n;
+  document.getElementById('meta-date').textContent = shortDate(n - 1);
+  document.getElementById('meta-pct').textContent = n + ' / 90';
+  document.getElementById('prog-fill').style.width = ((n / 90) * 100).toFixed(1) + '%';
+  document.getElementById('verse-text').textContent = v.text;
+  document.getElementById('verse-ref').textContent = v.ref;
+  document.getElementById('verse-prompt').textContent = v.prompt;
+
+  const rp = REFLECTION_PROMPTS[(n - 1) % REFLECTION_PROMPTS.length];
+  document.getElementById('refl-prompt-txt').textContent = rp;
+
+  currentAff = (n - 1) % AFFIRMATIONS.length;
+  renderAff();
+
+  document.getElementById('hdr-date').textContent = todayStr();
+  document.getElementById('save-day-num').textContent = n;
+
+  document.getElementById('prev-btn').disabled = n <= 1;
+  document.getElementById('next-btn').disabled = n >= 90;
+
+  const data = journalData[n] || {};
+  document.getElementById('g1').value = data.g1 || '';
+  document.getElementById('g2').value = data.g2 || '';
+  document.getElementById('g3').value = data.g3 || '';
+  document.getElementById('reflection').value = data.reflection || '';
+  document.getElementById('prayer').value = data.prayer || '';
+  document.getElementById('action').value = data.action || '';
+  document.getElementById('int-custom').value = data.intCustom || '';
+
+  selectedMood = data.mood || '';
+  document.querySelectorAll('.mood-opt').forEach(el => {
+    el.classList.toggle('selected', el.getAttribute('onclick').includes("'" + selectedMood + "'") && selectedMood !== '');
+  });
+
+  selectedInt = data.intention || '';
+  document.querySelectorAll('.intention-chip').forEach(el => {
+    el.classList.toggle('selected', el.getAttribute('onclick').includes("'" + selectedInt + "'") && selectedInt !== '');
+  });
+
+  renderDots();
+  renderStats();
+}
+
+function renderAff() {
+  document.getElementById('aff-display').textContent = AFFIRMATIONS[currentAff];
+}
+
+function nextAff() { currentAff = (currentAff + 1) % AFFIRMATIONS.length; renderAff(); }
+function prevAff() { currentAff = (currentAff - 1 + AFFIRMATIONS.length) % AFFIRMATIONS.length; renderAff(); }
+
+function selectMood(el, val) {
+  selectedMood = val;
+  document.querySelectorAll('.mood-opt').forEach(e => e.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+function selectInt(el, val) {
+  selectedInt = val;
+  document.querySelectorAll('.intention-chip').forEach(e => e.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+function saveDay() {
+  journalData[currentDay] = {
+    g1: document.getElementById('g1').value,
+    g2: document.getElementById('g2').value,
+    g3: document.getElementById('g3').value,
+    reflection: document.getElementById('reflection').value,
+    prayer: document.getElementById('prayer').value,
+    action: document.getElementById('action').value,
+    mood: selectedMood,
+    intention: selectedInt,
+    intCustom: document.getElementById('int-custom').value,
+    aff: currentAff,
+    saved: true
+  };
+  saveStorage();
+  renderDots();
+  renderStats();
+  showToast('Día ' + currentDay + ' guardado ✓');
+}
+
+function clearDay() {
+  if (confirm('¿Limpiar las entradas de hoy?')) {
+    ['g1','g2','g3','reflection','prayer','action','int-custom'].forEach(id => {
+      document.getElementById(id).value = '';
+    });
+    selectedMood = ''; selectedInt = '';
+    document.querySelectorAll('.mood-opt, .intention-chip').forEach(e => e.classList.remove('selected'));
+  }
+}
+
+function goDay(dir) {
+  const n = currentDay + dir;
+  if (n >= 1 && n <= 90) renderDay(n);
+}
+
+function renderDots() {
+  const wrap = document.getElementById('dots-wrap');
+  wrap.innerHTML = '';
+  const show = Math.min(30, 90);
+  const start = Math.max(1, currentDay - 15);
+  for (let i = start; i < start + show && i <= 90; i++) {
+    const d = document.createElement('div');
+    d.className = 'dot' + (journalData[i] && journalData[i].saved ? ' done' : '') + (i === currentDay ? ' current' : '');
+    d.title = 'Día ' + i;
+    d.onclick = (function(day){ return function(){ renderDay(day); }; })(i);
+    wrap.appendChild(d);
+  }
+}
+
+function renderStats() {
+  const done = Object.values(journalData).filter(d => d && d.saved).length;
+  document.getElementById('s-done').textContent = done;
+  document.getElementById('s-left').textContent = 90 - done;
+
+  let streak = 0;
+  for (let i = currentDay; i >= 1; i--) {
+    if (journalData[i] && journalData[i].saved) streak++;
+    else break;
+  }
+  document.getElementById('s-streak').textContent = streak;
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+function startBreath() {
+  if (breathRunning) {
+    breathRunning = false;
+    clearTimeout(breathTimer);
+    document.getElementById('breath-btn').textContent = 'Comenzar';
+    document.getElementById('breath-word').textContent = 'Inhala';
+    document.getElementById('breath-count').textContent = '4';
+    document.getElementById('breath-ring').style.strokeDashoffset = '339.3';
+    document.getElementById('breath-instr').textContent = '4 respiros · Inhala 4 · Sostén 4 · Exhala 4';
+    return;
+  }
+  breathRunning = true;
+  document.getElementById('breath-btn').textContent = 'Detener';
+  let cycle = 0, totalCycles = 4;
+  const phases = [
+    { word: 'Inhala', secs: 4, offset: 0, label: 'Inhala...' },
+    { word: 'Sostén', secs: 4, offset: 0, label: 'Sostén...' },
+    { word: 'Exhala', secs: 4, offset: 339.3, label: 'Exhala...' },
+    { word: 'Pausa', secs: 2, offset: 339.3, label: 'Pausa...' }
+  ];
+  let phaseIdx = 0;
+  let secLeft = phases[0].secs;
+  const ring = document.getElementById('breath-ring');
+
+  function tick() {
+    if (!breathRunning) return;
+    const ph = phases[phaseIdx];
+    document.getElementById('breath-word').textContent = ph.word;
+    document.getElementById('breath-count').textContent = secLeft;
+    document.getElementById('breath-instr').textContent = 'Ciclo ' + (cycle + 1) + ' de ' + totalCycles + ' · ' + ph.label;
+    const prog = 1 - (secLeft / ph.secs);
+    const fullCirc = 339.3;
+    if (phaseIdx === 0) ring.style.strokeDashoffset = (fullCirc * (1 - prog)).toFixed(1);
+    else if (phaseIdx === 2) ring.style.strokeDashoffset = (fullCirc * prog).toFixed(1);
+    secLeft--;
+    if (secLeft < 0) {
+      phaseIdx++;
+      if (phaseIdx >= phases.length) {
+        phaseIdx = 0; cycle++;
+        if (cycle >= totalCycles) {
+          breathRunning = false;
+          document.getElementById('breath-btn').textContent = 'Comenzar';
+          document.getElementById('breath-word').textContent = '✓';
+          document.getElementById('breath-count').textContent = '';
+          document.getElementById('breath-instr').textContent = 'Momento de presencia completado';
+          ring.style.strokeDashoffset = '0';
+          return;
+        }
+      }
+      secLeft = phases[phaseIdx].secs;
+    }
+    breathTimer = setTimeout(tick, 1000);
+  }
+  tick();
+}
+
+loadStorage();
+renderDay(1);
+</script>
