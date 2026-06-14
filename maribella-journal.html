@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Maribella's Journal · 90 Días</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --burgundy: #510100;
+    --burgundy-light: #7a1a1a;
+    --burgundy-pale: #f9f0f0;
+    --gold: #c9a96e;
+    --cream: #faf7f2;
+    --cream-dark: #f0ebe2;
+    --text-primary: #1a1a1a;
+    --text-secondary: #555;
+    --text-tertiary: #999;
+    --border: #e0d8ce;
+    --border-light: #ede8e0;
+    --white: #ffffff;
+    --radius: 10px;
+    --radius-sm: 6px;
+  }
+
+  body {
+    font-family: 'Montserrat', sans-serif;
+    background: var(--cream);
+    color: var(--text-primary);
+    min-height: 100vh;
+    font-size: 14px;
+    line-height: 1.7;
+  }
+
+  .page {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 0 1rem 4rem;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    text-align: center;
+    padding: 3rem 1rem 2.5rem;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 2rem;
+  }
+
+  .header-eyebrow {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.75rem;
+    font-weight: 500;
+  }
+
+  .header-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 32px;
+    font-weight: 500;
+    color: var(--burgundy);
+    margin-bottom: 0.4rem;
+    letter-spacing: 0.02em;
+  }
+
+  .header-date {
+    font-size: 12px;
+    color: var(--text-tertiary);
+    font-weight: 300;
+  }
+
+  /* ── STATS ── */
+  .stats-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 1.75rem;
+  }
+
+  .stat-box {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1rem;
+    text-align: center;
+  }
+
+  .stat-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 26px;
+    font-weight: 500;
+    color: var(--burgundy);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .stat-lbl {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+    font-weight: 500;
+  }
+
+  /* ── DAY META ── */
+  .day-meta {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 1.75rem;
+  }
+
+  .meta-card {
+    background: var(--cream-dark);
+    border-radius: var(--radius);
+    padding: 0.875rem 1rem;
+  }
+
+  .meta-label {
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+    font-weight: 500;
+    margin-bottom: 4px;
+  }
+
+  .meta-value {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text-primary);
+  }
+
+  .meta-value.big {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 26px;
+    font-weight: 500;
+    color: var(--burgundy);
+  }
+
+  .progress-bar {
+    height: 2px;
+    background: var(--border);
+    border-radius: 2px;
+    margin-top: 8px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: var(--burgundy);
+    border-radius: 2px;
+    transition: width 0.4s ease;
+  }
+
+  /* ── SECTION ── */
+  .section {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 1.25rem;
+    overflow: hidden;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0.875rem 1.25rem;
+    border-bottom: 1px solid var(--border-light);
+    background: var(--cream);
+  }
+
+  .section-icon {
+    font-size: 14px;
+    color: var(--gold);
+    width: 18px;
+    text-align: center;
+  }
+
+  .section-title {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+  }
+
+  .section-body {
+    padding: 1.25rem;
+  }
+
+  /* ── VERSE ── */
+  .verse-block {
+    border-left: 2px solid var(--burgundy);
+    padding: 0.875rem 1.125rem;
+    background: var(--burgundy-pale);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    margin-bottom: 1rem;
+  }
+
+  .verse-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px;
+    font-style: italic;
+    line-height: 1.7;
+    color: var(--text-primary);
+    margin-bottom: 6px;
+  }
+
+  .verse-ref {
+    font-size: 11px;
+    color: var(--text-tertiary);
+    font-weight: 500;
+    letter-spacing: 0.05em;
+  }
+
+  .verse-prompt {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.65;
+  }
+
+  /* ── BREATH ── */
+  .breath-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.5rem 0;
+  }
+
+  .breath-ring-wrap {
+    position: relative;
+    width: 130px;
+    height: 130px;
+  }
+
+  .breath-ring-wrap svg {
+    position: absolute;
+    inset: 0;
+    transform: rotate(-90deg);
+  }
+
+  .breath-inner {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+  }
+
+  .breath-word {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--burgundy);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .breath-count {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-weight: 500;
+    color: var(--text-primary);
+    min-width: 2ch;
+    text-align: center;
+    line-height: 1;
+  }
+
+  .breath-instr {
+    font-size: 12px;
+    color: var(--text-tertiary);
+    text-align: center;
+  }
+
+  .breath-btn {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.6rem 1.75rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: transparent;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .breath-btn:hover {
+    border-color: var(--burgundy);
+    color: var(--burgundy);
+  }
+
+  /* ── MOOD ── */
+  .mood-track {
+    display: flex;
+    gap: 6px;
+  }
+
+  .mood-opt {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    padding: 0.75rem 0.25rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: all 0.2s;
+    background: var(--white);
+    user-select: none;
+  }
+
+  .mood-opt:hover { border-color: var(--burgundy); background: var(--burgundy-pale); }
+
+  .mood-opt.selected {
+    border-color: var(--burgundy);
+    background: var(--burgundy-pale);
+  }
+
+  .mood-icon { font-size: 20px; }
+  .mood-label { font-size: 10px; color: var(--text-tertiary); font-weight: 500; text-align: center; }
+
+  /* ── GRATITUDE ── */
+  .gratitude-inputs { display: flex; flex-direction: column; gap: 8px; }
+
+  .gratitude-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .gratitude-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    color: var(--gold);
+    min-width: 18px;
+    text-align: center;
+  }
+
+  .gratitude-row input {
+    flex: 1;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 0.65rem 0.875rem;
+    color: var(--text-primary);
+    background: var(--cream);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .gratitude-row input:focus { border-color: var(--burgundy); background: var(--white); }
+  .gratitude-row input::placeholder { color: var(--text-tertiary); font-style: italic; }
+
+  /* ── AFFIRMATION ── */
+  .aff-display {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-style: italic;
+    line-height: 1.6;
+    color: var(--burgundy);
+    text-align: center;
+    padding: 1rem 0 1.25rem;
+    min-height: 70px;
+  }
+
+  .aff-nav {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .aff-btn {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    padding: 0.45rem 0.875rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: transparent;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .aff-btn:hover { border-color: var(--burgundy); color: var(--burgundy); }
+
+  /* ── INTENTION CHIPS ── */
+  .int-opts {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 1rem;
+  }
+
+  .int-chip {
+    padding: 0.6rem 0.875rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s;
+    background: var(--cream);
+    user-select: none;
+  }
+
+  .int-chip:hover { border-color: var(--burgundy); color: var(--burgundy); background: var(--burgundy-pale); }
+
+  .int-chip.selected {
+    background: var(--burgundy);
+    color: var(--white);
+    border-color: var(--burgundy);
+  }
+
+  /* ── TEXTAREA ── */
+  textarea {
+    width: 100%;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    line-height: 1.7;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 0.875rem 1rem;
+    color: var(--text-primary);
+    background: var(--cream);
+    resize: none;
+    outline: none;
+    transition: border-color 0.2s, background 0.2s;
+  }
+
+  textarea:focus { border-color: var(--burgundy); background: var(--white); }
+  textarea::placeholder { color: var(--text-tertiary); font-style: italic; }
+
+  .refl-prompt {
+    font-size: 12px;
+    color: var(--gold);
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    margin-bottom: 10px;
+  }
+
+  /* ── SAVE ROW ── */
+  .action-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 1.5rem;
+  }
+
+  .save-btn {
+    flex: 1;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    padding: 0.875rem 1.25rem;
+    background: var(--burgundy);
+    color: var(--white);
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: opacity 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .save-btn:hover { opacity: 0.85; }
+
+  .clear-btn {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    padding: 0.875rem 1.125rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: transparent;
+    color: var(--text-tertiary);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .clear-btn:hover { border-color: var(--text-tertiary); color: var(--text-secondary); }
+
+  /* ── NAV ── */
+  .nav-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 2rem;
+  }
+
+  .nav-btn {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 0.6rem 1rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: transparent;
+    color: var(--text-secondary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+
+  .nav-btn:hover:not(:disabled) { border-color: var(--burgundy); color: var(--burgundy); }
+  .nav-btn:disabled { opacity: 0.3; cursor: default; }
+
+  .dots-wrap {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+    justify-content: center;
+    flex: 1;
+  }
+
+  .dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--border);
+    cursor: pointer;
+    transition: background 0.15s, transform 0.15s;
+    flex-shrink: 0;
+  }
+
+  .dot:hover { transform: scale(1.4); }
+  .dot.done { background: var(--burgundy); }
+  .dot.current { background: var(--gold); }
+
+  /* ── TOAST ── */
+  .toast {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%) translateY(16px);
+    background: var(--burgundy);
+    color: var(--white);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    padding: 0.65rem 1.5rem;
+    border-radius: var(--radius-sm);
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.25s ease;
+    white-space: nowrap;
+    z-index: 999;
+  }
+
+  .toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 500px) {
+    .header-title { font-size: 26px; }
+    .stats-row, .day-meta { grid-template-columns: 1fr 1fr 1fr; gap: 6px; }
+    .stat-num { font-size: 22px; }
+    .mood-track { gap: 4px; }
+    .int-opts { grid-template-columns: 1fr 1fr; }
+    .aff-display { font-size: 17px; }
+    .nav-btn span { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <div class="header">
+    <div class="header-eyebrow">Devocional matutino · 90 días</div>
+    <div class="header-title">Maribella's Journal</div>
+    <div class="header-date" id="hdr-date"></div>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-box"><div class="stat-num" id="s-done">0</div><div class="stat-lbl">Completados</div></div>
+    <div class="stat-box"><div class="stat-num" id="s-streak">0</div><div class="stat-lbl">Racha</div></div>
+    <div class="stat-box"><div class="stat-num" id="s-left">90</div><div class="stat-lbl">Por vivir</div></div>
+  </div>
+
+  <div class="day-meta">
+    <div class="meta-card">
+      <div class="meta-label">Día</div>
+      <div class="meta-value big" id="meta-day">1</div>
+    </div>
+    <div class="meta-card">
+      <div class="meta-label">Fecha</div>
+      <div class="meta-value" id="meta-date" style="font-size:13px;"></div>
+    </div>
+    <div class="meta-card">
+      <div class="meta-label">Progreso</div>
+      <div class="meta-value" id="meta-pct">1 / 90</div>
+      <div class="progress-bar"><div class="progress-fill" id="prog-fill" style="width:1.1%"></div></div>
+    </div>
+  </div>
+
+  <!-- RESPIRA -->
+  <div class="section">
+    <div class="section-header">
+      <i class="fa-solid fa-wind section-icon"></i>
+      <span class="section-title">Respira · Entra en presencia</span>
+    </div>
+    <div class="section-body">
+      <div class="breath-section">
+        <div class="breath-ring-wrap">
+          <svg viewBox="0 0 130 130" width="130" height="130" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="65" cy="65" r="56" fill="none" stroke="#e0d8ce" stroke-width="3"/>
+            <circle id="breath-ring" cx="65" cy="65" r="56" fill="none" stroke="#510100" stroke-width="3"
+              stroke-linecap="round"
+              stroke-dasharray="351.9"
+              stroke-dashoffset="351.9"/>
+          </svg>
+          <div class="breath-inner">
+            <div class="breath-word" id="breath-word">Inhala</div>
+            <div class="breath-count" id="breath-count">4</div>
+          </div>
+        </div>
+        <div class="breath-instr" id="breath-instr">Inhala 4 · Sostén 4 · Exhala 4 · 4 ciclos</div>
+        <button class="breath-btn" id="breath-btn" onclick="startBreath()">Comenzar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- LA PALABRA -->
+  <div class="section">
+    <div class="section-header">
+      <i class="fa-solid fa-book-open section-icon"></i>
+      <span class="section-title">La Palabra de hoy</span>
+    </div>
+    <div class="section-body">
+      <div class="verse-block">
+        <div class="verse-text" id="verse-text"></div>
+        <div class="verse-ref" id="verse-ref"></div>
+      </div>
+      <div class="verse-prompt" id="verse-prompt"></div>
+    </div>
+  </div>
+
+  <!-- ESTADO DE LLEGADA -->
+  <div class="section">
+    <div class="section-header">
+      <i class="fa-regular fa-face-smile section-icon"></i>
+      <span class="section-title">¿Cómo estoy llegando?</span>
+    </div>
+    <div class="section-body">
+      <div class="mood-track">
+        <div class="mood-opt" onclick="selectMood(this,'pesada')"><div class="mood-icon">😔</div><div class="mood-label">Pesada</div></div>
+        <div class="mood-opt" onclick="selectMood(this,'cansada')"><div class="mood-icon">😴</div><div class="mood-label">Cansada</div></div>
+        <div class="mood-opt" onclick="selectMood(this,'tranquila')"><div class="mood-icon">😌</div><div class="mood-label">Tranquila</div></div>
+        <div class="mood-opt" onclick="selectMood(this,'esperanzada')"><div class="mood-icon">🌱</div><div class="mood-label">Esperanzada</div></div>
+        <div class="mood-opt" onclick="selectMood(this,'agradecida')"><div class="mood-icon">✨</div><div class="mood-label">Agradecida</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GRATITUD -->
+  <div class="section">
+    <div class="section-header">
+      <i class="fa-solid fa-heart section-icon"></i>
+      <span class="section-title">Gratitud · 3 cosas</span>
+    </div>
+    <div class="section-body">
+      <div class="gratitude-inputs">
+        <div class="gratitude-row"><span class="gratitude-num">1</span><input id="g1" type="text" placeholder="Hoy agradezco..." /></div>
+        <div class="gratitude-row"><span class="gratitude-num">2</span><input id="g2" type="text" placeholder="También soy agradecida por..." /></div>
+        <div class="gratitude-row"><span class="gratitude-num">3</span><input id="g3" type="text" placeholder="Y no puedo dejar de agradecer..." /></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DECLARACIÓN -->
+  <div class="section">
+    <div class="section-header">
+      <i class="fa-solid fa-star section-icon"></i>
+      <span class="section-title">Declaración del día</span>
+    </div>
+    <div class="section-body">
+      <div class="aff-display" id="aff-display"></div>
+      <div class="aff-nav">
+        <button class="aff-btn" onclick="prevAff()">&#8592; Anterior</button>
+        <button class="aff-btn" onclick="nextAff()">Siguiente &#8594;</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- INTENCIÓN -->
+  <div class="section">
+    <div class="section-header">
+      <i class="fa-solid fa-crosshairs section-icon"></i>
+      <span class="section-title">Mi intención de hoy</span>
+    </div>
+    <div class="section-body">
+      <div class="int-opts" id="int-opts">
+        <div class="int-chip" onclick="selectInt(this,'Presencia')">Presencia</div>
+        <div class="int-chip" onclick="selectInt(this,'Disciplina')">Disciplina</div>
+        <div class="int-chip" onclick="selectInt(this,'Fe en acción')">Fe en acción</div>
+        <div class="int-chip" onclick="selectInt(this,'Descanso')">Descanso</div>
+        <div class="int-chip" onclick="selectInt(this,'Valentía')">Valentía</div>
+        <div class="int-chip" onclick="selectInt(this,'Soltar control')">Soltar control</div>
+      </div>
+      <textarea id="int-custom" rows="2" placeholder="O escribe tu propia intención..."></textarea>
+    </div>
+  </div>
+
+  <!-- REFLEXIÓN -->
+  <div class="section">
+    <div class="section-header">
+      <i class="fa-solid fa-pen-nib section-icon"></i>
+      <span class="section-title">Reflexión matutina</span>
+    </div>
+    <div class="section-body">
+      <div class="refl-prompt" id="refl-prompt-txt"></div>
+      <textarea id="reflection" rows="6" placeholder="Escribe desde tu corazón..."></textarea>
+    </div>
+  </div>
+
+  <!-- ORACIÓN -->
+  <div class="section">
+    <div class="section-header">
+      <i class="fa-solid fa-hands-praying section-icon"></i>
+      <span class="section-title">Oración del día</span>
+    </div>
+    <div class="section-body">
+      <textarea id="prayer" rows="5" placeholder="Señor, hoy te entrego..."></textarea>
+    </div>
+  </div>
+
+  <!-- PASO CONCRETO -->
+  <div class="section">
+    <div class="section-header">
+      <i class="fa-solid fa-check section-icon"></i>
+      <span class="section-title">Un paso concreto hoy</span>
+    </div>
+    <div class="section-body">
+      <textarea id="action" rows="2" placeholder="Hoy voy a..."></textarea>
+    </div>
+  </div>
+
+  <div class="action-row">
+    <button class="save-btn" onclick="saveDay()">
+      <i class="fa-solid fa-floppy-disk"></i>
+      <span>Guardar día <span id="save-day-num">1</span></span>
+    </button>
+    <button class="clear-btn" onclick="clearDay()" title="Limpiar entradas">
+      <i class="fa-solid fa-rotate-right"></i>
+    </button>
+  </div>
+
+  <div class="nav-row">
+    <button class="nav-btn" id="prev-btn" onclick="goDay(-1)" disabled>
+      <i class="fa-solid fa-arrow-left"></i> <span>Anterior</span>
+    </button>
+    <div class="dots-wrap" id="dots-wrap"></div>
+    <button class="nav-btn" id="next-btn" onclick="goDay(1)">
+      <span>Siguiente</span> <i class="fa-solid fa-arrow-right"></i>
+    </button>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const VERSES = [
+  { text: "Porque yo sé los planes que tengo para vosotros, dice el Señor, planes de bienestar y no de mal, para daros un futuro y una esperanza.", ref: "Jeremías 29:11", prompt: "¿En qué área de tu vida necesitas recordar hoy que Dios tiene un plan?" },
+  { text: "Todo lo puedo en Cristo que me fortalece.", ref: "Filipenses 4:13", prompt: "¿Qué desafío de hoy entregas a la fortaleza de Cristo?" },
+  { text: "No os conforméis a este siglo, sino transformaos por medio de la renovación de vuestro entendimiento.", ref: "Romanos 12:2", prompt: "¿Qué patrón de pensamiento quieres renovar hoy?" },
+  { text: "Esfuérzate y sé valiente; no temas ni desmayes, porque Jehová tu Dios estará contigo en dondequiera que vayas.", ref: "Josué 1:9", prompt: "¿Qué paso valiente ha estado esperando tu obediencia?" },
+  { text: "Encomienda a Jehová tu camino, y confía en él; y él hará.", ref: "Salmos 37:5", prompt: "¿Qué estás cargando sola que Dios te invita a entregarle hoy?" },
+  { text: "El Señor mismo marchará al frente de ti y estará contigo; nunca te dejará ni te abandonará.", ref: "Deuteronomio 31:8", prompt: "¿En qué momento de tu semana sentiste que Dios te acompañaba?" },
+  { text: "Buscad primeramente el reino de Dios y su justicia, y todas estas cosas os serán añadidas.", ref: "Mateo 6:33", prompt: "¿Qué estás buscando primero hoy? ¿Qué necesitas reordenar?" },
+  { text: "Vosotros sois la luz del mundo. Una ciudad asentada sobre un monte no se puede esconder.", ref: "Mateo 5:14", prompt: "¿Dónde necesitas brillar con más confianza hoy?" },
+  { text: "Fíate de Jehová de todo tu corazón, y no te apoyes en tu propia prudencia.", ref: "Proverbios 3:5", prompt: "¿Qué decisión estás intentando controlar en lugar de confiar?" },
+  { text: "Yo soy la vid, vosotros los pámpanos; el que permanece en mí, y yo en él, éste lleva mucho fruto.", ref: "Juan 15:5", prompt: "¿En qué área de tu vida necesitas permanecer conectada a la vid hoy?" },
+  { text: "Porque Dios no nos ha dado un espíritu de cobardía, sino de poder, de amor y de dominio propio.", ref: "2 Timoteo 1:7", prompt: "¿Cuál de estos tres — poder, amor, dominio propio — necesitas activar hoy?" },
+  { text: "La mujer que teme a Jehová, ésa será alabada.", ref: "Proverbios 31:30", prompt: "¿Qué significa para ti ser la mujer que teme a Dios en la práctica de este día?" },
+  { text: "El amor de Dios ha sido derramado en nuestros corazones por el Espíritu Santo que nos fue dado.", ref: "Romanos 5:5", prompt: "¿Cómo quieres que ese amor fluya a través de ti hacia otros hoy?" },
+  { text: "Porque somos hechura suya, creados en Cristo Jesús para buenas obras.", ref: "Efesios 2:10", prompt: "¿Qué 'buena obra' específica crees que Dios preparó para ti hoy?" },
+  { text: "Confía en el Señor y haz el bien; vive en la tierra y mantente fiel.", ref: "Salmos 37:3", prompt: "¿Qué 'bien' concreto puedes hacer hoy aunque no veas el resultado?" },
+  { text: "El que comenzó en vosotros la buena obra, la perfeccionará hasta el día de Jesucristo.", ref: "Filipenses 1:6", prompt: "¿Qué proceso en tu vida necesita que confíes en que Dios lo va a completar?" },
+  { text: "Deléitate asimismo en Jehová, y él te concederá las peticiones de tu corazón.", ref: "Salmos 37:4", prompt: "¿Qué significa deleitarte en Dios hoy, más allá de pedir?" },
+  { text: "El Señor es mi pastor; nada me faltará.", ref: "Salmos 23:1", prompt: "¿En qué área de tu vida sientes carencia hoy? ¿Puedes confiar en el Pastor?" },
+  { text: "Clama a mí, y yo te responderé, y te enseñaré cosas grandes y ocultas que tú no conoces.", ref: "Jeremías 33:3", prompt: "¿Qué necesitas que Dios te revele hoy? Pídelo específicamente." },
+  { text: "No nos cansemos, pues, de hacer bien; porque a su tiempo segaremos, si no desmayamos.", ref: "Gálatas 6:9", prompt: "¿En qué área necesitas no desmayar hoy, aunque no veas los frutos aún?" },
+  { text: "El Señor es bueno; para siempre es su misericordia, y su verdad por todas las generaciones.", ref: "Salmos 100:5", prompt: "¿Cómo has visto la bondad de Dios manifestarse en tu historia?" },
+  { text: "Vestíos de toda la armadura de Dios, para que podáis estar firmes contra las asechanzas del diablo.", ref: "Efesios 6:11", prompt: "¿Con qué pieza de la armadura necesitas vestirte especialmente hoy?" },
+  { text: "El fruto del Espíritu es amor, gozo, paz, paciencia, benignidad, bondad, fe.", ref: "Gálatas 5:22", prompt: "¿Cuál de estos frutos necesitas que el Espíritu produzca más en ti hoy?" },
+  { text: "Jehová peleará por vosotros, y vosotros estaréis tranquilos.", ref: "Éxodo 14:14", prompt: "¿En qué batalla necesitas detenerte y dejar que sea Dios quien pelee?" },
+  { text: "Todo lo que hagáis, hacedlo de corazón, como para el Señor y no para los hombres.", ref: "Colosenses 3:23", prompt: "¿A quién estás buscando complacer en la tarea más importante de hoy?" },
+  { text: "La paz de Dios, que sobrepasa todo entendimiento, guardará vuestros corazones y vuestros pensamientos en Cristo Jesús.", ref: "Filipenses 4:7", prompt: "¿En qué área de tu mente necesitas la guardia de esa paz que no se explica?" },
+  { text: "Echad toda vuestra ansiedad sobre él, porque él tiene cuidado de vosotros.", ref: "1 Pedro 5:7", prompt: "¿Qué carga específica vas a echar sobre Él esta mañana? Nómbrala." },
+  { text: "Y sabemos que a los que aman a Dios, todas las cosas les ayudan a bien.", ref: "Romanos 8:28", prompt: "¿Qué situación difícil necesitas empezar a ver como parte del 'bien' que Dios está tejiendo?" },
+  { text: "Restaura a los quebrantados de corazón, y venda sus heridas.", ref: "Salmos 147:3", prompt: "¿Qué área de tu corazón necesita la mano restauradora de Dios hoy?" },
+  { text: "No vive el hombre solo de pan, sino de toda palabra que sale de la boca de Dios.", ref: "Mateo 4:4", prompt: "¿Cómo te estás alimentando del pan de la Palabra esta semana?" },
+  { text: "Porque separados de mí nada podéis hacer.", ref: "Juan 15:5b", prompt: "¿Hay algo que estás intentando construir con tus propias fuerzas sin incluir a Dios?" },
+  { text: "Dios es amor; y el que permanece en amor, permanece en Dios, y Dios en él.", ref: "1 Juan 4:16", prompt: "¿Dónde el amor de Dios necesita sanar algo en ti antes de que puedas darlo?" },
+  { text: "Si permanecéis en mí, y mis palabras permanecen en vosotros, pedid todo lo que queréis, y os será hecho.", ref: "Juan 15:7", prompt: "¿Qué petición específica pones delante de Dios hoy desde la permanencia en Él?" },
+  { text: "Porque con Dios nada habrá imposible.", ref: "Lucas 1:37", prompt: "¿Qué sueño has descartado como imposible que hoy le devuelves a Dios?" },
+  { text: "Sed fuertes y valientes. No temáis ni os desaniméis, porque Jehová vuestro Dios estará con vosotros.", ref: "1 Crónicas 28:20", prompt: "¿Qué proyecto, relación o decisión requiere que elijas valentía hoy?" }
+];
+
+const AFFIRMATIONS = [
+  "Fui creada con propósito. Nada en mí fue un error.",
+  "Dios me conoció antes de que yo me conociera a mí misma.",
+  "Mi valía no viene de lo que produzco. Viene de Quién me creó.",
+  "Soy amada en mi proceso, no solo en mis resultados.",
+  "No tengo que probarle nada a nadie. Dios ya me aprobó.",
+  "Mi historia tiene sentido en las manos de Dios.",
+  "Soy lo suficiente para lo que Dios me está llamando a hacer.",
+  "La mujer que nací para ser ya existe. Estoy volviéndome ella.",
+  "No estoy sola en este proceso. El Espíritu de Dios habita en mí.",
+  "Cada día que elijo comenzar con Dios es un día que cambia mi vida.",
+  "Tengo la mente de Cristo. Pienso desde un lugar de fe, no de miedo.",
+  "Mi identidad no está en mis circunstancias. Está en Cristo.",
+  "Soy capaz de lo que Dios me ha llamado a hacer. Él me equipa.",
+  "Esta temporada está formando en mí algo que el mundo va a necesitar.",
+  "Mi disciplina es un acto de fe. Le digo a Dios que creo en lo que viene.",
+  "No vivo para el aplauso humano. Vivo para el 'bien hecho' de Dios.",
+  "Mis pensamientos son renovados. Mi mente pertenece a Cristo.",
+  "Tengo autoridad espiritual sobre cada pensamiento que me quiere destruir.",
+  "Dios pelea por mí. Yo puedo estar tranquila.",
+  "El futuro que Dios preparó para mí es más grande que mi miedo más grande.",
+  "Soy una mujer de fe en acción. Mi obediencia precede al milagro.",
+  "Puedo soltar el control porque confío en el que controla todo.",
+  "Soy la mujer que Dios imaginó cuando me creó. Hoy elijo vivir como ella.",
+  "Mis límites son sagrados porque mi tiempo fue creado por Dios.",
+  "No soy víctima de mi pasado. Soy beneficiaria de la gracia de Dios.",
+  "Lo que Dios comenzó en mí lo terminará. Solo necesito seguir.",
+  "Soy agradecida por quien soy, no solo por lo que tengo.",
+  "Mi voz importa. Dios me la dio para algo.",
+  "Camino por fe, no por vista. Aunque no lo vea, lo creo.",
+  "Soy la respuesta a la oración de alguien. Por eso estoy aquí."
+];
+
+const REFLECTION_PROMPTS = [
+  "¿Qué versión de ti quieres ser al terminar este día?",
+  "¿Qué patrón de pensamiento necesitas romper hoy?",
+  "¿Dónde estás dándole demasiado poder a las opiniones de otros?",
+  "¿Qué has estado posponiendo que sabes que Dios te está llamando a hacer?",
+  "¿Cómo luce la obediencia para ti hoy?",
+  "¿Qué área de tu vida necesita más fe y menos control?",
+  "¿Qué te dices a ti misma cuando nadie está mirando?",
+  "¿Qué herida pasada todavía está diciendo su opinión en tu presente?",
+  "¿En qué cosa específica puedes escoger el amor propio hoy?",
+  "¿Cuál es la voz más ruidosa en tu cabeza esta mañana, y es la voz de Dios?",
+  "¿Qué significa confiar en Dios para ti hoy, en lo práctico y concreto?",
+  "¿Qué bendición de Dios has estado desestimando porque no luce como esperabas?",
+  "¿A quién necesitas soltar para poder avanzar?",
+  "¿Qué miedo específico quieres darle nombre hoy para poder entregárselo a Dios?",
+  "¿Cuándo fue la última vez que celebraste quién te estás convirtiendo?",
+  "¿Qué parte de tu historia de hoy vas a contar como testimonio mañana?",
+  "¿Qué límite necesitas poner hoy para proteger tu paz?",
+  "¿Cómo luce la mujer que nació para ser en las próximas 24 horas?",
+  "¿Qué necesita más de tu atención hoy: tu fe, tu salud, tus relaciones, o tu vocación?",
+  "¿Qué mentira has estado creyendo sobre ti misma que Dios quiere confrontar hoy?"
+];
+
+let currentDay = 1;
+let journalData = {};
+let currentAff = 0;
+let selectedMood = '';
+let selectedInt = '';
+let breathRunning = false;
+let breathTimer = null;
+
+function loadStorage() {
+  try {
+    const d = localStorage.getItem('mj_journal_v1');
+    if (d) journalData = JSON.parse(d);
+  } catch(e) { journalData = {}; }
+}
+
+function saveStorage() {
+  try { localStorage.setItem('mj_journal_v1', JSON.stringify(journalData)); } catch(e) {}
+}
+
+function todayStr() {
+  return new Date().toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+}
+
+function shortDate(offset) {
+  const d = new Date();
+  d.setDate(d.getDate() + offset);
+  return d.toLocaleDateString('es-ES', { day: 'numeric', month: 'short' });
+}
+
+function renderDay(n) {
+  currentDay = n;
+  const idx = (n - 1) % VERSES.length;
+  const v = VERSES[idx];
+
+  document.getElementById('meta-day').textContent = n;
+  document.getElementById('meta-date').textContent = shortDate(n - 1);
+  document.getElementById('meta-pct').textContent = n + ' / 90';
+  document.getElementById('prog-fill').style.width = ((n / 90) * 100).toFixed(1) + '%';
+  document.getElementById('verse-text').textContent = v.text;
+  document.getElementById('verse-ref').textContent = v.ref + ' (RVR1960)';
+  document.getElementById('verse-prompt').textContent = v.prompt;
+  document.getElementById('refl-prompt-txt').textContent = REFLECTION_PROMPTS[(n - 1) % REFLECTION_PROMPTS.length];
+  document.getElementById('hdr-date').textContent = todayStr();
+  document.getElementById('save-day-num').textContent = n;
+
+  currentAff = (n - 1) % AFFIRMATIONS.length;
+  renderAff();
+
+  document.getElementById('prev-btn').disabled = n <= 1;
+  document.getElementById('next-btn').disabled = n >= 90;
+
+  const data = journalData[n] || {};
+  document.getElementById('g1').value = data.g1 || '';
+  document.getElementById('g2').value = data.g2 || '';
+  document.getElementById('g3').value = data.g3 || '';
+  document.getElementById('reflection').value = data.reflection || '';
+  document.getElementById('prayer').value = data.prayer || '';
+  document.getElementById('action').value = data.action || '';
+  document.getElementById('int-custom').value = data.intCustom || '';
+
+  selectedMood = data.mood || '';
+  document.querySelectorAll('.mood-opt').forEach(function(el) {
+    var val = el.getAttribute('onclick').match(/'([^']+)'/);
+    el.classList.toggle('selected', val && val[1] === selectedMood && selectedMood !== '');
+  });
+
+  selectedInt = data.intention || '';
+  document.querySelectorAll('.int-chip').forEach(function(el) {
+    var val = el.getAttribute('onclick').match(/'([^']+)'/);
+    el.classList.toggle('selected', val && val[1] === selectedInt && selectedInt !== '');
+  });
+
+  if (data.aff !== undefined) { currentAff = data.aff; renderAff(); }
+
+  renderDots();
+  renderStats();
+}
+
+function renderAff() {
+  document.getElementById('aff-display').textContent = AFFIRMATIONS[currentAff];
+}
+
+function nextAff() { currentAff = (currentAff + 1) % AFFIRMATIONS.length; renderAff(); }
+function prevAff() { currentAff = (currentAff - 1 + AFFIRMATIONS.length) % AFFIRMATIONS.length; renderAff(); }
+
+function selectMood(el, val) {
+  selectedMood = val;
+  document.querySelectorAll('.mood-opt').forEach(function(e) { e.classList.remove('selected'); });
+  el.classList.add('selected');
+}
+
+function selectInt(el, val) {
+  selectedInt = val;
+  document.querySelectorAll('.int-chip').forEach(function(e) { e.classList.remove('selected'); });
+  el.classList.add('selected');
+}
+
+function saveDay() {
+  journalData[currentDay] = {
+    g1: document.getElementById('g1').value,
+    g2: document.getElementById('g2').value,
+    g3: document.getElementById('g3').value,
+    reflection: document.getElementById('reflection').value,
+    prayer: document.getElementById('prayer').value,
+    action: document.getElementById('action').value,
+    mood: selectedMood,
+    intention: selectedInt,
+    intCustom: document.getElementById('int-custom').value,
+    aff: currentAff,
+    saved: true
+  };
+  saveStorage();
+  renderDots();
+  renderStats();
+  showToast('Día ' + currentDay + ' guardado ✓');
+}
+
+function clearDay() {
+  if (confirm('¿Limpiar las entradas de hoy?')) {
+    ['g1','g2','g3','reflection','prayer','action','int-custom'].forEach(function(id) {
+      document.getElementById(id).value = '';
+    });
+    selectedMood = '';
+    selectedInt = '';
+    document.querySelectorAll('.mood-opt, .int-chip').forEach(function(e) { e.classList.remove('selected'); });
+  }
+}
+
+function goDay(dir) {
+  var n = currentDay + dir;
+  if (n >= 1 && n <= 90) renderDay(n);
+}
+
+function renderDots() {
+  var wrap = document.getElementById('dots-wrap');
+  wrap.innerHTML = '';
+  var start = Math.max(1, currentDay - 14);
+  var end = Math.min(90, start + 29);
+  for (var i = start; i <= end; i++) {
+    (function(day) {
+      var d = document.createElement('div');
+      var cls = 'dot';
+      if (journalData[day] && journalData[day].saved) cls += ' done';
+      if (day === currentDay) cls += ' current';
+      d.className = cls;
+      d.title = 'Día ' + day;
+      d.onclick = function() { renderDay(day); };
+      wrap.appendChild(d);
+    })(i);
+  }
+}
+
+function renderStats() {
+  var done = Object.values(journalData).filter(function(d) { return d && d.saved; }).length;
+  document.getElementById('s-done').textContent = done;
+  document.getElementById('s-left').textContent = 90 - done;
+  var streak = 0;
+  for (var i = currentDay; i >= 1; i--) {
+    if (journalData[i] && journalData[i].saved) streak++;
+    else break;
+  }
+  document.getElementById('s-streak').textContent = streak;
+}
+
+function showToast(msg) {
+  var t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(function() { t.classList.remove('show'); }, 2200);
+}
+
+function startBreath() {
+  if (breathRunning) {
+    breathRunning = false;
+    clearTimeout(breathTimer);
+    document.getElementById('breath-btn').textContent = 'Comenzar';
+    document.getElementById('breath-word').textContent = 'Inhala';
+    document.getElementById('breath-count').textContent = '4';
+    document.getElementById('breath-ring').style.strokeDashoffset = '351.9';
+    document.getElementById('breath-instr').textContent = 'Inhala 4 · Sostén 4 · Exhala 4 · 4 ciclos';
+    return;
+  }
+  breathRunning = true;
+  document.getElementById('breath-btn').textContent = 'Detener';
+
+  var phases = [
+    { word: 'Inhala', secs: 4, fillDir: 'in' },
+    { word: 'Sostén', secs: 4, fillDir: 'hold' },
+    { word: 'Exhala', secs: 4, fillDir: 'out' },
+    { word: 'Pausa',  secs: 2, fillDir: 'hold' }
+  ];
+  var FULL = 351.9;
+  var cycle = 0, totalCycles = 4;
+  var phaseIdx = 0;
+  var secLeft = phases[0].secs;
+  var ring = document.getElementById('breath-ring');
+
+  function tick() {
+    if (!breathRunning) return;
+    var ph = phases[phaseIdx];
+    document.getElementById('breath-word').textContent = ph.word;
+    document.getElementById('breath-count').textContent = secLeft;
+    document.getElementById('breath-instr').textContent = 'Ciclo ' + (cycle + 1) + ' de ' + totalCycles + ' · ' + ph.word + '...';
+
+    var prog = 1 - (secLeft / ph.secs);
+    if (ph.fillDir === 'in')  ring.style.strokeDashoffset = (FULL * (1 - prog)).toFixed(1);
+    if (ph.fillDir === 'out') ring.style.strokeDashoffset = (FULL * prog).toFixed(1);
+
+    secLeft--;
+    if (secLeft < 0) {
+      phaseIdx++;
+      if (phaseIdx >= phases.length) {
+        phaseIdx = 0;
+        cycle++;
+        if (cycle >= totalCycles) {
+          breathRunning = false;
+          document.getElementById('breath-btn').textContent = 'Comenzar';
+          document.getElementById('breath-word').textContent = '✓';
+          document.getElementById('breath-count').textContent = '';
+          document.getElementById('breath-instr').textContent = 'Momento de presencia completado';
+          ring.style.strokeDashoffset = '0';
+          return;
+        }
+      }
+      secLeft = phases[phaseIdx].secs;
+    }
+    breathTimer = setTimeout(tick, 1000);
+  }
+  tick();
+}
+
+loadStorage();
+renderDay(1);
+</script>
+</body>
+</html>
