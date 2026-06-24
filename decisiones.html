@@ -11,8 +11,8 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif; background: #520101; min-height: 100vh; color: #1d1d1f; line-height: 1.6; }
         .container { max-width: 100%; background: #520101; overflow: hidden; }
-        .header { background: #520101; padding: 50px 60px 40px; border-bottom: 1px solid rgba(255,255,255,0.08); display: flex; flex-direction: column; align-items: center; }
-        .header-logo { max-width: 280px; width: 100%; display: block; }
+        .header { background: #520101; padding: 50px 60px 40px; border-bottom: 1px solid rgba(255,255,255,0.08); display: flex; flex-direction: column; align-items: center; box-sizing: border-box; width: 100%; }
+        .header-logo { max-width: 280px; width: 100%; display: block; height: auto; }
         .header p { font-size: 1.05em; line-height: 1.7; font-weight: 400; max-width: 700px; color: rgba(255,255,255,0.85); text-align: center; margin-top: 24px; }
         .progress-bar { background: #520101; padding: 16px 60px; display: flex; justify-content: center; align-items: center; gap: 3px; }
         .progress-dot { width: 28px; height: 28px; border-radius: 50%; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25); display: flex; align-items: center; justify-content: center; font-size: 0.65em; font-weight: 600; color: white; transition: all 0.25s ease; }
@@ -58,7 +58,7 @@
         <h2 style="color: white; font-size: 2.6em; font-weight: 700; line-height: 1.2; max-width: 700px; text-align: center; margin-top: 28px; margin-bottom: 16px; letter-spacing: -1px;">Autoanálisis: Decisiones</h2>
         <p>Descubre cómo el enemigo está influyendo en tus decisiones diarias a través de la duda, el desánimo y el temor</p>
     </div>
-
+ 
     <div class="progress-bar" id="progressBar">
         <div class="progress-dot active">1</div>
         <div class="progress-dot">2</div>
@@ -71,18 +71,18 @@
         <div class="progress-dot">9</div>
         <div class="progress-dot">10</div>
     </div>
-
+ 
     <div class="content" id="questionsContainer"></div>
-
+ 
     <div class="navigation">
         <button class="btn" id="nextBtn" onclick="nextQuestion()">Siguiente</button>
         <button class="btn" id="submitBtn" onclick="calculateResult()" style="display:none;">Ver Resultado</button>
         <button class="btn" id="prevBtn" onclick="previousQuestion()" style="display:none;">Anterior</button>
     </div>
-
+ 
     <div class="result" id="resultContainer"></div>
 </div>
-
+ 
 <script>
     const questions = [
         { q: "Cuando despiertas por la mañana, ¿qué pensamientos dominan tu mente antes de levantarte?", options: [ { text: "Pensamientos de preocupación, cansancio y desmotivación ('No quiero levantarme', '¿Para qué?')", value: 1 }, { text: "Ansiedad por todo lo que tengo que hacer y sentimiento de incapacidad", value: 2 }, { text: "A veces positivos, a veces negativos - es una lucha constante", value: 3 }, { text: "Agradecimiento a Dios por un nuevo día y expectativa de Sus bendiciones", value: 4 } ] },
@@ -96,10 +96,10 @@
         { q: "Antes de dormir, ¿con qué pensamientos cierras tu día?", options: [ { text: "Preocupación, ansiedad por el mañana, reproches por lo que no hice", value: 1 }, { text: "Estrés y pensamiento repetitivo sobre problemas sin resolver", value: 2 }, { text: "Mezcla de gratitud con preocupación - no tengo paz completa", value: 3 }, { text: "Gratitud a Dios, entrega de mis cargas a Él, paz en Su control", value: 4 } ] },
         { q: "¿Con qué frecuencia te encuentras diciendo 'no puedo', 'es imposible', 'no lo lograré'?", options: [ { text: "Constantemente - es mi diálogo interno automático", value: 1 }, { text: "Varias veces al día - especialmente ante desafíos", value: 2 }, { text: "Ocasionalmente - estoy trabajando en cambiarlo", value: 3 }, { text: "Rara vez - he renovado mi mente con la verdad de Dios", value: 4 } ] }
     ];
-
+ 
     let currentQuestion = 0;
     let answers = {};
-
+ 
     function initQuiz() {
         const container = document.getElementById('questionsContainer');
         questions.forEach((question, index) => {
@@ -116,7 +116,7 @@
         });
         updateProgress();
     }
-
+ 
     function selectOption(qIndex, value, el) {
         answers[qIndex] = value;
         el.parentElement.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
@@ -124,7 +124,7 @@
         document.getElementById('nextBtn').disabled = false;
         if (currentQuestion === questions.length - 1) document.getElementById('submitBtn').disabled = false;
     }
-
+ 
     function nextQuestion() {
         if (!answers.hasOwnProperty(currentQuestion)) { alert('Por favor selecciona una respuesta antes de continuar'); return; }
         document.getElementById('question-' + currentQuestion).classList.remove('active');
@@ -132,14 +132,14 @@
         document.getElementById('question-' + currentQuestion).classList.add('active');
         updateButtons(); updateProgress();
     }
-
+ 
     function previousQuestion() {
         document.getElementById('question-' + currentQuestion).classList.remove('active');
         currentQuestion--;
         document.getElementById('question-' + currentQuestion).classList.add('active');
         updateButtons(); updateProgress();
     }
-
+ 
     function updateButtons() {
         document.getElementById('prevBtn').style.display = currentQuestion > 0 ? 'block' : 'none';
         if (currentQuestion === questions.length - 1) {
@@ -152,7 +152,7 @@
             document.getElementById('nextBtn').disabled = !answers.hasOwnProperty(currentQuestion);
         }
     }
-
+ 
     function updateProgress() {
         document.querySelectorAll('.progress-dot').forEach((dot, i) => {
             dot.classList.remove('active', 'completed');
@@ -160,7 +160,7 @@
             else if (i < currentQuestion) dot.classList.add('completed');
         });
     }
-
+ 
     function calculateResult() {
         if (Object.keys(answers).length !== questions.length) { alert('Por favor responde todas las preguntas'); return; }
         const total = Object.values(answers).reduce((s, v) => s + v, 0);
@@ -190,7 +190,7 @@
         rc.innerHTML = `<div><div class="result-title">${title}</div><div class="result-description">${desc}</div><div class="result-recommendations"><h4>Estrategias de Guerra Para Tus Decisiones Diarias:</h4><ul>${recs}</ul></div><div class="final-message"><p><strong>Recuerda:</strong> La batalla por tus decisiones es real, pero ya está ganada en Cristo. El enemigo usa la duda, el desánimo y el temor porque sabe que tus decisiones diarias determinan tu destino. Cada decisión tomada en fe es un territorio recuperado para el Reino de Dios.</p><p>"Pues aunque andamos en la carne, no militamos según la carne; porque las armas de nuestra milicia no son carnales, sino poderosas en Dios para la destrucción de fortalezas, derribando argumentos y toda altivez que se levanta contra el conocimiento de Dios, y llevando cautivo todo pensamiento a la obediencia a Cristo." — 2 Corintios 10:3-5</p></div><button class="btn restart-btn" onclick="location.reload()">Realizar Autoanálisis Nuevamente</button></div>`;
         rc.classList.add('active');
     }
-
+ 
     initQuiz();
 </script>
 </body>
