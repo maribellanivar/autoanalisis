@@ -11,7 +11,7 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif; background: #520101; min-height: 100vh; color: #1d1d1f; line-height: 1.6; }
         .container { max-width: 100%; background: #520101; overflow: hidden; }
-        .header { background: #520101; padding: 50px 60px 40px; border-bottom: 1px solid rgba(255,255,255,0.08); display: flex; flex-direction: column; align-items: center; box-sizing: border-box; width: 100%; }
+        .header { background: #520101; padding: 50px 60px 40px; border-bottom: 1px solid rgba(255,255,255,0.08); display: flex; flex-direction: column; align-items: center; }
         .header-logo { max-width: 280px; width: 100%; display: block; height: auto; }
         .header h2 { color: white; font-size: 3.4em; font-weight: 700; line-height: 1.2; max-width: 700px; text-align: center; margin-top: 28px; margin-bottom: 16px; letter-spacing: -1px; }
         .header p { font-size: 1.05em; line-height: 1.7; font-weight: 400; max-width: 700px; color: rgba(255,255,255,0.85); text-align: center; }
@@ -59,7 +59,7 @@
         <h2>Autoanálisis:<br>Soltar el Control</h2>
         <p>Descubre si estás confiando en tus propios planes o si realmente has soltado el control a Dios</p>
     </div>
-
+ 
     <div class="progress-bar" id="progressBar">
         <div class="progress-dot active">1</div>
         <div class="progress-dot">2</div>
@@ -72,18 +72,18 @@
         <div class="progress-dot">9</div>
         <div class="progress-dot">10</div>
     </div>
-
+ 
     <div class="content" id="questionsContainer"></div>
-
+ 
     <div class="navigation">
         <button class="btn" id="nextBtn" onclick="nextQuestion()">Siguiente</button>
         <button class="btn" id="submitBtn" onclick="calculateResult()" style="display:none;">Ver Resultado</button>
         <button class="btn" id="prevBtn" onclick="previousQuestion()" style="display:none;">Anterior</button>
     </div>
-
+ 
     <div class="result" id="resultContainer"></div>
 </div>
-
+ 
 <script>
     const questions = [
         { q: "Cuando tus planes no salen como esperabas, ¿cuál es tu primera reacción?", options: [ { text: "Entro en pánico y trato de forzar que las cosas funcionen a toda costa", value: 1 }, { text: "Me frustro intensamente y cuestiono por qué Dios lo permitió", value: 2 }, { text: "Me decepciono pero intento ajustar y buscar una solución rápidamente", value: 3 }, { text: "Respiro, oro y busco entender qué está enseñándome Dios en esta redirección", value: 4 } ] },
@@ -97,10 +97,10 @@
         { q: "¿Cómo te sientes cuando las cosas están fuera de tu control?", options: [ { text: "Completamente descontrolada - mi paz depende de controlar mi entorno", value: 1 }, { text: "Muy ansiosa y vulnerable - necesito saber y controlar para sentirme segura", value: 2 }, { text: "Incómoda pero reconozco que el control es limitado", value: 3 }, { text: "En paz - mi seguridad está en Dios, no en controlar las circunstancias", value: 4 } ] },
         { q: "¿Qué tan seguido dices 'No entiendo por qué esto está pasando, pero confío en Ti, Dios' y REALMENTE lo sientes?", options: [ { text: "Nunca - siempre necesito entender para poder confiar", value: 1 }, { text: "Rara vez - lo digo pero no lo siento genuinamente", value: 2 }, { text: "A veces - depende de la situación y cuánto me afecta", value: 3 }, { text: "Frecuentemente - he aprendido que no necesito entender para confiar", value: 4 } ] }
     ];
-
+ 
     let currentQuestion = 0;
     let answers = {};
-
+ 
     function initQuiz() {
         const container = document.getElementById('questionsContainer');
         questions.forEach((question, index) => {
@@ -117,7 +117,7 @@
         });
         updateProgress();
     }
-
+ 
     function selectOption(qIndex, value, el) {
         answers[qIndex] = value;
         el.parentElement.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
@@ -125,7 +125,7 @@
         document.getElementById('nextBtn').disabled = false;
         if (currentQuestion === questions.length - 1) document.getElementById('submitBtn').disabled = false;
     }
-
+ 
     function nextQuestion() {
         if (!answers.hasOwnProperty(currentQuestion)) { alert('Por favor selecciona una respuesta antes de continuar'); return; }
         document.getElementById('question-' + currentQuestion).classList.remove('active');
@@ -133,14 +133,14 @@
         document.getElementById('question-' + currentQuestion).classList.add('active');
         updateButtons(); updateProgress();
     }
-
+ 
     function previousQuestion() {
         document.getElementById('question-' + currentQuestion).classList.remove('active');
         currentQuestion--;
         document.getElementById('question-' + currentQuestion).classList.add('active');
         updateButtons(); updateProgress();
     }
-
+ 
     function updateButtons() {
         document.getElementById('prevBtn').style.display = currentQuestion > 0 ? 'block' : 'none';
         if (currentQuestion === questions.length - 1) {
@@ -153,7 +153,7 @@
             document.getElementById('nextBtn').disabled = !answers.hasOwnProperty(currentQuestion);
         }
     }
-
+ 
     function updateProgress() {
         document.querySelectorAll('.progress-dot').forEach((dot, i) => {
             dot.classList.remove('active', 'completed');
@@ -161,7 +161,7 @@
             else if (i < currentQuestion) dot.classList.add('completed');
         });
     }
-
+ 
     function calculateResult() {
         if (Object.keys(answers).length !== questions.length) { alert('Por favor responde todas las preguntas'); return; }
         const total = Object.values(answers).reduce((s, v) => s + v, 0);
@@ -191,7 +191,7 @@
         rc.innerHTML = `<div><div class="result-title">${title}</div><div class="result-description">${desc}</div><div class="result-recommendations"><h4>Pasos Para Soltar el Control y Confiar en Dios:</h4><ul>${recs}</ul></div><div class="final-message"><p><strong>Recuerda:</strong> Soltar el control no es resignación, es confianza activa. No es dejar de actuar, es actuar desde un lugar de rendición a Dios en lugar de desde el miedo. Las manos abiertas pueden recibir lo que las manos cerradas nunca podrán: los planes perfectos de Dios para tu vida.</p><p>"Confía en el Señor con todo tu corazón, y no te apoyes en tu propio entendimiento. Reconócelo en todos tus caminos, y Él enderezará tus sendas." — Proverbios 3:5-6</p></div><button class="btn restart-btn" onclick="location.reload()">Realizar Autoanálisis Nuevamente</button></div>`;
         rc.classList.add('active');
     }
-
+ 
     initQuiz();
 </script>
 </body>
